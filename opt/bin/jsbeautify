@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# cd into the youngest parent directory of the first argument that contains a
+# .jsbeautifyrc, then run js-beautify on the first argument. argument must be
+# an absolute path
+
+search_up() {
+    local start_dir=$(dirname $2)
+    local look=${start_dir%/}
+
+    while [[ -n $look ]]; do
+        [[ -e $look/$1 ]] && {
+            echo $look
+            return
+        }
+
+        look=${look%/*}
+    done
+
+    [[ -e /$1 ]] && echo /
+}
+
+if [[ -f $1 ]]; then
+    containing_dir="$(search_up '.jsbeautifyrc' $1)"
+    if [[ -z $containing_dir ]]; then
+        js-beautify -r $1
+    else
+        cd $containing_dir && js-beautify -r $1
+    fi
+fi

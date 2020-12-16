@@ -1,0 +1,27 @@
+#!/bin/bash
+
+startkafka() {
+    tmux new-window
+    tmux send-keys /opt/kafka-$VERSION/bin/zookeeper-server-start.sh Space /opt/kafka-$VERSION/config/zookeeper.properties C-m
+
+    sleep 3
+
+    tmux split-window -h "/opt/kafka-$VERSION/bin/kafka-server-start.sh /opt/kafka-$VERSION/config/server.properties"
+    tmux split-window -h "/opt/kafka-$VERSION/bin/kafka-server-start.sh /opt/kafka-$VERSION/config/server1.properties"
+    tmux split-window -h "/opt/kafka-$VERSION/bin/kafka-server-start.sh /opt/kafka-$VERSION/config/server2.properties"
+    tmux select-layout main-vertical > /dev/null
+
+    sleep 3
+
+    tmux new-window "/opt/kafka-$VERSION/bin/kafka-topics.sh --create --zookeeper localhost:2181 --topic testtopic_replicated --replication-factor 2 --partitions 10"
+    #tmux close-window
+}
+
+VERSION=$1
+
+startkafka
+
+export BROKERS=localhost:9092,localhost:9093,localhost:9094
+export BROKERS_SSL=localhost:9082,localhost:9083,localhost:9084
+export KAFKA_BIN=/opt/kafka-$VERSION
+export ZOOKEEPER=localhost:2181

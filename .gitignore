@@ -1,0 +1,6 @@
+*.swp
+*.un~
+*.pyc
+nohup.out
+.netrwhist
+black
