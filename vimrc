@@ -199,9 +199,7 @@ nnoremap <leader>c :close<cr>
 nnoremap <leader>rn :set relativenumber!<cr>
 " Easier linewise reselection
 map <leader>v V`]
-" Yankring
-nnoremap <silent> <F3> :YRShow<cr>
-nnoremap <silent> <leader>y :YRShow<cr>
+nnoremap <silent> <leader>y "+y
 " highlight long lines in file
 nnoremap <leader>long :HighlightLongLines<CR>
 "sort CSS properties
