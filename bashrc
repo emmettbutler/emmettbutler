@@ -138,6 +138,7 @@ alias pipu="pip install --upgrade --upgrade-strategy only-if-needed"
 alias androidstudio="/opt/android-studio/android-studio/bin/studio.sh"
 # unset/set AWS_PROFILE before/after auth OR alias AWS_PROFILE export so it's easy to use repeatedly
 alias googleauth="`cat ~/.google_auth_command`"
+alias googleauthsudo="`cat ~/.google_auth_sudoer_command`"
 alias parselyvpn="sudo openvpn --config ~/.openvpn/parsely-udp1194.ovpn"
 alias automatticproxy="ssh -N -D 8080 emmettbutler@proxy.automattic.com -i ~/.ssh/id_rsa_automattic"
 
