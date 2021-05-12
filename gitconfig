@@ -1,0 +1,9 @@
+[user]
+    email = emmett.butler321@gmail.com
+    name = Emmett Butler
+[push]
+    default = current
+[branch]
+    autosetuprebase = always
+[receive]
+    denyNonFastForwards = true
