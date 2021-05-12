@@ -182,4 +182,4 @@ fi
 
 
 ssh-add ~/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
-~/.bashrc_secrets
+source ~/.bashrc_secrets
