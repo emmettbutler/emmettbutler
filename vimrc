@@ -7,6 +7,11 @@ filetype off
 syntax on
 filetype plugin indent on
 
+call plug#begin('~/.vim/plugged')
+Plug 'psf/black', { 'branch': 'stable' }
+call plug#end()
+
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "       SETTINGS OF ALL SORTES
