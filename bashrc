@@ -75,7 +75,7 @@ fi
 ##################################################
 #USER-ADDED FUNCTIONS/ALIASES
 ##################################################
-export EDITOR=vim
+export EDITOR=nvim
 
 alias cp='cp -i'
 alias rm='rm -i'
@@ -88,36 +88,19 @@ alias clj="java -cp /usr/local/bin/clojure-1.6.0/clojure-1.6.0.jar clojure.main"
 alias xrestart="sudo /etc/init.d/gdm restart"
 alias fanstat='sudo cat /proc/acpi/ibm/fan'
 
-if [[ $platform == 'linux' ]]; then
-    export WORKON_HOME="/home/emmett/virtualenvs"
-elif [[ $platform == 'mac' ]]; then
-    export WORKON_HOME="/Users/emmettbutler/virtualenvs"
-fi
-export GRAILS_HOME="/opt/grails"
 export PYTHONSTARTUP="~/.pythonstartup"
 
 # path modifications
-export PATH=$PATH:/usr/lib/postgresql/8.4/bin:/opt/grails/bin:/opt/mongo/bin:/opt/flex/bin
-export PATH=$PATH:/home/emmett/tools/storm-0.8.2/bin
 export PATH=$PATH:/sbin
 export PATH=$PATH:/opt/apache-maven-3.3.3/bin
 export PATH=$PATH:/home/emmett/opt/bin:/opt/bin
-export PATH=$PATH:~/opt/bin
-export PATH=$PATH:/usr/share/elasticsearch/bin
 export PATH=$PATH:/opt/llvm/build/Release+Asserts/bin
-export PATH=$PATH:/opt/python-3.4.3/bin
-export PATH=$PATH:/opt/python-3.5.0/bin
-export PATH=$PATH:/opt/python-3.6.0/bin
-export PATH=$PATH:/home/emmett/Android/Sdk
-alias pyspark_ipython='PYSPARK_DRIVER_PYTHON=/usr/local/bin/ipython PYSPARK_PYTHON=/home/emmett/virtualenvs/ct-casterisk-rebuilds/bin/python pyspark --master local[8]'
-alias pyspark24_ipython='PYSPARK_DRIVER_PYTHON=/usr/local/bin/ipython PYSPARK_PYTHON=/home/emmett/virtualenvs/ct-casterisk-rebuilds/bin/python pyspark --master local[8]'
+export PATH="/usr/local/Cellar/openvpn/2.5.2/sbin:$PATH"
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib:/home/emmett/anaconda3/lib
 
 export JAVA_HOME="/usr/lib/jvm/default-java/"
 export M2_HOME="/opt/apache-maven-3.3.3"
-export BROWSERSTACK_USERNAME="emmettbutler1"
-export BROWSERSTACK_KEY="6QjFGomTEXyqL6TMpFD5"
 export TZ="UTC"  # for pyspark
 export NODE_PATH="/usr/local/lib/node_modules"
 
@@ -129,30 +112,21 @@ function histr () {
     $cmd
 }
 
-alias pconnect='ssh -L 27017:localhost:27017 cogtree@174.143.145.120'
-alias hay='find . -name'
-alias nes='mednafen'
 alias tmux='TERM=xterm-256color tmux'
-alias ipy="python -c 'import IPython; IPython.terminal.ipapp.launch_new_instance()'"
 alias pipu="pip install --upgrade --upgrade-strategy only-if-needed"
-alias androidstudio="/opt/android-studio/android-studio/bin/studio.sh"
 # unset/set AWS_PROFILE before/after auth OR alias AWS_PROFILE export so it's easy to use repeatedly
 alias googleauth="`cat ~/.google_auth_command`"
 alias parselyvpn="sudo openvpn --config ~/.openvpn/parsely-udp1194.ovpn"
-
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-source /usr/local/bin/virtualenvwrapper.sh
 source ~/liquidprompt/liquidprompt
 
 # don't check cacert
 export GIT_SSL_NO_VERIFY=true
 
-alias minify="./build_scripts/assets/compile_manifest.py --csso-path $CSSO_PATH --closure-path $CLOSURE_PATH"
-export CSSO_PATH="/usr/local/bin/csso"
 export CLOSURE_PATH="/home/emmett/.npm/closure-compiler/0.2.2/package/lib/vendor/compiler.jar"
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
@@ -160,9 +134,6 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# added by travis gem
-[ -f /home/emmett/.travis/travis.sh ] && source /home/emmett/.travis/travis.sh
 
 eval `keychain --eval --agents ssh id_rsa`
 
