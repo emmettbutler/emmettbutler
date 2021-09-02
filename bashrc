@@ -101,7 +101,6 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib:/home/emmett/anaconda3/lib
 
 export JAVA_HOME="/usr/lib/jvm/default-java/"
 export M2_HOME="/opt/apache-maven-3.3.3"
-export TZ="UTC"  # for pyspark
 export NODE_PATH="/usr/local/lib/node_modules"
 
 #print and execute the command at the specified line+1 of the bash history file
@@ -116,7 +115,9 @@ alias tmux='TERM=xterm-256color tmux'
 alias pipu="pip install --upgrade --upgrade-strategy only-if-needed"
 # unset/set AWS_PROFILE before/after auth OR alias AWS_PROFILE export so it's easy to use repeatedly
 alias googleauth="`cat ~/.google_auth_command`"
+alias googleauthsudo="`cat ~/.google_auth_sudoer_command`"
 alias parselyvpn="sudo openvpn --config ~/.openvpn/parsely-udp1194.ovpn"
+alias automatticproxy="ssh -N -D 8080 emmettbutler@proxy.automattic.com -i ~/.ssh/id_rsa_automattic"
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
@@ -130,9 +131,10 @@ export GIT_SSL_NO_VERIFY=true
 export CLOSURE_PATH="/home/emmett/.npm/closure-compiler/0.2.2/package/lib/vendor/compiler.jar"
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 eval `keychain --eval --agents ssh id_rsa`
@@ -151,4 +153,4 @@ fi
 
 
 ssh-add ~/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
-~/.bashrc_secrets
+source ~/.bashrc_secrets

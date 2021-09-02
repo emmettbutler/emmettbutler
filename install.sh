@@ -13,6 +13,7 @@ ln -s ~/git/dotfiles/vimrc ~/.vimrc
 ln -s ~/git/dotfiles/tmux.conf ~/.tmux.conf
 ln -s ~/git/dotfiles/opt ~/opt
 ln -s ~/git/dotfiles/vim ~/.vim
+ln -s ~/git/dotfiles/gitconfig ~/.gitconfig
 ln -s ~/git/dotfiles/pythonstartup ~/.pythonstartup
 ln -s ~/git/dotfiles/pull_repos.py ~/git/parsely/pull_repos.py
 ln -s ~/git/dotfiles/ssh_config ~/.ssh/config
