@@ -3,3 +3,6 @@ Host *.compute-1.amazonaws.com
   # this file needs to be chmod 400'ed for this to work
   IdentityFile /home/emmett/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
   ForwardAgent yes
+
+Host *.cogtree.com
+  StrictHostKeyChecking no
