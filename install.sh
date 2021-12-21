@@ -10,6 +10,7 @@ mkdir ~/git/parsely
 
 ln -s ~/git/dotfiles/bashrc ~/.bashrc
 ln -s ~/git/dotfiles/vimrc ~/.vimrc
+ln -s ~/git/dotfiles/liquidpromptrc ~/.liquidpromptrc
 ln -s ~/git/dotfiles/tmux.conf ~/.tmux.conf
 ln -s ~/git/dotfiles/opt ~/opt
 ln -s ~/git/dotfiles/vim ~/.vim
