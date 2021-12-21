@@ -44,3 +44,6 @@ pip install black
 sudo npm install -g js-beautify
 
 git clone git@github.com:Parsely/engineering.git ~/git/parsely/engineering
+
+# turn off keyboard autorepeat
+gsettings set org.gnome.desktop.peripherals.keyboard repeat false
