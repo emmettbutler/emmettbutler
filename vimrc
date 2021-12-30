@@ -294,6 +294,8 @@ autocmd FileType php nmap <leader>pc :!php -l %<cr>
 " open PHP classes but not functions
 autocmd FileType php set foldlevel=1
 
+autocmd FileType terraform set tabstop=2 softtabstop=2 shiftwidth=2
+
 map <silent> <F11> :call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")<CR>
 
 autocmd BufWritePost *.py call Flake8()
