@@ -118,6 +118,7 @@ alias googleauth="`cat ~/.google_auth_command`"
 alias googleauthsudo="`cat ~/.google_auth_sudoer_command`"
 alias parselyvpn="sudo openvpn --config ~/.openvpn/parsely-udp1194.ovpn"
 alias automatticproxy="ssh -N -D 8080 emmettbutler@proxy.automattic.com -i ~/.ssh/id_rsa_automattic"
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
