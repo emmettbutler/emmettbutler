@@ -27,6 +27,10 @@ curl -Sso ~/.vim/autoload/pathogen.vim \
 
 cd
 
+curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | sudo apt-key add -
+echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+
+
 sudo add-apt-repository ppa:neovim-ppa/stable
 sudo add-apt-repository ppa:obsproject/obs-studio
 sudo apt-get update
@@ -36,7 +40,10 @@ git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-v
 git clone https://github.com/nojhan/liquidprompt.git
 git clone git@github.com:Parsely/engineering.git ~/git/parsely/engineering
 
-sudo apt-get install tmux ipython vim-gtk-py2 git build-essential wmctrl gimp neovim rkhunter nodejs zlib1g-dev libssl-dev ffmpeg v4l2loopback-dkms obs-studio
+sudo apt-get install tmux ipython vim-gtk-py2 git build-essential wmctrl gimp neovim rkhunter nodejs zlib1g-dev libssl-dev ffmpeg v4l2loopback-dkms obs-studio spotify-client
+
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo dpkg -i google-chrome-stable_current_amd64.deb
 
 pyenv install 3.9.7
 pyenv global 3.9.7
