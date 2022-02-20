@@ -1,25 +1,25 @@
 #!/bin/bash
 
-rm ~/.bashrc
-rm ~/.vimrc
-rm ~/.tmux.conf
-rm ~/.pythonstartup
-rm ~/opt
+rm -f ~/.bashrc
+rm -f ~/.vimrc
+rm -f ~/.tmux.conf
+rm -f ~/.pythonstartup
+rm -f ~/opt
 
-mkdir ~/git/parsely
+mkdir -p ~/git/parsely
 
-ln -s ~/git/dotfiles/bashrc ~/.bashrc
-ln -s ~/git/dotfiles/vimrc ~/.vimrc
-ln -s ~/git/dotfiles/liquidpromptrc ~/.liquidpromptrc
-ln -s ~/git/dotfiles/tmux.conf ~/.tmux.conf
-ln -s ~/git/dotfiles/opt ~/opt
-ln -s ~/git/dotfiles/vim ~/.vim
-ln -s ~/git/dotfiles/gitconfig ~/.gitconfig
-ln -s ~/git/dotfiles/pythonstartup ~/.pythonstartup
-ln -s ~/git/dotfiles/pull_repos.py ~/git/parsely/pull_repos.py
-ln -s ~/git/dotfiles/ssh_config ~/.ssh/config
-mkdir ~/.config/nvim
-ln -s ~/git/dotfiles/nvim/init.vim ~/.config/nvim/init.vim
+ln -fs ~/git/dotfiles/bashrc ~/.bashrc
+ln -fs ~/git/dotfiles/vimrc ~/.vimrc
+ln -fs ~/git/dotfiles/liquidpromptrc ~/.liquidpromptrc
+ln -fs ~/git/dotfiles/tmux.conf ~/.tmux.conf
+ln -fs ~/git/dotfiles/opt ~/opt
+ln -fs ~/git/dotfiles/vim ~/.vim
+ln -fs ~/git/dotfiles/gitconfig ~/.gitconfig
+ln -fs ~/git/dotfiles/pythonstartup ~/.pythonstartup
+ln -fs ~/git/dotfiles/pull_repos.py ~/git/parsely/pull_repos.py
+ln -fs ~/git/dotfiles/ssh_config ~/.ssh/config
+mkdir -p ~/.config/nvim
+ln -fs ~/git/dotfiles/nvim/init.vim ~/.config/nvim/init.vim
 
 mkdir -p ~/.vim/autoload ~/.vim/bundle; \
 curl -Sso ~/.vim/autoload/pathogen.vim \
