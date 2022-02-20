@@ -26,16 +26,20 @@ curl -Sso ~/.vim/autoload/pathogen.vim \
     https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
 
 cd
-git clone https://github.com/nojhan/liquidprompt.git
 
 sudo add-apt-repository ppa:neovim-ppa/stable
+sudo add-apt-repository ppa:obsproject/obs-studio
 sudo apt-get update
 
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
-sudo apt-get install tmux ipython vim-gtk-py2 git build-essential wmctrl gimp neovim rkhunter nodejs zlib1g-dev libssl-dev
-pyenv install 3.6.7
-pyenv global 3.6.7
+git clone https://github.com/nojhan/liquidprompt.git
+git clone git@github.com:Parsely/engineering.git ~/git/parsely/engineering
+
+sudo apt-get install tmux ipython vim-gtk-py2 git build-essential wmctrl gimp neovim rkhunter nodejs zlib1g-dev libssl-dev ffmpeg v4l2loopback-dkms obs-studio
+
+pyenv install 3.9.7
+pyenv global 3.9.7
 
 # install a bunch of standard stuff
 pip install flake8
@@ -43,7 +47,5 @@ pip install black
 
 sudo npm install -g js-beautify
 
-git clone git@github.com:Parsely/engineering.git ~/git/parsely/engineering
-
-# turn off keyboard autorepeat
+# turn off keyboard autorepeat, for vim practice
 gsettings set org.gnome.desktop.peripherals.keyboard repeat false
