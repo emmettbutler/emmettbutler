@@ -1,7 +1,5 @@
 # A Guide to Working With Emmett Butler
 
-Last updated 2/2022
-
 ![](./cat.jpg)
 
 Portland, OR (GMT-7)
