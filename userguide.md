@@ -118,7 +118,8 @@ defensiveness.
 * Not asking for help when they truly need it
 * Not admitting when they don’t know something
 * Ignoring non-code contributions or team process
-* I focus intensely on empathy and continuous learning, probably more than the average manager.
+
+I focus intensely on empathy and continuous learning, probably more than the average manager.
 
 ## How I give and receive feedback
 
