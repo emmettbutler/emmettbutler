@@ -102,6 +102,8 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib:/home/emmett/anaconda3/lib
 export JAVA_HOME="/usr/lib/jvm/default-java/"
 export M2_HOME="/opt/apache-maven-3.3.3"
 export NODE_PATH="/usr/local/lib/node_modules"
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+export AWS_PROFILE=parsely-prod
 
 #print and execute the command at the specified line+1 of the bash history file
 #+1 because the numbers that `history` displays are apparently off by one
@@ -118,7 +120,6 @@ alias googleauth="`cat ~/.google_auth_command`"
 alias googleauthsudo="`cat ~/.google_auth_sudoer_command`"
 alias parselyvpn="sudo openvpn --config ~/.openvpn/parsely-udp1194.ovpn"
 alias automatticproxy="ssh -N -D 8080 emmettbutler@proxy.automattic.com -i ~/.ssh/id_rsa_automattic"
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
@@ -151,6 +152,26 @@ if command -v pyenv 1>/dev/null 2>&1; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
 fi
+
+source ~/.parsely-bashrc
+
+updateparselynodes() {
+    rm -f ~/.parsely-bashrc
+    echo 'PARSELY_NODES=(' > ~/.parsely-bashrc
+    aws ec2 describe-instances | grep -A 1 'ansible_hostname' | grep 'Value' | awk '{ print $3 }' | sort | xargs -I {} echo "\"{}\"" >> ~/.parsely-bashrc
+    echo ')' >> ~/.parsely-bashrc
+}
+
+psh() {
+    MYSERVER=$(echo ${PARSELY_NODES[@]} |  tr '[:space:]' '\n' | fzf)
+    history -s ssh "${MYSERVER}"
+    ssh "${MYSERVER}"
+}
+
+xpsh() {
+    SERVERS=($(echo ${PARSELY_NODES[@]} |  tr '[:space:]' '\n' | fzf --multi --reverse))
+    xpanes --ssh $(echo "${SERVERS[*]}")
+}
 
 
 ssh-add ~/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem

@@ -40,7 +40,7 @@ git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-v
 git clone https://github.com/nojhan/liquidprompt.git
 git clone git@github.com:Parsely/engineering.git ~/git/parsely/engineering
 
-sudo apt-get install tmux ipython vim-gtk-py2 git build-essential wmctrl gimp neovim rkhunter nodejs zlib1g-dev libssl-dev ffmpeg v4l2loopback-dkms obs-studio spotify-client
+sudo apt-get install tmux git build-essential wmctrl gimp neovim rkhunter nodejs zlib1g-dev libssl-dev ffmpeg v4l2loopback-dkms obs-studio spotify-client fzf
 
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo dpkg -i google-chrome-stable_current_amd64.deb
