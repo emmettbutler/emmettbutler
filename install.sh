@@ -27,21 +27,25 @@ curl -Sso ~/.vim/autoload/pathogen.vim \
 
 cd
 
-curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | sudo apt-key add -
-echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+echo "deb https://apt.enpass.io/ stable main" | sudo tee /etc/apt/sources.list.d/enpass.list
+wget -O - https://apt.enpass.io/keys/enpass-linux.key | sudo tee /etc/apt/trusted.gpg.d/enpass.asc
 
+curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | sudo apt-key add -
+echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 
 sudo add-apt-repository ppa:neovim-ppa/stable
 sudo add-apt-repository ppa:obsproject/obs-studio
 sudo apt-get update
+sudo apt-get install enpass
 
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
 git clone https://github.com/nojhan/liquidprompt.git
 git clone git@github.com:Parsely/engineering.git ~/git/parsely/engineering
 
-sudo apt-get install tmux git build-essential wmctrl gimp neovim rkhunter nodejs zlib1g-dev libssl-dev ffmpeg v4l2loopback-dkms obs-studio spotify-client fzf
+sudo apt-get install tmux git vlc keychain build-essential wmctrl gimp neovim rkhunter nodejs zlib1g-dev libssl-dev ffmpeg v4l2loopback-dkms npm obs-studio fzf spotify-client awscli
 
+rm ~/google-chrome-stable*
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo dpkg -i google-chrome-stable_current_amd64.deb
 
