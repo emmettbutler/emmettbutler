@@ -43,7 +43,7 @@ git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-v
 git clone https://github.com/nojhan/liquidprompt.git
 git clone git@github.com:Parsely/engineering.git ~/git/parsely/engineering
 
-sudo apt-get install tmux git vlc keychain build-essential wmctrl gimp neovim rkhunter nodejs zlib1g-dev libssl-dev ffmpeg v4l2loopback-dkms npm obs-studio fzf spotify-client awscli
+sudo apt-get install pipx python3.8-venv tmux git vlc keychain build-essential wmctrl gimp neovim rkhunter nodejs zlib1g-dev libffi-dev libssl-dev ffmpeg v4l2loopback-dkms npm obs-studio fzf spotify-client awscli
 
 rm ~/google-chrome-stable*
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -52,9 +52,11 @@ sudo dpkg -i google-chrome-stable_current_amd64.deb
 pyenv install 3.9.7
 pyenv global 3.9.7
 
+pyenv virtualenv 3.9.7 python-nvim
+
 # install a bunch of standard stuff
 pip install flake8
-pip install black
+pip install --user black==21.5b0  # pinned to specific version to maintain vim plugin compatibility
 pip install aws-google-auth
 
 sudo npm install -g js-beautify

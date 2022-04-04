@@ -1,5 +1,6 @@
 :colorscheme molokai
 
+let g:python3_host_prog="~/.pyenv/shims/python"
 let g:flake8_ignore="E501,W503,E203"  " ignore certain flake8 errors from Black
 
 call pathogen#infect()
@@ -8,7 +9,7 @@ syntax on
 filetype plugin indent on
 
 call plug#begin('~/.vim/plugged')
-Plug 'psf/black', { 'branch': 'stable' }
+Plug 'psf/black', { 'commit': 'ce14fa8b497bae2b50ec48b3bd7022573a59cdb1' }
 call plug#end()
 
 
