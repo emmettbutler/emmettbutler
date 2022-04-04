@@ -55,6 +55,7 @@ pyenv global 3.9.7
 # install a bunch of standard stuff
 pip install flake8
 pip install black
+pip install aws-google-auth
 
 sudo npm install -g js-beautify
 
