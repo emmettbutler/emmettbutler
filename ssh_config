@@ -1,8 +1,28 @@
-Host *.compute-1.amazonaws.com
-  User hadoop
-  # this file needs to be chmod 400'ed for this to work
-  IdentityFile /home/emmett/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
-  ForwardAgent yes
+Host *
+    StrictHostKeyChecking no
+    CheckHostIP no
+    AddKeysToAgent yes
+    IdentityFile ~/.ssh/id_rsa
+
+Host *.lan.cogtree.com
+    User emmett
+    ForwardAgent yes
 
 Host *.cogtree.com
-  StrictHostKeyChecking no
+    User emmett
+    ForwardAgent yes
+
+Host *.compute-1.amazonaws.com
+    ForwardAgent yes
+    User hadoop
+    IdentityFile /path/to/repos/engineering/casterisk-realtime/emr/emr_jobs.pem
+
+Host *-emr.cogtree.com
+    ForwardAgent yes
+    User hadoop
+    IdentityFile /path/to/repos/engineering/casterisk-realtime/emr/emr_jobs.pem
+
+Host *.amazonaws.com
+    ForwardAgent yes
+    User hadoop
+    IdentityFile /path/to/repos/engineering/casterisk-realtime/emr/emr_jobs.pem
