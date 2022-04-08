@@ -176,6 +176,7 @@ Python code. His pragmatic approach to using the language’s strengths to one�
 
 * DM me on Slack any time between 8 and 3 US/Pacific and tell me you’d like to chat. I’ll make time for you as soon
 as possible.
+* Schedule time with me using my [Calendly link](https://calendly.com/emmett9001/30min)
 * Wait for your weekly 1:1 slot to come around.
 * Attend my weekly office hour: a timeslot where I hang out in my Zoom room and chat with whoever joins about whatever
 they’d like. It’s first-come, first-serve and I try to make time for everyone who attends.
