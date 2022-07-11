@@ -156,10 +156,21 @@ fi
 source ~/.parsely-bashrc
 
 updateparselynodes() {
-    rm -f ~/.parsely-bashrc
-    echo 'PARSELY_NODES=(' > ~/.parsely-bashrc
-    aws ec2 describe-instances | grep -A 1 'ansible_hostname' | grep 'Value' | awk '{ print $3 }' | sort | xargs -I {} echo "\"{}\"" >> ~/.parsely-bashrc
-    echo ')' >> ~/.parsely-bashrc
+    local _aws_profile="parsely-prod"
+    local _inventory_file="$HOME/.parsely-bashrc"
+
+    rm -f "$_inventory_file"
+    echo 'PARSELY_NODES=(' > "$_inventory_file"
+
+    for region in us-east-1 us-west-2 eu-west-1; do
+        aws --profile "$_aws_profile" ec2 describe-instances \
+            --region "$region" \
+            --filters "Name=tag:ansible_managed,Values=true" \
+            --query "Reservations[*].Instances[].Tags[?Key == 'ansible_hostname'].Value[] | [] | sort(@)" \
+            --output text | tr "\t" "\n"
+    done >> "$_inventory_file"
+    echo ')' >> "$_inventory_file"
+
 }
 
 psh() {
