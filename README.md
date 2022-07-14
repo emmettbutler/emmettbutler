@@ -1,3 +1,3 @@
-* [Guide to Working with Me](writing/user-guide.md)
-* [Writing about Engineering Management](writing/eng-management)
-* [Writing about Engineering Management](writing/book-reviews)
+* [guide to working with me](writing/user-guide.md)
+* [writing about engineering management](writing/eng-management)
+* [engineering book reviews](writing/book-reviews)
