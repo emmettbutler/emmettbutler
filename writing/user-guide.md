@@ -1,6 +1,6 @@
 # A Guide to Working With Emmett Butler
 
-![](./cat.jpg)
+![](media/cat.jpg)
 
 Portland, OR (GMT-7)
 
