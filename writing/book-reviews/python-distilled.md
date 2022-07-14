@@ -1,7 +1,7 @@
 Python Distilled
 ================
 
-![](media/python-distilled.jpg)
+![](../media/python-distilled.jpg)
 
 I recently read David Beazley's new book Python Distilled, and I'd like to share a few thoughts about it.
 
@@ -12,7 +12,7 @@ and out and is good at teaching it.
 I had the privilege of experiencing his teaching in person when I attended the 2014 edition of his Write a Compiler in
 Python course in Chicago.
 
-![](media/dabeaz.png)
+![](../media/dabeaz.png)
 
 Me and my 2014 haircut at Dabeaz's "write a compiler in python" course
 
@@ -56,7 +56,7 @@ I took from this read:
 
 Finally, I would be remiss if I didn't include this example of dabeaz's wonderful sense of humor from the book.
 
-![](media/hotdog.jpg)
+![](../media/hotdog.jpg)
 
 A fun example of dabeaz's dry sense of humor
 

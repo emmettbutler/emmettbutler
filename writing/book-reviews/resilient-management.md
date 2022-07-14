@@ -1,7 +1,7 @@
 Resilient Management
 ====================
 
-![](media/resilient-management.jpg)
+![](../media/resilient-management.jpg)
 
 I recently read Resilient Management by Lara Hogan after hearing about it on @matt's Distributed podcast. Lara's
 approach to people-management as illustrated by both the podcast interview and the book resonated deeply with me and
@@ -18,7 +18,7 @@ BICEPS core needs is Paloma Medina's theory of basic needs that all humans share
 Equality, Predictability, and Significance. Understanding which of these most commonly feel threatened for different
 teammates can inform how you work with them. When one or more of these needs is threatened, we can get "grumpy".
 
-![](media/biceps-measure.png)
+![](../media/biceps-measure.png)
 
 Tracking one's own BICEPS core needs on a daily basis
 
@@ -47,7 +47,7 @@ exercises.
 Feedback equation - a handy back-pocket framework for delivering feedback in a way that might actually land (positive or
 negative).
 
-![](media/feedback-equation.png)
+![](../media/feedback-equation.png)
 
 RACI matrices (Responsible/Accountable/Consulted/Informed) are tools that frame individuals' involvement in a given
 project. For me, this concept would have been especially useful in Parse.ly's "ops as gatekeeper" phase.
@@ -62,7 +62,7 @@ thinking of these energies as "cards" that can be "played" as the situation call
 such feedback and frames the mode not as natural or inherent to one's person, but as the "default". My default mode is
 probably black, and purple might be the hardest for me to play.
 
-![](media/communication_energies.png)
+![](../media/communication_energies.png)
 
 Hogan's communication energy "cards"
 
@@ -70,7 +70,7 @@ Energy-level tracking - Hogan makes the observation that different activities re
 example is the distinction between deep-focus "maker time" and expansive, context-switching "manager time". She
 recommends grouping meetings that use the same brain to minimize brain-switching that leads to energy drain.
 
-![](media/voltron.jpeg)
+![](../media/voltron.jpeg)
 
 Manager voltron is the idea that no one person will provide every type of support that you need. Thus, you can assemble
 a network of people who support you in different ways. Hogan suggests ways to add people to the voltron and even offers

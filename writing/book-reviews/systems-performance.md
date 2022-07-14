@@ -13,7 +13,7 @@ based on a relatively new Linux feature called Extended BPF. This tool provides 
 kernel-level events like block IO, TCP message receipt, LLC hits, and so much more, often at the level of individual
 CPU cycles. This is one of Gregg's favorite diagrams of eBPF's capabilities:
 
-![](media/bpf_performance_tools.png)
+![](../media/bpf_performance_tools.png)
 
 Brendan Gregg's data visualization design skills at work
 

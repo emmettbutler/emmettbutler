@@ -6,7 +6,7 @@ my takeaways from it. This book has been on my radar for a while as a valuable s
 systems of the kind Parse.ly has built over the last decade. In a context where so much software engineering literature
 assumes the request/response server operation of a web app, such a source feels especially useful to me.
 
-![](media/ddia-map.jpg)
+![](../media/ddia-map.jpg)
 
 An example of the beautifully nerdy maps accompanying each chapter
 
@@ -40,7 +40,7 @@ This book isn't about any specific technologies (though it mentions many as exam
 on the abstractions and algorithms that many data systems have in common. There are lots of graphs of network
 communication over time, explaining various faults that can occur in partitioned and replicated systems:
 
-~[](media/snapshot_isolation_MVCC.png)
+![](../media/snapshot_isolation_MVCC.png)
 
 A typical map of distributed communication from the book
 
@@ -67,7 +67,7 @@ power structures, to undermine human rights, and to protect vested interests. Bu
 make underrepresented people’s voices heard, to create opportunities for everyone, and to avert disasters. This book is
 dedicated to everyone working toward the good.
 
-![](media/ddia.jpg)
+![](../media/ddia.jpg)
 
 This book gets a strong recommendation from me for anyone who's ever committed or wanted to commit code to
 Parsely/engineering. It expanded my mind and gave me confidence in my knowledge of distributed systems. If you read

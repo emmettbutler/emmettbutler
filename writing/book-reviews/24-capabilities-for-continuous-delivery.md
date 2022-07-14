@@ -7,7 +7,7 @@ software delivery performance?" It presents a statistically-supported causal rel
 and developmental practices and the agility with which teams deliver software. The authors even draw these relationships
 visually:
 
-![](media/accelerate.jpg)
+![](../media/accelerate.jpg)
 
 I've heard time and again the importance of many of these practices, especially test automation, deployment automation,
 monitoring, alerting, and making work visible. Some were newer to me, like the idea of transformational leadership and
