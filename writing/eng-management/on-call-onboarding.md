@@ -8,6 +8,8 @@ pressure to save the day. ~Site Reliability Engineering
 This document describes one possible path an engineer can take from new hire to member of the on-call rotation. It’s
 loosely based on the framework from the SRE book.
 
+![](../media/on-call-onboarding.jpg)
+
 Phase 1: On-Call Student
 ------------------------
 

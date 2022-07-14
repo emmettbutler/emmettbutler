@@ -9,6 +9,8 @@ response on some relatively short timeline.
 
 The distinction between proactive and reactive that we use fits nicely into an Eisenhower Matrix.
 
+![](../media/reactive.png)
+
 This matrix and this whole document describe the present state of how we decide what to work on as individuals and
 teams. One can imagine improvements to these norms, and we can all work to make them better serve our needs.
 
