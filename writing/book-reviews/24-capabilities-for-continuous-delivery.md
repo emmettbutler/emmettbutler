@@ -146,6 +146,7 @@ Feedback on whether master happens to be deployable isn't available very fast. T
 low-latency systems during business hours, largely because of organizational scar tissue and lack of strong guarantees.
 
 ARCHITECTURE CAPABILITIES
+-------------------------
 
 9. USE A LOOSELY COUPLED ARCHITECTURE
 
@@ -232,6 +233,7 @@ We generally maintain enough slack that engineers have some free time to experim
 permissive, though maybe not encouraging, of experimentation and stepping outside of predefined patterns and roles.
 
 LEAN MANAGEMENT AND MONITORING CAPABILITIES
+-------------------------------------------
 
 15. HAVE A LIGHTWEIGHT CHANGE APPROVAL PROCESS
 
