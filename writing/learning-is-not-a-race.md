@@ -4,10 +4,12 @@ To the Next Parse.ly Intern: Learning is Not A Race
 5/14/2013
 
 __Emmett Butler is a web and video game developer and an NYU senior studying computer science and music technology. In
-this post, he reflects on his time as an intern at Parse.ly Today, I leave Parse.ly after 20 months of work that took me
+this post, he reflects on his time as an intern at Parse.ly__
+
+Today, I leave Parse.ly after 20 months of work that took me
 from writing web scrapers to diving deep into semantic web standards to designing mobile SDKs. Here is some advice and
 emotional primer for the incoming Parse.ly intern. I can only speak from my own experience, and while I try to
-generalize, all of my advice is heavily colored by what I went through when I started.__
+generalize, all of my advice is heavily colored by what I went through when I started.
 
 When I started at Parse.ly, I was working 20 hours a week alongside another part-time work study job. I was entering my
 3rd year of an NYU double music technology/cs degree, and my technical skills were rudimentary. I had no "real world"
