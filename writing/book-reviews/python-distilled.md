@@ -1,6 +1,8 @@
 Python Distilled
 ================
 
+![](media/python-distilled.jpg)
+
 I recently read David Beazley's new book Python Distilled, and I'd like to share a few thoughts about it.
 
 I've been a huge dabeaz fan since I saw him speak at a PyCon years ago. He's got a great dry sense of humor and
@@ -9,6 +11,8 @@ and out and is good at teaching it.
 
 I had the privilege of experiencing his teaching in person when I attended the 2014 edition of his Write a Compiler in
 Python course in Chicago.
+
+![](media/dabeaz.png)
 
 Me and my 2014 haircut at Dabeaz's "write a compiler in python" course
 
@@ -40,12 +44,19 @@ Python 3.8+ that I wasn't aware of or lacked context on. There were quite a few,
 how uninterested I am in keeping up with the latest hackernews posts. Some highlights of new pieces of knowledge that
 I took from this read:
 
-The := "walrus" operatorexception.__context__Positional-only argumentsDeeper understanding of "enhanced generators" and
-their relation to asyncA class can contain arbitrary Python code, not just function and variable definitions"Really
-private" mangled attributes starting with __Pitfalls of multiple inheritanceManually walking an object's __mro__What's
-really going on with StringIO
+* The := "walrus" operator
+* exception.__context__
+* Positional-only arguments
+* Deeper understanding of "enhanced generators" and their relation to async
+* A class can contain arbitrary Python code, not just function and variable definitions
+* "Really private" mangled attributes starting with __
+* Pitfalls of multiple inheritance
+* Manually walking an object's __mro__
+* What's really going on with StringIO
 
-Finally, I would be remiss if I didn't include this example of dabeaz's wonderful sense of humor from the book:
+Finally, I would be remiss if I didn't include this example of dabeaz's wonderful sense of humor from the book.
+
+![](media/hotdog.jpg)
 
 A fun example of dabeaz's dry sense of humor
 
