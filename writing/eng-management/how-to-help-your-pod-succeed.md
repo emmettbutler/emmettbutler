@@ -62,8 +62,7 @@ Tracer Bullets
 A tracer bullet project optimizes the time spent between starting work and getting feedback on the work from real
 users. This interview explains the concept well:
 
-*
-Bill Venners: In your book, The Pragmatic Programmer, you suggest that programmers fire "tracer bullets." What are
+*Bill Venners: In your book, The Pragmatic Programmer, you suggest that programmers fire "tracer bullets." What are
 tracer bullets? And what am I trading off by using tracer bullets versus "specifying the system to death," as you put
 it in the book.
 
@@ -84,8 +83,7 @@ Instead, the tracer bullet analogy says, "Let's try and produce something really
 the user to see how close we will be to the target. As time goes on, we can adjust our aim slightly by seeing where we
 are in relation to our user's target." You're looking at small iterations, skeleton code, which is non-functional,
 but enough of an application to show people how it's going to hang together.Basically, it all comes down to feedback.
-The more quickly you can get feedback, the less change you need to get back on target.
-*
+The more quickly you can get feedback, the less change you need to get back on target.*
 
 Think deeply and brainstorm with your podmates about the hypothesis, and find a “tracer bullet” project that will give
 you specific, actionable feedback on the hypothesis within a single iteration. Don’t optimize for making your project
