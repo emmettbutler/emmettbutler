@@ -65,6 +65,7 @@ users. This interview explains the concept well:
 > Bill Venners: In your book, The Pragmatic Programmer, you suggest that programmers fire "tracer bullets." What are
 tracer bullets? And what am I trading off by using tracer bullets versus "specifying the system to death," as you put
 it in the book.
+
 > Dave Thomas: The idea of tracer bullets comes obviously from gunnery artillery. In the heavy artillery days, you would
 take your gun position, your target position, the wind, temperature, elevation, and other factors, and feed that into
 a firing table. You would get a solution that said to aim your gun at this angle and elevation, and fire. And you'd
@@ -73,7 +74,9 @@ tracer bullets. If your target is moving, or if you don't know all the factors, 
 phosphorous rounds intermixed with real rounds in your gun. As you fire, you can actually see the tracer bullets.
 And where they are landing is where the actual bullets are landing. If you're not quite on target—because you can see
 if you're not on target—you can adjust your position.
+
 > Andy Hunt: Dynamically, in real time, under real conditions.
+
 > Dave Thomas: The software analog to firing heavy artillery by calculating everything up front is saying, "I'm going to
 specify everything up front, feed that to the coders, and hope what comes out the other end is close to my target."
 Instead, the tracer bullet analogy says, "Let's try and produce something really early on that we can actually give to
