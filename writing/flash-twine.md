@@ -1,4 +1,4 @@
-![](../media/twine1.jpg)
+![](media/twine1.jpg)
 
 This post is about using Twine in the context of an Actionscript Flash game, since Nina and I did so successfully in our
 recent game Ladylike with Deckman Coss and Winnie Song. Twine is "an open-source tool for telling interactive, nonlinear
@@ -24,7 +24,7 @@ identify that branch of the conversation tree. The addResponse calls point to ne
 As I'm sure Nina can attest, writing a story in this format was painstaking. The conversation tree in Nina's head was
 huge, and drawing tree branches on paper and copy-pasting code blocks was getting old fast.
 
-![](../media/twine2.jpg)
+![](media/twine2.jpg)
 
 I wanted to turn Nina's writing interface from the above code into something like this:
 
