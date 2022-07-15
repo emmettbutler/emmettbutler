@@ -62,11 +62,10 @@ Tracer Bullets
 A tracer bullet project optimizes the time spent between starting work and getting feedback on the work from real
 users. This interview explains the concept well:
 
-*Bill Venners: In your book, The Pragmatic Programmer, you suggest that programmers fire "tracer bullets." What are
+> Bill Venners: In your book, The Pragmatic Programmer, you suggest that programmers fire "tracer bullets." What are
 tracer bullets? And what am I trading off by using tracer bullets versus "specifying the system to death," as you put
 it in the book.
-
-Dave Thomas: The idea of tracer bullets comes obviously from gunnery artillery. In the heavy artillery days, you would
+> Dave Thomas: The idea of tracer bullets comes obviously from gunnery artillery. In the heavy artillery days, you would
 take your gun position, your target position, the wind, temperature, elevation, and other factors, and feed that into
 a firing table. You would get a solution that said to aim your gun at this angle and elevation, and fire. And you'd
 fire your gun and hope that your shell landed somewhere close to your target. An alternative to that approach is to use
@@ -74,16 +73,14 @@ tracer bullets. If your target is moving, or if you don't know all the factors, 
 phosphorous rounds intermixed with real rounds in your gun. As you fire, you can actually see the tracer bullets.
 And where they are landing is where the actual bullets are landing. If you're not quite on target—because you can see
 if you're not on target—you can adjust your position.
-
-Andy Hunt: Dynamically, in real time, under real conditions.
-
-Dave Thomas: The software analog to firing heavy artillery by calculating everything up front is saying, "I'm going to
+> Andy Hunt: Dynamically, in real time, under real conditions.
+> Dave Thomas: The software analog to firing heavy artillery by calculating everything up front is saying, "I'm going to
 specify everything up front, feed that to the coders, and hope what comes out the other end is close to my target."
 Instead, the tracer bullet analogy says, "Let's try and produce something really early on that we can actually give to
 the user to see how close we will be to the target. As time goes on, we can adjust our aim slightly by seeing where we
 are in relation to our user's target." You're looking at small iterations, skeleton code, which is non-functional,
 but enough of an application to show people how it's going to hang together.Basically, it all comes down to feedback.
-The more quickly you can get feedback, the less change you need to get back on target.*
+The more quickly you can get feedback, the less change you need to get back on target.
 
 Think deeply and brainstorm with your podmates about the hypothesis, and find a “tracer bullet” project that will give
 you specific, actionable feedback on the hypothesis within a single iteration. Don’t optimize for making your project
