@@ -1,5 +1,3 @@
-WIP
-
 A Review of the Book _Continuous Delivery_
 ==========================================
 
