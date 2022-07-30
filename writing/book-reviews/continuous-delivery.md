@@ -161,4 +161,5 @@ a set of questions to ask when evaluating a team's maturity along these lines.
 
 The rising popularity of GitHub, cloud computing, and remote work haven't undermined the relevance of _Continuous
 Delivery_. The fundamental messages of **pervasive automation, comprehensive testing, loose coupling, and trunk-based
-development** are as applicable today as they were in 2010.
+development** are as applicable today as they were in 2010. There's a blog associated with this book at
+[continuousdelivery.com](https://continuousdelivery.com/).
