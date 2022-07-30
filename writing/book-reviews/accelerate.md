@@ -1,5 +1,5 @@
-24 Capabilities for Continuous Delivery
-=======================================
+24 Capabilities for Continuous Delivery, from _Accelerate_
+==========================================================
 
 I recently read the book Accelerate by Nicole Forsgren, PhD, Jez Humble, and Gene Kim. The book is essentially
 a research report on a multi-year study that used rigorous statistical methods to answer the question, "what drives
