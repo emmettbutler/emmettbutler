@@ -35,7 +35,7 @@ is backed up by anecdotes from this book. This leads to a clear conclusion: over
 more frequently by committing directly to master and keeping it releasable requires less effort than integrating
 infrequently.
 
-![](media/ci-effort.png)
+![](../media/ci-effort.png)
 
 That spike on the far left of the CI curve is very real. Planning a big project such that every individual step is
 releasable is not a small task, but the authors strongly believe that it's possible in nearly every case. More
@@ -81,34 +81,71 @@ can be committed individually to master.
 The book goes into a lot of detail about the concepts of components and dependencies, but the main point as I see it is
 that loosely-coupled architecture supports continuous integration.
 
+As mentioned above, committing frequently to master without supportive process and automation in place is likely to
+cause more problems than it solves in the short term. This is why the authors recommend reducing the pain of
+integration not only by doing it frequently, but by automating as much of the process as possible through different
+types of tests. This focus on automation mirrors Site Reliability Engineering's approach to toil reduction. Both schools
+of thought acknowledge the importance of freeing up humans to do creative work by having computers do the repetitive
+stuff.
 
-main way to reduce the pain of frequent integration is by automating it away (echoes of SRE)
-test suite should give complete confidence that the software is fit for purpose
-it's possible to eliminate the need for all manual testing - if there's a manual step you feel compelled to do to check
-for releasability, automate it.
-85 test quadrants
-automated acceptance testing, 3 layers, owned by the whole team
-210 tension re integrating with external systems in acceptance tests
-difference between acceptance tests with stubs and integration tests
-196 executable specification
-acceptance testing (and all testing) is toil reduction
-automation is executable documentation
+The suite of automated tests should provide complete confidence that the software on trunk is fit for purpose. It's
+possible to eliminate almost all types of manual tests, which means that any part of the release process that's manual
+should be scrutinized for automation potential. _Continuous Delivery_ presents a taxonomy of tests based on two
+independent dimensions: business/technology-facing tests, and supportive/critiquing tests.
 
-230 balance between assuming you can fix all capacity problems later and writing overly defensive code that solves
-problems you may never have
-in distributed client/server architectures, representative capacity testing is often impossible
+![](../media/test-quadrant.png)
 
-most constants should be configuration
-properties files for configuration
-164 smoke testing deployments
-253 first deployment list
+The authors recommend organizing these types of tests in a pipeline that runs on every change to master in order of
+feedback speed. Faster tests run first, and slower tests run later.
 
-autonomic infrastructure
+I would love to have such a comprehensive pipeline on my current team. Most of our code is covered by a reasonable set
+of unit tests, but our integration, acceptance, and capacity test automation is almost nonexistent. Most data-affecting
+changes I've made to our Lambda architecture have been followed by hours or days of manual testing, usually involving
+eyeballing before and after trends to see if anything looks "weird". I can personally attest that this is a painful
+process. The infrastructure necessary to support automating that workflow isn't simple or cheap, but the amount of time
+it would have saved for me over the years is certainly huge.
 
-419 model
+One interesting point the book raises about acceptance tests, those that validate the customer-visible behavior of the
+system, is that they are in effect executable specifications of that behavior. When written using a properly-abstracted
+DSL, they can be read by anyone in an organization to provide an understanding of the expected behavir of the system at
+that moment. The fact that they run on every commit means that they are provably up-to-date, something that's almost
+never true of documentation. A general takeaway from this book is that automation is better than documentation.
+
+_Continuous Delivery_ has some things to say about automated capacity testing, but it's the book's weakest section. It's
+really hard and expensive to test the capacity of an internet-facing distributed system, because the capacity it's built
+to handle is often prohibitively large. Because non-functional requirements like capacity and availability cut across
+many different functional areas of the product, they are also often difficult to manage. Not paying enough attention to
+these requirements at the outset and over-engineered defensive architecture are two opposite responses that can paralyze
+teams. The book doesn't offer many clear solutions to this problem, but emphasizes the importance of finding a middle
+path.
+
+On infrastructure and deployment, _Continuous Delivery_ is committed to reproducibility. This is the idea that given
+a commit hash on trunk, the entire environment, configuration, and application should be automatically buildable.
+Autonomic infrastructure, which constantly aligns itself with a declared desired state, is a cornerstone of this
+approach. At publication time, Puppet and Chef were the state of the art in the open-source community for achieving
+this; today it's Terraform and Ansible. There's also a focus on smoke-tests as part of deployment automation - the
+deployment script should do some basic check to ensure that it accomplished its goal.
+
+"Configuration" is a word that comes up a lot in DevOps books, and I've had a hard time understanding exactly what it
+means in context. After this read, I'm more confident: anything that can be data instead of code should be. Most
+concretely to my own experience, this means that the practice of enumerating environment-specific settings in Python
+files could be improved by putting them into a standard properties-file format versioned independently from the code.
+The main reason to do this is that it enables creating a single deployable artifact early in the release pipeline and
+reusing it on all of the pre-production environments (for unit tests, acceptance tests, user tests, etc). When
+environment-specific config information is part of the code, the deployable artifact is also environment-specific,
+invalidating the guarantee that what's being tested is precisely what will go to production later in the pipeline.
+
+The hueristic I'll take with me on this point is that if there's an environment-specific constant in my code, I should
+seriously consider turning it into configuration.
+
+The book even offers a direct precursor to _Accelerate_'s delivery maturity model:
+
 ![](../media/maturity-model.png)
 
-team health questions
+My current team's practices are mostly at level 0, with the exception of testing, which I'd consider to be regressive
+due to the extensive manual testing necessary for data-affecting changes. By way of recommendation, the authors offer
+a set of questions to ask when evaluating a team's maturity along these lines.
+
 * How are you tracking progress?
 * How are you preventing defects?
 * How are you discovering defects?
@@ -123,3 +160,7 @@ team health questions
 * How are you building your software?
 * How are you ensuring that your release plan is workable?
 * How are you ensuring that your risk-and-issue log is up to date?
+
+The rising popularity of GitHub, cloud computing, and remote work haven't undermined the relevance of _Continuous
+Delivery_. The fundamental messages of **pervasive automation, comprehensive testing, loose coupling, and trunk-based
+development** are as applicable today as they were in 2010.
