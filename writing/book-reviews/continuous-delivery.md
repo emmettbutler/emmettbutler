@@ -44,13 +44,13 @@ a feature takes from idea to production) in the long run.
 Humble and Farley offer a few broad outlines of strategies for keeping the trunk releasable that are worth reproducing
 here:
 
-*Hide new functionality until it is finished*
+**Hide new functionality until it is finished**
 
 At its simplest, this can be done by committing unreachable code to master. Beyond that, feature flags and canary
 deployments are two common approaches to hiding in-progress functionality while simultaneously integrating and testing
 it.
 
-*Make all changes incrementally as a series of small changes, each of which is releasable*
+**Make all changes incrementally as a series of small changes, each of which is releasable**
 
 On this point, the authors' own words are too perfect not to quote directly:
 
@@ -60,9 +60,9 @@ On this point, the authors' own words are too perfect not to quote directly:
 > also means you can stop at any time if you need to, avoiding the sunk cost involved in getting halfway through a big
 > change and then having to abandon it.
 
-*Use [branch by
+**Use [branch by
 abstraction](https://continuousdelivery.com/2011/05/make-large-scale-changes-incrementally-with-branch-by-abstraction/)
-to make large-scale changes*
+to make large-scale changes**
 
 Essentially, this is an example of how to break down apparently non-decomposable problems into a series of steps that
 can be committed individually to master.
@@ -74,7 +74,7 @@ can be committed individually to master.
 5. Rinse and repeat the previous two steps, shipping your system in the meantime if desired.
 6. Once the old implementation has been completely replaced, you can remove the abstraction layer if you like.
 
-*Decouple parts of the application that change at different rates*
+**Decouple parts of the application that change at different rates**
 
 The book goes into a lot of detail about the concepts of components and dependencies, but the main point as I see it is
 that loosely-coupled architecture supports continuous integration.
