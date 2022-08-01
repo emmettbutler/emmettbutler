@@ -6,9 +6,12 @@ rm -f ~/.tmux.conf
 rm -f ~/.pythonstartup
 rm -f ~/opt
 
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
 mkdir -p ~/git/parsely
 
 ln -fs ~/git/dotfiles/bashrc ~/.bashrc
+ln -fs ~/git/dotfiles/zshrc ~/.zshrc
 ln -fs ~/git/dotfiles/vimrc ~/.vimrc
 ln -fs ~/git/dotfiles/liquidpromptrc ~/.liquidpromptrc
 ln -fs ~/git/dotfiles/tmux.conf ~/.tmux.conf
