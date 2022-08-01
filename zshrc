@@ -15,6 +15,52 @@ zstyle ':omz:update' mode auto      # update automatically without asking
 
 plugins=(git tmux)
 
+## Plugin Manager
+# check if zplug is not installed, then init!
+if [[ ! -e "${HOME}/.zplug/init.zsh" ]]; then
+    curl -sL --proto-redir -all,https \
+        https://raw.githubusercontent.com/zplug/installer/master/installer.zsh \
+        | zsh
+fi
+source "${HOME}/.zplug/init.zsh"
+
+# https://www.github.com/zsh-users/zsh-autosuggestions
+# Fish-like fast/unobtrusive autosuggestions for zsh. When you type a command a
+# second time it shows up but is shaded, use the right arrow to fully complete
+# the command
+zplug "zsh-users/zsh-autosuggestions"
+
+# https://www.github.com/zsh-users/zsh-completions
+# Additional completions for common command line tools
+zplug "zsh-users/zsh-completions"
+
+# You can type the beginning of a command and then use arrow keys to filter
+# previous commands in your history that share the same beginning
+# https://www.github.com/zsh-users/zsh-history-substring-search
+zplug "zsh-users/zsh-history-substring-search"
+
+# Quick changing directories, z is a command line tool that allows you to jump
+# quickly to directories that you have visited frequently in the past, or
+# recently
+# https://www.github.com/agkozak/zsh-z
+zplug "agkozak/zsh-z"
+
+# https://www.github.com/zsh-users/zsh-syntax-highlighting
+# Fish shell-like syntax highlighting for Zsh.
+# zplug "zsh-users/zsh-syntax-highlighting"
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+
+# Then, source plugins and add commands to $PATH
+# Remove --verbose if you find the startup message annoying
+zplug load # --verbose
+
 export AWS_PROFILE=parsely-prod
 export CLOSURE_PATH="/home/emmett/.npm/closure-compiler/0.2.2/package/lib/vendor/compiler.jar"
 export EDITOR=nvim
