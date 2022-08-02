@@ -1,6 +1,7 @@
 #!/bin/bash
 
 rm -f ~/.bashrc
+rm -f ~/.zshrc
 rm -f ~/.vimrc
 rm -f ~/.tmux.conf
 rm -f ~/.pythonstartup

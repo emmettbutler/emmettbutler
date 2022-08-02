@@ -1,0 +1,110 @@
+- name: Add Enpass repo key
+  ansible.builtin.apt_key:
+    url: https://apt.enpass.io/keys/enpass-linux.key
+    state: present
+
+- name: Ensure Enpass apt repo is present
+  ansible.builtin.apt_repository:
+    repo: "deb https://apt.enpass.io/ stable main"
+    state: present
+    update_cache: true
+
+- name: Add Spotify repo key
+  ansible.builtin.apt_key:
+    url: https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg
+    state: present
+
+- name: Ensure Spotify apt repo is present
+  ansible.builtin.apt_repository:
+    repo: "deb http://repository.spotify.com stable non-free"
+    state: present
+    update_cache: true
+
+- name: Ensure Neovim PPA is present
+  ansible.builtin.apt_repository:
+    repo: ppa:neovim-ppa/stable
+
+- name: Ensure OBS PPA is present
+  ansible.builtin.apt_repository:
+    repo: ppa:obsproject/obs-studio
+
+- name: Install apt packages
+  ansible.builtin.apt:
+    pkg:
+      - pipx
+      - python3.8-venv
+      - tmux
+      - git
+      - vlc
+      - keychain
+      - build-essential
+      - wmctrl
+      - gimp
+      - neovim
+      - rkhunter
+      - zlib1g-dev
+      - libffi-dev
+      - libssl-dev
+      - ffmpeg
+      - v4l2loopback-dkms
+      - obs-studio
+      - fzf
+      - spotify-client
+      - awscli
+      - enpass
+
+- name: Copy tmux configuration
+  copy:
+    src: "{{ role_path }}/files/tmux.conf"
+    dest: /home/emmett/.tmux.conf
+    owner: emmett
+    group: emmett
+
+- name: Copy zshrc
+  copy:
+    src: "{{ role_path }}/files/zshrc"
+    dest: /home/emmett/.zshrc
+    owner: emmett
+    group: emmett
+
+- name: Copy /opt
+  copy:
+    src: "{{ role_path }}/files/opt"
+    dest: /home/emmett/
+    owner: emmett
+    group: emmett
+    mode: u+x
+
+- name: Install pyenv
+  git:
+    repo: https://github.com/pyenv/pyenv.git
+    dest: /home/emmett/.pyenv
+    update: no
+
+- name: Install pyenv-virtualenv
+  git:
+    repo: https://github.com/pyenv/pyenv-virtualenv.git
+    dest: /home/emmett/.pyenv/plugins/pyenv-virtualenv
+    update: no
+
+- name: Install apt-transport-https
+  ansible.builtin.apt:
+    state: latest
+    update_cache: true
+
+- name: Add Apt signing key
+  ansible.builtin.apt_key:
+    url: "https://dl.google.com/linux/linux_signing_key.pub"
+    state: present
+
+- name: Add repository into sources list
+  ansible.builtin.apt_repository:
+    repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+    state: present
+    filename: google-chrome
+
+- name: Install google-chrome-stable
+  ansible.builtin.apt:
+    name: "google-chrome-stable"
+    state: latest
+    update_cache: true
