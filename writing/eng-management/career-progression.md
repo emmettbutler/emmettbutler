@@ -6,7 +6,7 @@ On our team, we mark career progression with a well-defined sequence of titles.
 A Title is Not a Job
 --------------------
 
-First thing’s first: Titles are Toxic.
+First thing’s first: [Titles are Toxic](https://randsinrepose.com/archives/titles-are-toxic/).
 
 Titles on our team provide a career growth path. The realities of the job market make titles necessary, because when
 people leave the company, they need to be able to illustrate their transferrable skills.
