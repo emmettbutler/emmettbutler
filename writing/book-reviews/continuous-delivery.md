@@ -22,7 +22,8 @@ statement that will probably start an interesting discussion. I was surprised wh
 position against developing on branches, having built my career in the time of GitHub and Google Hangout. However, the
 book makes a compelling case that the use of branches is unresolvably at odds with integrating changes continuously.
 It's pretty intuitive: you will eventually release *one* version of your software to production, and a branch is
-a *second copy* of your software that will necessarily have to be *integrated* before release.
+a *second copy* of your software that will necessarily have to be *integrated* before release. The problem quickly gets
+worse when you account for multiple branches coexisting on a large team.
 
 Instead of using branches, the book's strong recommendation is to commit directly to master at least once a day.
 Attempting to apply that approach right now on my current team would probably do more harm than good - trunk (the master
