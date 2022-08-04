@@ -5,24 +5,24 @@ Host *
     IdentityFile ~/.ssh/id_rsa
 
 Host *.lan.cogtree.com
-    User emmett
+    User emmett.butler
     ForwardAgent yes
 
 Host *.cogtree.com
-    User emmett
+    User emmett.butler
     ForwardAgent yes
 
 Host *.compute-1.amazonaws.com
     ForwardAgent yes
     User hadoop
-    IdentityFile /path/to/repos/engineering/casterisk-realtime/emr/emr_jobs.pem
+    IdentityFile /home/emmett/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
 
 Host *-emr.cogtree.com
     ForwardAgent yes
     User hadoop
-    IdentityFile /path/to/repos/engineering/casterisk-realtime/emr/emr_jobs.pem
+    IdentityFile /home/emmett/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
 
 Host *.amazonaws.com
     ForwardAgent yes
     User hadoop
-    IdentityFile /path/to/repos/engineering/casterisk-realtime/emr/emr_jobs.pem
+    IdentityFile /home/emmett/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
