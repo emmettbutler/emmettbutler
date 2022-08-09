@@ -1,7 +1,10 @@
 :colorscheme molokai
 
+let g:line_length=120
 let g:python3_host_prog="~/.pyenv/shims/python"
 let g:flake8_ignore="E501,W503,E203"  " ignore certain flake8 errors from Black
+let g:vim_isort_config_overrides = {
+  \ 'line_length': g:line_length}
 
 call pathogen#infect()
 filetype off
@@ -67,7 +70,7 @@ set gdefault                       " assume the /g flag on :s substitutions
 set hlsearch                       " highlight search items
 
 set wrap linebreak textwidth=9999  " set vim to soft wrap lines
-set colorcolumn=120
+let colorcolumn=g:line_length
 set formatoptions=qrn1
 set autoindent
 set shiftround
@@ -264,7 +267,7 @@ autocmd BufWinLeave * call clearmatches()
 augroup filetype
   autocmd BufNewFile,BufRead *.txt set filetype=human
 augroup END
-autocmd FileType mail,human,markdown set formatoptions+=t textwidth=120
+autocmd FileType mail,human,markdown set formatoptions+=t textwidth=g:line_length
 " for C-like programming, have automatic indentation:
 autocmd FileType c,cpp,slang set cindent
 " for actual C (not C++) programming where comments have explicit end
@@ -426,7 +429,7 @@ endfunction
 
 "return a list containing the lengths of the long lines in this buffer
 function! s:LongLines()
-    let threshold = (&tw ? &tw : 120)
+    let threshold = (&tw ? &tw : g:line_length)
     let spaces = repeat(" ", &ts)
 
     let long_line_lens = []
@@ -472,7 +475,7 @@ nmap <silent> \ :QFix<CR>
 " handle different Black configurations per repo
 function! BlackCustom()
   if expand("%:p") =~ "\/dash\/"
-    let g:black_linelength = 120
+    let g:black_linelength = g:line_length
   else
     let g:black_linelength = 88
   endif
