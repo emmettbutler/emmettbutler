@@ -28,6 +28,7 @@ pyenv virtualenv 3.9.7 python-nvim
 # install a bunch of standard stuff
 pip install flake8
 pip install --user black==21.5b0  # pinned to specific version to maintain vim plugin compatibility
+pip install --user isort
 pip install aws-google-auth
 
 sudo npm install -g js-beautify
