@@ -3,8 +3,6 @@
 let g:line_length=120
 let g:python3_host_prog="~/.pyenv/shims/python"
 let g:flake8_ignore="E501,W503,E203"  " ignore certain flake8 errors from Black
-let g:vim_isort_config_overrides = {
-  \ 'line_length': g:line_length}
 
 call pathogen#infect()
 filetype off
@@ -12,8 +10,7 @@ syntax on
 filetype plugin indent on
 
 call plug#begin('~/.vim/plugged')
-Plug 'psf/black', { 'commit': 'ce14fa8b497bae2b50ec48b3bd7022573a59cdb1' }
-Plug 'fisadev/vim-isort'
+Plug 'dense-analysis/ale'
 call plug#end()
 
 
@@ -303,11 +300,6 @@ autocmd FileType terraform set tabstop=2 softtabstop=2 shiftwidth=2
 
 map <silent> <F11> :call system("wmctrl -ir " . v:windowid . " -b toggle,fullscreen")<CR>
 
-autocmd BufWritePost *.py call Flake8()
-autocmd BufWritePre *.py call BlackCustom()
-autocmd BufWritePre *.py Isort
-autocmd BufWritePost *.js call JsBeautifyCustom()
-
 
 "recalculate the trailing whitespace warning when idle, and after saving
 autocmd cursorhold,bufwritepost * unlet! b:statusline_trailing_space_warning
@@ -471,22 +463,3 @@ function! QFixToggle(forced)
   endif
 endfunction
 nmap <silent> \ :QFix<CR>
-
-" handle different Black configurations per repo
-function! BlackCustom()
-  if expand("%:p") =~ "\/dash\/"
-    let g:black_linelength = g:line_length
-  else
-    let g:black_linelength = 88
-  endif
-  execute ":Black"
-endfunction
-
-function! JsBeautifyCustom()
-  if expand("%:p") =~ "\/parsely\-js\/"
-    let result = system('~/opt/bin/jsbeautify ' . expand("%:p"))
-    if result !~ "unchanged$"
-      execute ":e!"
-    endif
-  endif
-endfunction

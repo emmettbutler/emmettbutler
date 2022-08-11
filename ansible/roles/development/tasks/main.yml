@@ -99,10 +99,10 @@
     owner: emmett
     group: emmett
 
-- name: Copy nvim config
+- name: Copy nvim Lua config
   copy:
-    src: "{{ role_path }}/files/nvim/init.vim"
-    dest: /home/emmett/.config/nvim/init.vim
+    src: "{{ role_path }}/files/nvim/init.lua"
+    dest: /home/emmett/.config/nvim/init.lua
     owner: emmett
     group: emmett
 
