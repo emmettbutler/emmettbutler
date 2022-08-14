@@ -45,6 +45,29 @@
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
 
+  environment.gnome.excludePackages = with pkgs.gnome; [
+    eog # image viewer
+    epiphany # web browser
+    simple-scan # document scanner
+    totem # video player
+    yelp # help viewer
+    evince # document viewer
+    geary # email client
+    seahorse # password manager
+
+    gnome-calculator
+    gnome-calendar
+    gnome-characters
+    gnome-clocks
+    gnome-contacts
+    gnome-font-viewer
+    gnome-logs
+    gnome-maps
+    gnome-music
+    pkgs.gnome-photos
+    gnome-weather
+  ];
+
   # Configure keymap in X11
   services.xserver = {
     layout = "us";
@@ -151,6 +174,7 @@
     enpass
     spotify
     slack
+    vlc
 
     unzip
     yq
