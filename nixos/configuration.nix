@@ -5,11 +5,7 @@
 { config, pkgs, inputs, ... }:
 
 {
-  imports =
-    [
-      /etc/nixos/hardware-configuration.nix
-      ./zsh.nix
-    ];
+  imports = [ /etc/nixos/hardware-configuration.nix ./zsh.nix ];
   # Enable flakes
   # Keep outputs and derivations for nix-direnv
   nix = {
@@ -72,13 +68,12 @@
     #media-session.enable = true;
   };
 
-
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.interfaces.eno2.useDHCP = true;
-  networking.interfaces.wlo1.useDHCP = true;
+  networking.interfaces.enp0s25.useDHCP = true;
+  networking.interfaces.wlp3s0.useDHCP = true;
 
   # Users/Groups
   # Don't forget to set a password with ‘passwd’.
@@ -113,92 +108,60 @@
     createHome = true;
     isNormalUser = true;
     shell = pkgs.bash;
-    openssh.authorizedKeys.keys = [
-    ];
+    openssh.authorizedKeys.keys = [ ];
   };
 
   # List packages installed in system profile. To search, run:
-  environment.systemPackages = with pkgs;
-    [
-      neovimeb.neovimEB
-      mypython310
+  environment.systemPackages = with pkgs; [
+    neovimeb.neovimEB
+    mypython310
 
-      ack
-      amazon-ecr-credential-helper
-      ansible
-      awscli2
-      skopeo
-      btop
-      go
-      ctags
-      direnv
-      dnsutils
-      docker-compose
-      nq
-      nodejs-16_x
-      entr
-      devpi-client
-      doctl
-      emacs
-      fzf
-      gh
-      glab
-      gitAndTools.delta
-      gnumake
-      gnupg
-      hyperfine
-      jq
-      kubectl
-      lazydocker
-      ledger
-      lf
-      moreutils
-      ncdu
-      nix-direnv
-      pinentry-curses
-      rsync
-      shellcheck
-      shfmt
-      sops
-      stow
-      hexyl
-      termdown
-      tmux
-      tmux-xpanes
-      sampler
-      tree
-      keychain
+    ack
+    amazon-ecr-credential-helper
+    ansible
+    awscli2
+    direnv
+    dnsutils
+    docker-compose
+    devpi-client
+    doctl
+    fzf
+    gh
+    glab
+    gitAndTools.delta
+    gnumake
+    gnupg
+    hyperfine
+    jq
+    lf
+    nix-direnv
+    pinentry-curses
+    rsync
+    shellcheck
+    shfmt
+    sops
+    stow
+    tmux
+    tmux-xpanes
+    keychain
 
-      firecracker
-      ignite
-      firectl
-      binutils
-      iptables
-      firefox
-      google-chrome
-      discord
-      enpass
-      spotify
-      slack
+    iptables
+    google-chrome
+    discord
+    enpass
+    spotify
+    slack
 
-      unzip
-      yq
-      zip
-      virt-manager
-      virt-viewer
-      vagrant
-      openvpn
-      csvkit
-      redis
-      openssl
-      git
-      wget
-      terraform
-      terraform-ls
-      nfs-utils
-      chromium
-      kitty
-    ];
+    unzip
+    yq
+    zip
+    openvpn
+    openssl
+    git
+    wget
+    terraform
+    terraform-ls
+  ];
 
   # List services that you want to enable:
   # Enable the OpenSSH daemon.
@@ -206,41 +169,37 @@
     enable = true;
     forwardX11 = true;
   };
-  services.plex = {
-    enable = true;
-    openFirewall = true;
-  };
 
   programs.ssh = {
     extraConfig = ''
-Host *
-    StrictHostKeyChecking no
-    CheckHostIP no
-    AddKeysToAgent yes
-    IdentityFile ~/.ssh/id_rsa
+      Host *
+          StrictHostKeyChecking no
+          CheckHostIP no
+          AddKeysToAgent yes
+          IdentityFile ~/.ssh/id_rsa
 
-Host *.lan.cogtree.com
-    User emmett.butler
-    ForwardAgent yes
+      Host *.lan.cogtree.com
+          User emmett.butler
+          ForwardAgent yes
 
-Host *.cogtree.com
-    User emmett.butler
-    ForwardAgent yes
+      Host *.cogtree.com
+          User emmett.butler
+          ForwardAgent yes
 
-Host *.compute-1.amazonaws.com
-    ForwardAgent yes
-    User hadoop
-    IdentityFile /home/emmett/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
+      Host *.compute-1.amazonaws.com
+          ForwardAgent yes
+          User hadoop
+          IdentityFile /home/emmett/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
 
-Host *-emr.cogtree.com
-    ForwardAgent yes
-    User hadoop
-    IdentityFile /home/emmett/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
+      Host *-emr.cogtree.com
+          ForwardAgent yes
+          User hadoop
+          IdentityFile /home/emmett/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
 
-Host *.amazonaws.com
-    ForwardAgent yes
-    User hadoop
-    IdentityFile /home/emmett/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
+      Host *.amazonaws.com
+          ForwardAgent yes
+          User hadoop
+          IdentityFile /home/emmett/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
     '';
   };
 
