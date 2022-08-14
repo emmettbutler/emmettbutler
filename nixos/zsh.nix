@@ -1,10 +1,12 @@
 { config, lib, pkgs, ... }:
 
 {
-programs.zsh = {
+  programs.zsh = {
     enable = true;
     shellAliases = {
       vim = "nvim";
+      automatticproxy =
+        "ssh -N -D 8080 emmettbutler@proxy.automattic.com -i /home/emmett/.ssh/id_rsa_automattic";
     };
     ohMyZsh = {
       enable = true;
