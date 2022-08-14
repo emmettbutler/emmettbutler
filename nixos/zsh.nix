@@ -14,6 +14,7 @@ programs.zsh = {
     autosuggestions.enable = true;
     interactiveShellInit = ''
       export ZSH_TMUX_AUTOSTART=true
+      export NIX_PATH="nixos-config=/home/emmett/configuration.nix"
       plugins=(git tmux)
       if [[ ! -e "/home/emmett/.zplug/init.zsh" ]]; then
           curl -sL --proto-redir -all,https \

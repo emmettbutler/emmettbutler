@@ -7,7 +7,7 @@
 {
   imports =
     [
-      ./hardware-configuration.nix
+      /etc/nixos/hardware-configuration.nix
       ./zsh.nix
     ];
   # Enable flakes
@@ -34,10 +34,6 @@
 
   networking.networkmanager.enable = true;
   networking.hostName = "hell"; # Define your hostname.
-  # for vagrant
-  networking.firewall.extraCommands = ''
-    ip46tables -I INPUT 1 -i vboxnet+ -p tcp -m tcp --dport 2049 -j ACCEPT
-  '';
 
   # Typical system config
   time.timeZone = "America/Los_Angeles";
@@ -171,6 +167,7 @@
       tmux-xpanes
       sampler
       tree
+      keychain
 
       firecracker
       ignite
@@ -182,6 +179,7 @@
       discord
       enpass
       spotify
+      slack
 
       unzip
       yq
@@ -247,9 +245,10 @@ Host *.amazonaws.com
   };
 
   systemd.services."parsely-vpn" = {
+    enable = true;
     path = with pkgs; [ openvpn ];
     script = ''
-      openvpn --config /home/emmett/parsely-tcp443.ovpn
+      openvpn --config /home/emmett/parsely-udp1194.ovpn --auth-user-pass /home/emmett/vpn-credentials.txt
     '';
   };
 
@@ -257,10 +256,6 @@ Host *.amazonaws.com
   virtualisation.docker.enable = true;
   # Can't be enabled if running nomad
   virtualisation.docker.extraOptions = "--userns-remap='emmett'";
-
-  # User virtualbox
-  virtualisation.virtualbox.host.enable = true;
-  users.extraGroups.vboxusers.members = [ "emmett" ];
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
