@@ -206,6 +206,7 @@
   systemd.services."parsely-vpn" = {
     enable = true;
     path = with pkgs; [ openvpn ];
+    wantedBy = [ "multi-user.target" ];
     script = ''
       openvpn --config /home/emmett/parsely-udp1194.ovpn --auth-user-pass /home/emmett/vpn-credentials.txt
     '';
