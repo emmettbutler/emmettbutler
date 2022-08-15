@@ -8,6 +8,10 @@
       automatticproxy =
         "ssh -N -D 8080 emmettbutler@proxy.automattic.com -i /home/emmett/.ssh/id_rsa_automattic";
       pipu = "pip install --upgrade --upgrade-strategy only-if-needed";
+      pipzone =
+        "nix-shell ~/git/emmettbutler/nixos/pip-shell.nix -I nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos/nixpkgs";
+      update =
+        "sudo nixos-rebuild switch --flake /home/emmett/git/emmettbutler/nixos --impure";
     };
     ohMyZsh = {
       enable = true;
@@ -17,7 +21,6 @@
     autosuggestions.enable = true;
     interactiveShellInit = ''
       export ZSH_TMUX_AUTOSTART=true
-      export NIX_PATH="nixos-config=/home/emmett/configuration.nix"
       zstyle ':omz:update' mode auto
       plugins=(git tmux)
       if [[ ! -e "/home/emmett/.zplug/init.zsh" ]]; then
