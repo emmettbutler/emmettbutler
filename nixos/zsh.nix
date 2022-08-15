@@ -71,14 +71,14 @@
       }
 
       psh() {
-          MYSERVER=$(echo $\{PARSELY_NODES[@]\} |  tr '[:space:]' '\n' | fzf)
-          history -s ssh "$\{MYSERVER\}"
-          ssh "$\{MYSERVER\}"
+          MYSERVER=$(echo $PARSELY_NODES[@] |  tr '[:space:]' '\n' | fzf)
+          history -s ssh "$MYSERVER"
+          ssh "$MYSERVER"
       }
 
       xpsh() {
-          SERVERS=($(echo $\{PARSELY_NODES[@]\} |  tr '[:space:]' '\n' | fzf --multi --reverse))
-          xpanes --ssh $(echo "$\{SERVERS[*]\}")
+          SERVERS=($(echo $PARSELY_NODES[@] |  tr '[:space:]' '\n' | fzf --multi --reverse))
+          xpanes --ssh $(echo "$SERVERS[*]")
       }
 
       ssh-add ~/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
