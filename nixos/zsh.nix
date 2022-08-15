@@ -20,8 +20,7 @@
     enableCompletion = true;
     autosuggestions.enable = true;
     interactiveShellInit = ''
-      ${pkgs.lib.readFile
-      /home/emmett/git/emmettbutler/ansible/roles/development/files/zshrc}
+      ${pkgs.lib.readFile ../ansible/roles/development/files/zshrc}
     '';
     promptInit = "";
   };
