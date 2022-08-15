@@ -1,0 +1,17 @@
+- name: Copy gitconfig
+  copy:
+    src: "{{ role_path }}/files/gitconfig"
+    dest: /home/emmett/.gitconfig
+    owner: emmett
+
+- name: Copy ssh config
+  copy:
+    src: "{{ role_path }}/files/ssh_config"
+    dest: /home/emmett/.ssh/config
+    owner: emmett
+
+- name: Copy tmux configuration
+  copy:
+    src: "{{ role_path }}/files/tmux.conf"
+    dest: /home/emmett/.tmux.conf
+    owner: emmett

@@ -166,7 +166,6 @@
     stow
     tmux
     tmux-xpanes
-    keychain
 
     iptables
     google-chrome
@@ -175,6 +174,7 @@
     spotify
     slack
     vlc
+    zoom-us
 
     unzip
     yq
@@ -193,39 +193,7 @@
     enable = true;
     forwardX11 = true;
   };
-
-  programs.ssh = {
-    extraConfig = ''
-      Host *
-          StrictHostKeyChecking no
-          CheckHostIP no
-          AddKeysToAgent yes
-          IdentityFile ~/.ssh/id_rsa
-
-      Host *.lan.cogtree.com
-          User emmett.butler
-          ForwardAgent yes
-
-      Host *.cogtree.com
-          User emmett.butler
-          ForwardAgent yes
-
-      Host *.compute-1.amazonaws.com
-          ForwardAgent yes
-          User hadoop
-          IdentityFile /home/emmett/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
-
-      Host *-emr.cogtree.com
-          ForwardAgent yes
-          User hadoop
-          IdentityFile /home/emmett/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
-
-      Host *.amazonaws.com
-          ForwardAgent yes
-          User hadoop
-          IdentityFile /home/emmett/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
-    '';
-  };
+  security.pam.services.gdm.enableGnomeKeyring = true;
 
   systemd.services."parsely-vpn" = {
     enable = true;
