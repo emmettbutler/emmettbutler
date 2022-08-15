@@ -11,7 +11,7 @@
       pipzone =
         "nix-shell ~/git/emmettbutler/nixos/pip-shell.nix -I nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos/nixpkgs";
       update =
-        "sudo nixos-rebuild switch --flake /home/emmett/git/emmettbutler/nixos --impure";
+        "sudo nix flake update /home/emmett/git/emmettbutler/nixos/nvimeb && sudo nixos-rebuild switch --flake /home/emmett/git/emmettbutler/nixos --impure";
     };
     ohMyZsh = {
       enable = true;
