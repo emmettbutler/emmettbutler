@@ -64,13 +64,6 @@
       - awscli
       - enpass
 
-- name: Copy vimrc
-  copy:
-    src: "{{ role_path }}/files/vimrc"
-    dest: /home/emmett/.vimrc
-    owner: emmett
-    group: emmett
-
 - name: Copy nvim Lua config
   copy:
     src: "{{ role_path }}/files/nvim/init.lua"
