@@ -46,8 +46,6 @@
       export GIT_SSL_NO_VERIFY=true
       export ZSH_TMUX_AUTOSTART=true
 
-      eval `keychain --eval --agents ssh id_rsa`
-
       if [ -f '/opt/google-cloud-sdk/path.bash.inc' ]; then source '/opt/google-cloud-sdk/path.bash.inc'; fi
       if [ -f '/opt/google-cloud-sdk/completion.bash.inc' ]; then source '/opt/google-cloud-sdk/completion.bash.inc'; fi
 
@@ -84,7 +82,6 @@
       ssh-add ~/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
       ssh-add ~/.ssh/id_rsa
       ssh-add ~/.ssh/id_rsa_automattic
-      source ~/.bashrc_secrets
 
       touch ~/.zshrc
     '';
