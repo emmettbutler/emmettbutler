@@ -214,7 +214,10 @@
     path = with pkgs; [ openvpn ];
     wantedBy = [ "multi-user.target" ];
     script = ''
-      openvpn --config /home/emmett/parsely-udp1194.ovpn --auth-user-pass /home/emmett/vpn-credentials.txt
+      FILE=/home/emmett/parsely-udp1194.ovpn
+      if [[ -f "$FILE" ]]; then
+        openvpn --config $FILE --auth-user-pass /home/emmett/vpn-credentials.txt
+      fi
     '';
   };
 
