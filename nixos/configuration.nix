@@ -153,8 +153,6 @@
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
     neovimeb.neovimEB
-    mypython310
-
     ack
     amazon-ecr-credential-helper
     ansible
