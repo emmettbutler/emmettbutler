@@ -2,7 +2,6 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-22.05";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
-    neovimeb.url = "path:/etc/nixos/nvimeb";
   };
   outputs = { self, nixpkgs, ... }@inputs:
     let
