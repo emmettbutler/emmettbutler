@@ -9,6 +9,7 @@
       python39Packages.virtualenv
       postgresql
       openjdk8
+      leiningen
     ]);
   runScript = "bash";
 }).env
