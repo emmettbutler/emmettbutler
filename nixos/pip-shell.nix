@@ -11,5 +11,5 @@
       openjdk8
       leiningen
     ]);
-  runScript = "bash";
+  runScript = "zsh";
 }).env
