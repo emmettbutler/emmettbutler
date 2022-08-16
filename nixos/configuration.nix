@@ -25,8 +25,8 @@
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.networkmanager.enable = true;
   networking.hostName = "hell"; # Define your hostname.
@@ -40,6 +40,7 @@
   };
   # Enable the X11 windowing system.
   services.xserver.enable = true;
+  services.fprintd.enable = true;
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;

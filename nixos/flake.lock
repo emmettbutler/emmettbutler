@@ -5,23 +5,23 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1660438571,
-        "narHash": "sha256-YR+/pimfhN3AQJnrIe8ZS5IufatOSPGJl2x1aougCok=",
-        "path": "/etc/nixos/nvimeb",
+        "lastModified": 1660680056,
+        "narHash": "sha256-KXHupCkD6/jgj6EEU0oez9yVRjhiVlsjVqWfkHDUHk4=",
+        "path": "/home/emmett/git/emmettbutler/nixos/nvimeb",
         "type": "path"
       },
       "original": {
-        "path": "/etc/nixos/nvimeb",
+        "path": "/home/emmett/git/emmettbutler/nixos/nvimeb",
         "type": "path"
       }
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1660305968,
-        "narHash": "sha256-r0X1pZCSEA6mzt5OuTA7nHuLmvnbkwgpFAh1iLIx4GU=",
+        "lastModified": 1660574513,
+        "narHash": "sha256-nkMQ1TKIIAYIVbbUzjxfjPn3H1zZFW20TrHUFAjwvNU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "c4a0efdd5a728e20791b8d8d2f26f90ac228ee8d",
+        "rev": "af9e00071d0971eb292fd5abef334e66eda3cb69",
         "type": "github"
       },
       "original": {

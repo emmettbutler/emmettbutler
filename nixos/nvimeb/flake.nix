@@ -50,7 +50,7 @@
               customRC = ''
                 lua << EOF
                 ${pkgs.lib.readFile
-                ./init.lua}
+                ../../ansible/roles/development/files/nvim/init.lua}
                 EOF
               '';
               packages.myPlugins = with vimPlugins; {
