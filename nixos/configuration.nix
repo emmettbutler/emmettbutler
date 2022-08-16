@@ -134,6 +134,21 @@
     openssh.authorizedKeys.keys = [ ];
   };
 
+  nixpkgs.overlays = [
+    (self: super: {
+      zoomUsFixed = pkgs.zoom-us.overrideAttrs (old: {
+        postFixup = old.postFixup + ''
+          wrapProgram $out/bin/zoom-us --unset XDG_SESSION_TYPE
+        '';
+      });
+      zoom = pkgs.zoom-us.overrideAttrs (old: {
+        postFixup = old.postFixup + ''
+          wrapProgram $out/bin/zoom --unset XDG_SESSION_TYPE
+        '';
+      });
+    })
+  ];
+
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
     neovimeb.neovimEB
@@ -174,7 +189,7 @@
     spotify
     slack
     vlc
-    zoom-us
+    zoom
 
     unzip
     yq
