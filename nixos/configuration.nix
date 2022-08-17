@@ -27,6 +27,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelParams = [ "mem_sleep_default=deep" ];
 
   networking.networkmanager.enable = true;
   networking.hostName = "hell"; # Define your hostname.
