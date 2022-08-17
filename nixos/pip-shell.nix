@@ -3,6 +3,7 @@
   name = "pipzone";
   targetPkgs = pkgs:
     (with pkgs; [
+      binutils.bintools
       gcc
       git
       openssh
