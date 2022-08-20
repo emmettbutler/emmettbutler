@@ -32,6 +32,7 @@ vim.g.mapleader = ' '
 vim.o.expandtab = true
 vim.o.tabstop = 4
 vim.o.shiftwidth = 0
+vim.o.shiftround = true
 vim.o.relativenumber = true
 -- Distable word wrap
 vim.o.wrap = false
@@ -47,6 +48,22 @@ vim.o.spelllang = "en_ca"
 vim.o.hidden = true
 -- Ask confirm on exit instead of error
 vim.o.confirm = true
+vim.o.undofile = true
+vim.o.magic = true
+vim.o.backspace = 2
+vim.o.cursorline = true
+vim.o.virtualedit = "onemore"
+vim.o.mouse = "a"
+vim.o.ignorecase = true
+vim.o.smartcase = true
+vim.o.incsearch = true
+vim.o.gdefault = true
+vim.o.hlsearch = true
+vim.o.autoindent = true
+vim.o.wildmenu = true
+vim.o.wildmode = "longest,list"
+vim.o.wildchar = "<TAB>"
+vim.o.listchars = "set listchars=tab:>-,trail:~,extends:>,precedes:<"
 
 -- My Highlights
 vim.cmd [[
@@ -108,8 +125,6 @@ vim.api.nvim_set_keymap('n', '<leader>v', '^v$h', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>ll', 'G{jV}y}p10l', { noremap = true })
 -- Copy the current entry to the bottom, copy date from last entry
 vim.api.nvim_set_keymap('n', '<leader>lb', '{jV}yGp10l{{jvEy}jvEpl', { noremap = true })
--- Copy the current entry to the next position
---vim.api.nvim_set_keymap('n', '<leader>ln', '{jV}y}p10l', { noremap = true })
 -- Jump down from line to replace dollar ammount
 vim.api.nvim_set_keymap('n', '<leader>ld', 'j^f$lC', { noremap = true })
 -- After searching pull entry to current position
@@ -126,6 +141,21 @@ vim.api.nvim_set_keymap('n', '<c-w><c-a>', '<cmd>wa<cr>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>ee', '<cmd>e!<cr>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<expr> k', [[(v:count > 1 ? "m'" . v:count : '') . 'k']], { noremap = true })
 vim.api.nvim_set_keymap('n', '<expr> j', [[(v:count > 1 ? "m'" . v:count : '') . 'j']], { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>.', ':tabn<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>,', ':tabp<cr>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>c', ':close<cr>', { noremap = true })
+-- Ctrl moves between splits
+vim.api.nvim_set_keymap('n', '<c-h>', '<c-w>h', { noremap = true })
+vim.api.nvim_set_keymap('n', '<c-j>', '<c-w>j', { noremap = true })
+vim.api.nvim_set_keymap('n', '<c-k>', '<c-w>k', { noremap = true })
+vim.api.nvim_set_keymap('n', '<c-l>', '<c-w>l', { noremap = true })
+-- save 500 keypresses per day
+vim.api.nvim_set_keymap('n', ';', ':', { noremap = true })
+-- disable arrows
+vim.api.nvim_set_keymap('n', '<Up>', '<nop>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<Down>', '<nop>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<Left>', '<nop>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<Right>', '<nop>', { noremap = true })
 -- Call Ale Fix
 vim.api.nvim_set_keymap('n', '<leader>ef', '<cmd>ALEFix<cr>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>el', '<cmd>ALELint<cr>', { noremap = true })
@@ -139,6 +169,23 @@ vim.api.nvim_set_keymap('n', '<leader>psl', '<cmd>LanguageToolClear<cr>', { nore
 vim.api.nvim_set_keymap('n', '<leader>pc', '<cmd>cclose<cr><cmd>lclose<cr>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>pg', '<cmd>Goyo<cr>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>pp', 'vipJVgq', { noremap = true })
+-- close all sorts of brackets automatically
+vim.api.nvim_set_keymap('i', '{', '{}<Left>', { noremap = true })
+vim.api.nvim_set_keymap('i', '{{', '{', { noremap = true })
+vim.api.nvim_set_keymap('i', '{}', '{}', { noremap = true })
+vim.api.nvim_set_keymap('i', '{<CR>', '{<CR>}<Esc>O', { noremap = true })
+vim.api.nvim_set_keymap('i', '[', '[]<Left>', { noremap = true })
+vim.api.nvim_set_keymap('i', '[[', '[', { noremap = true })
+vim.api.nvim_set_keymap('i', '[]', '[]', { noremap = true })
+vim.api.nvim_set_keymap('i', '[<CR>', '[<CR>]<Esc>O', { noremap = true })
+vim.api.nvim_set_keymap('i', '(', '()<Left>', { noremap = true })
+vim.api.nvim_set_keymap('i', '((', '(', { noremap = true })
+vim.api.nvim_set_keymap('i', '()', '()', { noremap = true })
+vim.api.nvim_set_keymap('i', '(<CR>', '(<CR>)<Esc>O', { noremap = true })
+
+vim.cmd [[
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+]]
 
 -- Build a custom status line
 local status_line = {
