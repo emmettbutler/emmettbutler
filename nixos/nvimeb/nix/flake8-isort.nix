@@ -2,10 +2,10 @@
 
 buildPythonPackage rec {
   pname = "flake8-isort";
-  version = "4.1.2";
+  version = "4.2.0";
   src = fetchPypi {
     inherit pname version;
-    sha256 = "Ez+3qCR5ssvbflCg58QccK4TbbjLgjl79kBhOoetb5o=";
+    sha256 = "JlcVAM1Ul2u8DPEAb/vNGmjdEC+Ba3oQUbIZYWup/uA=";
   };
   checkInputs = with python3Packages; [ flake8 isort pytest ];
 }

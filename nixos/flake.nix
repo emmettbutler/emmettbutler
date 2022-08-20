@@ -18,8 +18,8 @@
           config.allowUnfree = true;
         };
         neovimeb = inputs.neovimeb.packages.${prev.system};
-        mypython310 =
-          pkgs.python310.withPackages (py-pkgs: with py-pkgs; [ virtualenv requests ipython ]);
+        mypython310 = pkgs.python310.withPackages
+          (py-pkgs: with py-pkgs; [ virtualenv requests ipython ]);
       };
     in {
       nixosConfigurations.hell = nixpkgs.lib.nixosSystem {
@@ -61,5 +61,4 @@
 
     };
 }
-
 

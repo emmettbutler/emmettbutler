@@ -49,8 +49,7 @@
               # customRC expects vimscript but I've already converted to lua
               customRC = ''
                 lua << EOF
-                ${pkgs.lib.readFile
-                ../../ansible/roles/development/files/nvim/init.lua}
+                ${pkgs.lib.readFile ./init.lua}
                 EOF
               '';
               packages.myPlugins = with vimPlugins; {
