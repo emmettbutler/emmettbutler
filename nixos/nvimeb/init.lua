@@ -64,6 +64,8 @@ vim.o.wildmenu = true
 vim.o.wildmode = "longest,list"
 vim.o.listchars = "tab:>-,trail:~,extends:>,precedes:<"
 
+sldkfjalskdjfgweughwu"""""
+
 -- My Highlights
 vim.cmd [[
 au VimEnter * hi Search ctermfg=166
