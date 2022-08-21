@@ -50,7 +50,6 @@ vim.o.hidden = true
 vim.o.confirm = true
 vim.o.undofile = true
 vim.o.magic = true
-vim.o.backspace = 2
 vim.o.cursorline = true
 vim.o.virtualedit = "onemore"
 vim.o.mouse = "a"
