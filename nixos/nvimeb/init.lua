@@ -403,12 +403,16 @@ vim.g.ale_linters = {
     terraform = { "terraform_ls" },
     markdown = { "vale" },
     nix = { "nix" },
+    lua = { "luacheck" },
+    javascript = { "jshint" },
 }
 vim.g.ale_fixers = {
     sh = { "shfmt", },
     python = { "isort", "black" },
     terraform = { "terraform" },
     nix = { "nixfmt" },
+    lua = { "stylua" },
+    javascript = { "eslint" },
 }
 
 -- osc-yank
