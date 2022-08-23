@@ -128,7 +128,6 @@
     createHome = true;
     isNormalUser = true;
     shell = pkgs.bash;
-    openssh.authorizedKeys.keys = [ ];
   };
 
   nixpkgs.overlays = [
@@ -197,12 +196,9 @@
     terraform-ls
   ];
 
+  programs.seahorse.enable = true;
+
   # List services that you want to enable:
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    forwardX11 = true;
-  };
   security.pam.services.gdm.enableGnomeKeyring = true;
 
   systemd.services."parsely-vpn" = {
