@@ -1,0 +1,113 @@
+- name: Ensuring Homebrew Is Installed
+  stat:
+    path: /opt/homebrew/bin/brew
+  register: homebrew_check
+
+- name: Fail If Homebrew Is Not Installed
+  fail:
+    msg: Homebrew is missing, install from web
+  when:
+    - not homebrew_check.stat.exists
+
+- name: Install Homebrew
+  shell: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  become: yes
+  when:
+    - not homebrew_check.stat.exists
+
+- name: Reset the Homebrew Library repo
+  git:
+    repo=https://github.com/Homebrew/brew.git
+    dest=/usr/local/Homebrew/Library
+    clone=no
+    update=yes
+    force=yes
+
+- name: Update Homebrew (first try may fail)
+  homebrew: update_homebrew=yes
+  become: no
+  ignore_errors: yes
+
+- name: Update Homebrew
+  homebrew: update_homebrew=yes
+  become: no
+
+- name: Install brew packages
+  homebrew:
+    name:
+      - mas
+      - tmux
+      - neovim
+    state: present
+
+- name: Install Mac Apps
+  community.general.mas:
+    id:
+      - 732710998  # enpass
+    state: present
+
+- name: Create .config directory if it does not exist
+  ansible.builtin.file:
+    path: /Users/emmett.butler/.config
+    state: directory
+    mode: '0755'
+
+- name: Create .config/nvim directory if it does not exist
+  ansible.builtin.file:
+    path: /Users/emmett.butler/.config/nvim
+    state: directory
+    mode: '0755'
+
+- name: Copy nvim Lua config
+  copy:
+    src: "{{ role_path }}/files/nvim/init.lua"
+    dest: /Users/emmett.butler/.config/nvim/init.lua
+    owner: emmett.butler
+    group: staff
+
+- name: Copy nvim colors
+  copy:
+    src: "{{ role_path }}/files/vim/colors"
+    dest: /Users/emmett.butler/.config/nvim
+    owner: emmett.butler
+    group: staff
+
+- name: Copy /opt
+  copy:
+    src: "{{ role_path }}/files/opt"
+    dest: /Users/emmett.butler/
+    owner: emmett.butler
+    group: staff
+    mode: u+x
+
+- name: Link vim directory
+  ansible.builtin.file:
+    src: /Users/emmett.butler/git/emmettbutler/ansible/roles/development/files/vim
+    dest: /Users/emmett.butler/.vim
+    owner: emmett.butler
+    group: staff
+    state: link
+
+- name: Install pyenv
+  git:
+    repo: https://github.com/pyenv/pyenv.git
+    dest: /Users/emmett.butler/.pyenv
+    update: no
+
+- name: Install pyenv-virtualenv
+  git:
+    repo: https://github.com/pyenv/pyenv-virtualenv.git
+    dest: /Users/emmett.butler/.pyenv/plugins/pyenv-virtualenv
+    update: no
+
+- name: Install oh-my-zsh
+  shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  args:
+    creates: /Users/emmett.butler/.oh-my-zsh
+
+- name: Copy zshrc
+  copy:
+    src: "{{ role_path }}/files/zshrc"
+    dest: /Users/emmett.butler/.zshrc
+    owner: emmett.butler
+    group: staff

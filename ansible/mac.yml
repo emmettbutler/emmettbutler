@@ -1,0 +1,7 @@
+- hosts: laptop
+  roles:
+    - m1_mac_development
+    - userconfs
+  vars:
+    username: emmett.butler
+    homedir: /Users/emmett.butler
