@@ -2,3 +2,6 @@
   roles:
     - development
     - userconfs
+  vars:
+    username: emmett
+    homedir: /home/emmett
