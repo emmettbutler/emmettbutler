@@ -1,6 +1,7 @@
 - hosts: laptop
   roles:
-    - development
+    - linux_base
+    - envconfs
     - userconfs
   vars:
     username: emmett

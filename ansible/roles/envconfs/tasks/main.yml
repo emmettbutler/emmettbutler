@@ -1,57 +1,3 @@
-- name: Check if homebrew is available
-  block:
-    - name: try using homebrew in check_mode (no changes)
-      homebrew:
-        update_homebrew: true
-      check_mode: true
-
-  rescue:
-    - name: No homebrew
-      fail:
-        msg: Homebrew is missing, install from web
-
-- name: Reset the Homebrew Library repo
-  git:
-    repo=https://github.com/Homebrew/brew.git
-    dest=/usr/local/Homebrew/Library
-    clone=no
-    update=yes
-    force=yes
-
-- name: Update Homebrew (first try may fail)
-  homebrew: update_homebrew=yes
-  become: no
-  ignore_errors: yes
-
-- name: Update Homebrew
-  homebrew: update_homebrew=yes
-  become: no
-
-- name: Install global python packages
-  ansible.builtin.pip:
-    name:
-      - black
-      - jedi-language-server
-      - flake8
-      - flake8-isort
-      - isort
-      - pynvim
-    extra_args: "-U"
-
-- name: Install brew packages
-  homebrew:
-    name:
-      - mas
-      - tmux
-      - lf
-      - neovim
-    state: present
-
-- name: Install Mac Apps
-  community.general.mas:
-    id:
-      - 732710998  # enpass
-    state: present
 
 - name: Create .config directory if it does not exist
   ansible.builtin.file:
@@ -97,6 +43,17 @@
     owner: "{{ username }}"
     group: staff
     mode: u+x
+
+- name: Install global python packages
+  ansible.builtin.pip:
+    name:
+      - black
+      - jedi-language-server
+      - flake8
+      - flake8-isort
+      - isort
+      - pynvim
+    extra_args: "-U"
 
 - name: Check if pyenv conf exists
   stat:

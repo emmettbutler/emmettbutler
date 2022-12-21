@@ -1,4 +1,5 @@
 - hosts: laptop
   roles:
-    - m1_mac_development
+    - m1_mac_base
+    - envconfs
     - userconfs
