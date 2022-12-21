@@ -55,64 +55,76 @@
 
 - name: Create .config directory if it does not exist
   ansible.builtin.file:
-    path: /Users/emmett.butler/.config
+    path: "{{ homedir }}/.config"
     state: directory
     mode: '0755'
 
 - name: Create .config/nvim directory if it does not exist
   ansible.builtin.file:
-    path: /Users/emmett.butler/.config/nvim
+    path: "{{ homedir }}/.config/nvim"
     state: directory
     mode: '0755'
 
 - name: Copy nvim Lua config
   copy:
     src: "{{ role_path }}/files/nvim/init.lua"
-    dest: /Users/emmett.butler/.config/nvim/init.lua
-    owner: emmett.butler
+    dest: "{{ homedir }}/.config/nvim/init.lua"
+    owner: "{{ username }}"
     group: staff
 
-- name: Check if file exists
+- name: Check if nvim conf exists
   stat:
-    path: /Users/emmett.butler/.config/nvim
+    path: "{{ homedir }}/.config/nvim"
   register: nvimconf
+
+- name: Check if nvim colors exists
+  stat:
+    path: "{{ homedir }}/.config/nvim/colors/molokai.vim"
+  register: nvimcolors
 
 - name: Copy nvim confs
   copy:
     src: "{{ role_path }}/files/vim/"
-    dest: /Users/emmett.butler/.config/nvim
-    owner: emmett.butler
+    dest: "{{ homedir }}/.config/nvim"
+    owner: "{{ username }}"
     group: staff
-  when: not nvimconf.stat.exists
+  when: not nvimcolors.stat.exists
 
 - name: Copy /opt
   copy:
     src: "{{ role_path }}/files/opt"
-    dest: /Users/emmett.butler/
-    owner: emmett.butler
+    dest: "{{ homedir }}/"
+    owner: "{{ username }}"
     group: staff
     mode: u+x
+
+- name: Check if pyenv conf exists
+  stat:
+    path: "{{ homedir }}/.pyenv"
+  register: pyenvconf
 
 - name: Install pyenv
   git:
     repo: https://github.com/pyenv/pyenv.git
-    dest: /Users/emmett.butler/.pyenv
+    dest: "{{ homedir }}/.pyenv"
     update: no
+  when: not pyenvconf.stat.exists
 
 - name: Install pyenv-virtualenv
   git:
     repo: https://github.com/pyenv/pyenv-virtualenv.git
-    dest: /Users/emmett.butler/.pyenv/plugins/pyenv-virtualenv
+    dest: "{{ homedir }}/.pyenv/plugins/pyenv-virtualenv"
     update: no
+  when: not pyenvconf.stat.exists
 
 - name: Install oh-my-zsh
   shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   args:
-    creates: /Users/emmett.butler/.oh-my-zsh
+    creates: "{{ homedir }}/.oh-my-zsh"
 
 - name: Copy zshrc
   copy:
     src: "{{ role_path }}/files/zshrc"
-    dest: /Users/emmett.butler/.zshrc
-    owner: emmett.butler
+    dest: "{{ homedir }}/.zshrc"
+    owner: "{{ username }}"
     group: staff
