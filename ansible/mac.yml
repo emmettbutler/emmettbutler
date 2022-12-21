@@ -3,3 +3,5 @@
     - m1_mac_base
     - envconfs
     - userconfs
+  vars:
+    usergrp: staff

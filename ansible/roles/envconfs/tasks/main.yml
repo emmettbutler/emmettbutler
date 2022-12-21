@@ -16,7 +16,7 @@
     src: "{{ role_path }}/files/nvim/init.lua"
     dest: "{{ homedir }}/.config/nvim/init.lua"
     owner: "{{ username }}"
-    group: staff
+    group: "{{ usergrp }}"
 
 - name: Check if nvim conf exists
   stat:
@@ -33,7 +33,7 @@
     src: "{{ role_path }}/files/vim/"
     dest: "{{ homedir }}/.config/nvim"
     owner: "{{ username }}"
-    group: staff
+    group: "{{ usergrp }}"
   when: not nvimcolors.stat.exists
 
 - name: Copy /opt
@@ -41,7 +41,7 @@
     src: "{{ role_path }}/files/opt"
     dest: "{{ homedir }}/"
     owner: "{{ username }}"
-    group: staff
+    group: "{{ usergrp }}"
     mode: u+x
 
 - name: Install global python packages
@@ -84,4 +84,4 @@
     src: "{{ role_path }}/files/zshrc"
     dest: "{{ homedir }}/.zshrc"
     owner: "{{ username }}"
-    group: staff
+    group: "{{ usergrp }}"

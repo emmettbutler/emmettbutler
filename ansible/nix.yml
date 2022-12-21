@@ -3,4 +3,5 @@
     - userconfs
   vars:
     username: emmett
+    usergrp: emmett
     homedir: /home/emmett
