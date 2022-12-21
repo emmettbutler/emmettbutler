@@ -1,19 +1,14 @@
-- name: Ensuring Homebrew Is Installed
-  stat:
-    path: /opt/homebrew/bin/brew
-  register: homebrew_check
+- name: Check if homebrew is available
+  block:
+    - name: try using homebrew in check_mode (no changes)
+      homebrew:
+        update_homebrew: true
+      check_mode: true
 
-- name: Fail If Homebrew Is Not Installed
-  fail:
-    msg: Homebrew is missing, install from web
-  when:
-    - not homebrew_check.stat.exists
-
-- name: Install Homebrew
-  shell: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  become: yes
-  when:
-    - not homebrew_check.stat.exists
+  rescue:
+    - name: No homebrew
+      fail:
+        msg: Homebrew is missing, install from web
 
 - name: Reset the Homebrew Library repo
   git:
