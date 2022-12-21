@@ -32,6 +32,17 @@
   homebrew: update_homebrew=yes
   become: no
 
+- name: Install global python packages
+  ansible.builtin.pip:
+    name:
+      - black
+      - jedi-language-server
+      - flake8
+      - flake8-isort
+      - isort
+      - pynvim
+    extra_args: "-U"
+
 - name: Install brew packages
   homebrew:
     name:
