@@ -22,7 +22,7 @@
     enableCompletion = true;
     autosuggestions.enable = true;
     interactiveShellInit = ''
-      ${pkgs.lib.readFile ../ansible/roles/development/files/zshrc}
+      ${pkgs.lib.readFile ../ansible/roles/envconfs/files/zshrc}
     '';
     promptInit = "";
   };

@@ -202,27 +202,28 @@ vim.o.statusline = table.concat(status_line)
 
 -- Options for all my plugins
 -- Install with the :PlugInstall vim command
--- TODO make this work under nixos by skipping the entire plug# block
-local Plug = vim.fn['plug#']
+if vim.loop.os_uname().sysname == "Darwin" then
+    local Plug = vim.fn['plug#']
 
-vim.call('plug#begin', '~/.config/nvim/plugged')
+    vim.call('plug#begin', '~/.config/nvim/plugged')
 
-Plug 'nvim-treesitter/nvim-treesitter'  -- :TSInstall [lua|vim|python]
-Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'lukas-reineke/indent-blankline.nvim'
-Plug 'phaazon/hop.nvim'
-Plug 'dense-analysis/ale'
-Plug 'ptzz/lf.vim'
-Plug 'voldikss/vim-floaterm'
-Plug 'junegunn/fzf'
-Plug 'foosoft/vim-argwrap'
-Plug 'ojroques/vim-oscyank'
-Plug 'anufrievroman/vim-angry-reviewer'
-Plug 'mileszs/ack.vim'
+    Plug 'nvim-treesitter/nvim-treesitter'  -- :TSInstall [lua|vim|python]
+    Plug 'neovim/nvim-lspconfig'
+    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'hrsh7th/nvim-cmp'
+    Plug 'lukas-reineke/indent-blankline.nvim'
+    Plug 'phaazon/hop.nvim'
+    Plug 'dense-analysis/ale'
+    Plug 'ptzz/lf.vim'
+    Plug 'voldikss/vim-floaterm'
+    Plug 'junegunn/fzf'
+    Plug 'foosoft/vim-argwrap'
+    Plug 'ojroques/vim-oscyank'
+    Plug 'anufrievroman/vim-angry-reviewer'
+    Plug 'mileszs/ack.vim'
 
-vim.call('plug#end')
+    vim.call('plug#end')
+end
 
 vim.cmd [[
 colorscheme molokai
