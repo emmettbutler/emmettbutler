@@ -5,8 +5,8 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1671649165,
-        "narHash": "sha256-a6dNNoj1cjjbcwbTfcf5xv/NfXzHi0xHXGEq4kyITzk=",
+        "lastModified": 1671650456,
+        "narHash": "sha256-uqO3750Q6t5NZuL/FGivmXp0CR7zDWpSqFzQagkFrAA=",
         "path": "/home/emmett/git/emmettbutler/nixos/nvimeb",
         "type": "path"
       },

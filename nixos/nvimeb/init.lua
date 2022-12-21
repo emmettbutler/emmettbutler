@@ -202,7 +202,7 @@ vim.o.statusline = table.concat(status_line)
 
 -- Options for all my plugins
 -- Install with the :PlugInstall vim command
-if vim.loop.os_uname().sysname == "Darwin" then
+if not string.find(vim.loop.os_uname().version, "NixOS") then
     local Plug = vim.fn['plug#']
 
     vim.call('plug#begin', '~/.config/nvim/plugged')
