@@ -200,7 +200,29 @@ local status_line = {
 }
 vim.o.statusline = table.concat(status_line)
 
--- Options for all my plugins. Plugins are already installed via nix.
+-- Options for all my plugins
+-- Install with the :PlugInstall vim command
+-- TODO make this work under nixos by skipping the entire plug# block
+local Plug = vim.fn['plug#']
+
+vim.call('plug#begin', '~/.config/nvim/plugged')
+
+Plug 'nvim-treesitter/nvim-treesitter'  -- :TSInstall [lua|vim|python]
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'phaazon/hop.nvim'
+Plug 'dense-analysis/ale'
+Plug 'ptzz/lf.vim'
+Plug 'voldikss/vim-floaterm'
+Plug 'junegunn/fzf'
+Plug 'foosoft/vim-argwrap'
+Plug 'ojroques/vim-oscyank'
+Plug 'anufrievroman/vim-angry-reviewer'
+Plug 'mileszs/ack.vim'
+
+vim.call('plug#end')
 
 vim.cmd [[
 colorscheme molokai
@@ -271,7 +293,7 @@ end
 local servers = { 'jedi_language_server', 'bashls', 'terraformls' }
 -- Add additional capabilities supported by nvim-cmp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 -- Setup language servers
 for _, lsp in ipairs(servers) do
     nvim_lsp[lsp].setup {

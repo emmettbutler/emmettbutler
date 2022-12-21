@@ -37,6 +37,7 @@
     name:
       - mas
       - tmux
+      - lf
       - neovim
     state: present
 
@@ -65,12 +66,18 @@
     owner: emmett.butler
     group: staff
 
-- name: Copy nvim colors
+- name: Check if file exists
+  stat:
+    path: /Users/emmett.butler/.config/nvim
+  register: nvimconf
+
+- name: Copy nvim confs
   copy:
-    src: "{{ role_path }}/files/vim/colors"
+    src: "{{ role_path }}/files/vim/"
     dest: /Users/emmett.butler/.config/nvim
     owner: emmett.butler
     group: staff
+  when: not nvimconf.stat.exists
 
 - name: Copy /opt
   copy:
@@ -79,14 +86,6 @@
     owner: emmett.butler
     group: staff
     mode: u+x
-
-- name: Link vim directory
-  ansible.builtin.file:
-    src: /Users/emmett.butler/git/emmettbutler/ansible/roles/development/files/vim
-    dest: /Users/emmett.butler/.vim
-    owner: emmett.butler
-    group: staff
-    state: link
 
 - name: Install pyenv
   git:
