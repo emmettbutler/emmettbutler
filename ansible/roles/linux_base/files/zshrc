@@ -84,6 +84,7 @@ if [[ ! $IS_NIXOS ]]; then
     export PYENV_VIRTUALENV_DISABLE_PROMPT=1
     export PYENV_ROOT="$HOME/.pyenv"
     eval `keychain --eval --agents ssh id_rsa`
+    eval `keychain --eval --agents ssh id_ed25519`
     eval "$(pyenv init --path)"
     if command -v pyenv 1>/dev/null 2>&1; then
         eval "$(pyenv init -)"
