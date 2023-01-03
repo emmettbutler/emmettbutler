@@ -4,6 +4,11 @@ Host *
     AddKeysToAgent yes
     IdentityFile ~/.ssh/id_rsa
 
+Host *.github.com
+    AddKeysToAgent yes
+    UseKeychain yes
+    IdentityFile ~/.ssh/id_ed25519
+
 Host *.lan.cogtree.com
     User emmett.butler
     ForwardAgent yes
