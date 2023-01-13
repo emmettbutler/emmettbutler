@@ -46,8 +46,11 @@
 
 - name: Install global python packages
   ansible.builtin.pip:
+    executable: pip3
+    state: forcereinstall
     name:
-      - black
+      - black[python2]==21.12b0
+      - click==8.0.2
       - jedi-language-server
       - flake8
       - flake8-isort

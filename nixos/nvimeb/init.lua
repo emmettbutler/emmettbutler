@@ -395,6 +395,8 @@ vim.api.nvim_set_keymap('n', '<leader>n', '<cmd>LfWorkingDirectory<cr>', { norem
 vim.api.nvim_set_keymap('', '<leader>s', '<cmd>HopChar2<cr>', { noremap = true })
 require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
 
+vim.g.python3_host_prog = "/usr/bin/python3"
+
 -- ale
 vim.g.ale_lint_on_enter = 1
 vim.g.ale_lint_on_save = 1

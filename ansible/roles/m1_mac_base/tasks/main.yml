@@ -34,7 +34,6 @@
       - tmux
       - lf
       - neovim
-      - stats
     state: present
 
 - name: Install Mac Apps
