@@ -200,9 +200,13 @@ local status_line = {
 }
 vim.o.statusline = table.concat(status_line)
 
--- Options for all my plugins
--- Install with the :PlugInstall vim command
+-- don't run this section on NixOS
 if not string.find(vim.loop.os_uname().version, "NixOS") then
+
+    vim.g.python3_host_prog = "/usr/bin/python3"
+
+    -- Options for all my plugins
+    -- Install with the :PlugInstall vim command
     local Plug = vim.fn['plug#']
 
     vim.call('plug#begin', '~/.config/nvim/plugged')
@@ -394,8 +398,6 @@ vim.api.nvim_set_keymap('n', '<leader>n', '<cmd>LfWorkingDirectory<cr>', { norem
 --hop-nvim
 vim.api.nvim_set_keymap('', '<leader>s', '<cmd>HopChar2<cr>', { noremap = true })
 require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
-
-vim.g.python3_host_prog = "/usr/bin/python3"
 
 -- ale
 vim.g.ale_lint_on_enter = 1
