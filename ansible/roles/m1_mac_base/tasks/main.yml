@@ -38,6 +38,13 @@
       - neovim
     state: present
 
+- name: Install casks
+  community.general.homebrew_cask:
+    name:
+      - stats
+      - monitorcontrol
+    state: present
+
 - name: Install Mac Apps
   community.general.mas:
     id:
