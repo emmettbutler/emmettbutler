@@ -51,11 +51,11 @@
     name:
       - black[python2]==21.12b0
       - click==8.0.2
-      - jedi-language-server
-      - flake8
-      - flake8-isort
-      - isort
-      - pynvim
+      - jedi-language-server==0.40.0
+      - flake8==6.0.0
+      - flake8-isort==6.0.0
+      - isort==5.11.4
+      - pynvim==0.4.3
     extra_args: "-U"
 
 - name: Check if pyenv conf exists
