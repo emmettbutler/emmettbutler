@@ -1,3 +1,5 @@
+- include_tasks: command_line_tools.yml
+
 - name: Check if homebrew is available
   block:
     - name: try using homebrew in check_mode (no changes)

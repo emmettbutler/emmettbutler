@@ -5,3 +5,5 @@
     - userconfs
   vars:
     usergrp: staff
+    force_install: no
+    clt_path: /Library/Developer/CommandLineTools
