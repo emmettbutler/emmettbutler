@@ -13,26 +13,3 @@ Host github.com
     AddKeysToAgent yes
     UseKeychain yes
     IdentityFile ~/.ssh/id_ed25519
-
-Host *.lan.cogtree.com
-    User emmett.butler
-    ForwardAgent yes
-
-Host *.cogtree.com
-    User emmett.butler
-    ForwardAgent yes
-
-Host *.compute-1.amazonaws.com
-    ForwardAgent yes
-    User hadoop
-    IdentityFile /home/emmett/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
-
-Host *-emr.cogtree.com
-    ForwardAgent yes
-    User hadoop
-    IdentityFile /home/emmett/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
-
-Host *.amazonaws.com
-    ForwardAgent yes
-    User hadoop
-    IdentityFile /home/emmett/git/parsely/engineering/casterisk-realtime/emr/emr_jobs.pem
