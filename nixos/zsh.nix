@@ -5,8 +5,6 @@
     enable = true;
     shellAliases = {
       vim = "nvim";
-      automatticproxy =
-        "ssh -N -D 8080 emmettbutler@proxy.automattic.com -i /home/emmett/.ssh/id_rsa_automattic";
       pipu = "pip install --upgrade --upgrade-strategy only-if-needed";
       pipzone =
         "nix-shell ~/git/emmettbutler/nixos/pip-shell.nix -I nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos/nixpkgs";
