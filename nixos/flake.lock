@@ -5,8 +5,8 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1671650456,
-        "narHash": "sha256-uqO3750Q6t5NZuL/FGivmXp0CR7zDWpSqFzQagkFrAA=",
+        "lastModified": 1676729185,
+        "narHash": "sha256-uRFt7L78oZPgD65jQvdEB8BbYDKxRbTh8QFmBpWn1/0=",
         "path": "/home/emmett/git/emmettbutler/nixos/nvimeb",
         "type": "path"
       },
@@ -17,11 +17,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1671359686,
-        "narHash": "sha256-3MpC6yZo+Xn9cPordGz2/ii6IJpP2n8LE8e/ebUXLrs=",
+        "lastModified": 1676569297,
+        "narHash": "sha256-2n4C4H3/U+3YbDrQB6xIw7AaLdFISCCFwOkcETAigqU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "04f574a1c0fde90b51bf68198e2297ca4e7cccf4",
+        "rev": "ac1f5b72a9e95873d1de0233fddcb56f99884b37",
         "type": "github"
       },
       "original": {
@@ -32,11 +32,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1671359686,
-        "narHash": "sha256-3MpC6yZo+Xn9cPordGz2/ii6IJpP2n8LE8e/ebUXLrs=",
+        "lastModified": 1676569297,
+        "narHash": "sha256-2n4C4H3/U+3YbDrQB6xIw7AaLdFISCCFwOkcETAigqU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "04f574a1c0fde90b51bf68198e2297ca4e7cccf4",
+        "rev": "ac1f5b72a9e95873d1de0233fddcb56f99884b37",
         "type": "github"
       },
       "original": {
@@ -47,11 +47,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1671447788,
-        "narHash": "sha256-Nitle27Q2gXkuk66VZUT+iyisT4pGQwQwU9eyExOVEk=",
+        "lastModified": 1672580127,
+        "narHash": "sha256-3lW3xZslREhJogoOkjeZtlBtvFMyxHku7I/9IVehhT8=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "bfb04388d42ff49e5e81da9f0bfcb48a6367273d",
+        "rev": "0874168639713f547c05947c76124f78441ea46c",
         "type": "github"
       },
       "original": {

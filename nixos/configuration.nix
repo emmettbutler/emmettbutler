@@ -201,20 +201,6 @@
   # List services that you want to enable:
   security.pam.services.gdm.enableGnomeKeyring = true;
 
-  systemd.services."parsely-vpn" = {
-    enable = true;
-    path = with pkgs; [ openvpn ];
-    wantedBy = [ "multi-user.target" ];
-    script = ''
-      FILE=/home/emmett/parsely-udp1194.ovpn
-      if [[ -f "$FILE" ]]; then
-        openvpn --config $FILE --auth-user-pass /home/emmett/vpn-credentials.txt
-      fi
-    '';
-  };
-
-  # Docker
-  virtualisation.docker.enable = true;
   # Can't be enabled if running nomad
   virtualisation.docker.extraOptions = "--userns-remap='emmett'";
 
