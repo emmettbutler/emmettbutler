@@ -181,7 +181,6 @@
     discord
     enpass
     spotify
-    slack
     vlc
     zoom
 
@@ -192,8 +191,6 @@
     openssl
     git
     wget
-    terraform
-    terraform-ls
   ];
 
   programs.seahorse.enable = true;
