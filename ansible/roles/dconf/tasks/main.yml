@@ -7,7 +7,7 @@
 - name: Enable system-monitor extension
   community.general.dconf:
     key: "/org/gnome/shell/enabled-extensions"
-    value: "['system-monitor@paradoxxx.zero.gmail.com']"
+    value: "['system-monitor@paradoxxx.zero.gmail.com', 'user-theme@gnome-shell-extensions.gcampax.github.com']"
     state: present
 
 - name: Set system-monitor center-display
@@ -166,6 +166,72 @@
     value: "true"
     state: present
 
+- name: Set interface font-antialiasing
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/font-antialiasing"
+    value: "'grayscale'"
+    state: present
+
+- name: Set interface font-hinting
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/font-hinting"
+    value: "'slight'"
+    state: present
+
+- name: Set interface toolkit-accessibility
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/toolkit-accessibility"
+    value: "false"
+    state: present
+
+- name: Check if themes dir exists
+  stat:
+    path: "{{ homedir }}/.themes/Tokyonight-Dark-B-LB/index.theme"
+  register: themeindex
+
+- name: Copy shell themes
+  copy:
+    src: "{{ inventory_dir }}/roles/dconf/files/themes/"
+    dest: "{{ homedir }}/.themes"
+    owner: "{{ username }}"
+  when: not themeindex.stat.exists
+
+- name: Set interface GTK theme
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/gtk-theme"
+    value: "'Tokyonight-Dark-B-LB'"
+    state: present
+
+- name: Set gnome shell theme
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/user-theme/name"
+    value: "'Tokyonight-Dark-B-LB'"
+    state: present
+
+- name: Check if icons dir exists
+  stat:
+    path: "{{ homedir }}/.icons/candy-icons-master/index.theme"
+  register: iconindex
+
+- name: Copy icon themes
+  copy:
+    src: "{{ inventory_dir }}/roles/dconf/files/icons/"
+    dest: "{{ homedir }}/.icons"
+    owner: "{{ username }}"
+  when: not iconindex.stat.exists
+
+- name: Set interface icons theme
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/icon-theme"
+    value: "'candy-icons-master'"
+    state: present
+
+- name: Set tweaks exntensions notice
+  community.general.dconf:
+    key: "/org/gnome/tweaks/show-extensions-notice"
+    value: "false"
+    state: present
+
 - name: Set mouse left-handed
   community.general.dconf:
     key: "/org/gnome/desktop/peripherals/mouse/left-handed"
@@ -226,8 +292,68 @@
     value: "'suspend'"
     state: present
 
-- name: Set console font scale
+- name: Set console shortcuts
   community.general.dconf:
-    key: "/org/gnome/Console/font-scale"
-    value: "1.2000000000000002"
+    key: "/org/gnome/terminal/legacy/shortcuts-enabled"
+    value: "false"
+    state: present
+
+- name: Set console theme variant
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/theme-variant"
+    value: "'dark'"
+    state: present
+
+- name: Set console profile bell
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/audible-bell"
+    value: "true"
+    state: present
+
+- name: Set console profile cursor
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/cursor-shape"
+    value: "'underline'"
+    state: present
+
+- name: Set console profile default columns
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/default-size-columns"
+    value: "301"
+    state: present
+
+- name: Set console profile default rows
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/default-size-rows"
+    value: "63"
+    state: present
+
+- name: Set console profile font
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/font"
+    value: "'Monospace 10'"
+    state: present
+
+- name: Set console profile scrollbar policy
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/scrollbar-policy"
+    value: "'never'"
+    state: present
+
+- name: Set console profile use system font
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-system-font"
+    value: "false"
+    state: present
+
+- name: Set console profile use theme colors
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-theme-colors"
+    value: "true"
+    state: present
+
+- name: Set console profile visible name
+  community.general.dconf:
+    key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/visible-name"
+    value: "'hackermans'"
     state: present

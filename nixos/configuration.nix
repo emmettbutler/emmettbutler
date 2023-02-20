@@ -163,6 +163,7 @@
       glab
       gitAndTools.delta
       gnomeExtensions.system-monitor
+      pkgs.gnome3.gnome-tweaks
       gnumake
       gnupg
       hyperfine
@@ -176,6 +177,7 @@
       shfmt
       sops
       stow
+      pkgs.gnome.gnome-terminal
       tmux
       tmux-xpanes
 

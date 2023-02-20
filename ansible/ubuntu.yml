@@ -3,6 +3,7 @@
     - linux_base
     - envconfs
     - userconfs
+    - dconf
   vars:
     username: emmett
     usergrp: emmett
