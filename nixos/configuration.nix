@@ -145,53 +145,56 @@
     })
   ];
 
-  # List packages installed in system profile. To search, run:
-  environment.systemPackages = with pkgs; [
-    neovimeb.neovimEB
-    ack
-    amazon-ecr-credential-helper
-    ansible
-    awscli2
-    direnv
-    dnsutils
-    docker-compose
-    devpi-client
-    doctl
-    fzf
-    gh
-    glab
-    gitAndTools.delta
-    gnumake
-    gnupg
-    hyperfine
-    jq
-    lf
-    nix-direnv
-    pinentry-curses
-    rsync
-    shellcheck
-    shfmt
-    sops
-    stow
-    tmux
-    tmux-xpanes
+  environment.systemPackages =
+    let pythonEnv = pkgs.python310.withPackages (p: with p; [ psutil ]);
+    in (with pkgs; [
+      neovimeb.neovimEB
+      ack
+      amazon-ecr-credential-helper
+      ansible
+      awscli2
+      direnv
+      dnsutils
+      docker-compose
+      devpi-client
+      doctl
+      fzf
+      gh
+      glab
+      gitAndTools.delta
+      gnomeExtensions.system-monitor
+      gnumake
+      gnupg
+      hyperfine
+      jq
+      lf
+      nix-direnv
+      pinentry-curses
+      pythonEnv
+      rsync
+      shellcheck
+      shfmt
+      sops
+      stow
+      tmux
+      tmux-xpanes
 
-    iptables
-    google-chrome
-    discord
-    enpass
-    spotify
-    vlc
-    zoom
+      iptables
+      google-chrome
+      discord
+      enpass
+      spotify
+      vlc
+      zoom
 
-    unzip
-    yq
-    zip
-    openvpn
-    openssl
-    git
-    wget
-  ];
+      unzip
+      yq
+      zip
+      openvpn
+      openssl
+      git
+      wget
+    ]);
 
   programs.seahorse.enable = true;
 

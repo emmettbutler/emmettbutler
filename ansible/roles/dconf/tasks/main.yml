@@ -1,0 +1,233 @@
+- name: Enable user extensions
+  community.general.dconf:
+    key: "/org/gnome/shell/disable-user-extensions"
+    value: "false"
+    state: present
+
+- name: Enable system-monitor extension
+  community.general.dconf:
+    key: "/org/gnome/shell/enabled-extensions"
+    value: "['system-monitor@paradoxxx.zero.gmail.com']"
+    state: present
+
+- name: Set system-monitor center-display
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/center-display"
+    value: "false"
+    state: present
+
+- name: Set system-monitor compact-display
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/compact-display"
+    value: "false"
+    state: present
+
+- name: Set system-monitor cpu-graph-width
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/cpu-graph-width"
+    value: "37"
+    state: present
+
+- name: Set system-monitor memory-graph-width
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/memory-graph-width"
+    value: "37"
+    state: present
+
+- name: Set system-monitor net-graph-width
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/net-graph-width"
+    value: "37"
+    state: present
+
+- name: Set system-monitor cpu-style
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/cpu-style"
+    value: "'both'"
+    state: present
+
+- name: Set system-monitor memory-style
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/memory-style"
+    value: "'both'"
+    state: present
+
+- name: Set system-monitor net-style
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/net-style"
+    value: "'both'"
+    state: present
+
+- name: Set system-monitor net-show-text
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/net-show-text"
+    value: "true"
+    state: present
+
+- name: Set system-monitor net-speed-in-bits
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/net-speed-in-bits"
+    value: "false"
+    state: present
+
+- name: Set system-monitor cpu-individual-cores
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/cpu-individual-cores"
+    value: "false"
+    state: present
+
+- name: Set system-monitor cpu-iowait-color
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/cpu-iowait-color"
+    value: "'#5e5c64ff'"
+    state: present
+
+- name: Set system-monitor cpu-other-color
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/cpu-other-color"
+    value: "'#9a9996ff'"
+    state: present
+
+- name: Set system-monitor cpu-nice-color
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/cpu-nice-color"
+    value: "'#3d3846ff'"
+    state: present
+
+- name: Set system-monitor cpu-system-color
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/cpu-system-color"
+    value: "'#241f31ff'"
+    state: present
+
+- name: Set system-monitor cpu-user-color
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/cpu-user-color"
+    value: "'#77767bff'"
+    state: present
+
+- name: Set system-monitor memory-buffer-color
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/memory-buffer-color"
+    value: "'#5e5c64ff'"
+    state: present
+
+- name: Set system-monitor memory-cache-color
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/memory-cache-color"
+    value: "'#77767bff'"
+    state: present
+
+- name: Set system-monitor memory-program-color
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/memory-program-color"
+    value: "'#3d3846ff'"
+    state: present
+
+- name: Set system-monitor net-down-color
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/net-down-color"
+    value: "'#1c71d8ff'"
+    state: present
+
+- name: Set system-monitor net-downerrors-color
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/net-downerrors-color"
+    value: "'#e5a50aff'"
+    state: present
+
+- name: Set system-monitor net-up-color
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/net-up-color"
+    value: "'#f66151ff'"
+    state: present
+
+- name: Set system-monitor net-uperrors-color
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/system-monitor/net-uperrors-color"
+    value: "'#e0006eff'"
+    state: present
+
+- name: Set interface color-scheme
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/color-scheme"
+    value: "'prefer-dark'"
+    state: present
+
+- name: Set interface enable-hot-corners
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/enable-hot-corners"
+    value: "false"
+    state: present
+
+- name: Set interface show-battery-percentage
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/show-battery-percentage"
+    value: "true"
+    state: present
+
+- name: Set mouse left-handed
+  community.general.dconf:
+    key: "/org/gnome/desktop/peripherals/mouse/left-handed"
+    value: "false"
+    state: present
+
+- name: Set mouse natrual-scroll
+  community.general.dconf:
+    key: "/org/gnome/desktop/peripherals/mouse/natural-scroll"
+    value: "false"
+    state: present
+
+- name: Set mouse speed
+  community.general.dconf:
+    key: "/org/gnome/desktop/peripherals/mouse/speed"
+    value: "0.76363636363636367"
+    state: present
+
+- name: Set touchpad speed
+  community.general.dconf:
+    key: "/org/gnome/desktop/peripherals/touchpad/speed"
+    value: "0.38967136150234749"
+    state: present
+
+- name: Set touchpad tap-to-click
+  community.general.dconf:
+    key: "/org/gnome/desktop/peripherals/touchpad/tap-to-click"
+    value: "true"
+    state: present
+
+- name: Set touchpad 2fscroll
+  community.general.dconf:
+    key: "/org/gnome/desktop/peripherals/touchpad/two-finger-scrolling-enabled"
+    value: "true"
+    state: present
+
+- name: Set session idle-delay
+  community.general.dconf:
+    key: "/org/gnome/desktop/session/idle-delay"
+    value: "uint32 0"
+    state: present
+
+- name: Set nautilus folder viewer
+  community.general.dconf:
+    key: "/org/gnome/nautilus/preferences/default-folder-viewer"
+    value: "'list-view'"
+    state: present
+
+- name: Set nautilus search filter
+  community.general.dconf:
+    key: "/org/gnome/nautilus/preferences/search-filter-time-type"
+    value: "'last_modified'"
+    state: present
+
+- name: Set power button suspend
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/power/power-button-action"
+    value: "'suspend'"
+    state: present
+
+- name: Set console font scale
+  community.general.dconf:
+    key: "/org/gnome/Console/font-scale"
+    value: "1.2000000000000002"
+    state: present

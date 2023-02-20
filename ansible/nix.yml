@@ -1,6 +1,7 @@
 - hosts: laptop
   roles:
     - userconfs
+    - dconf
   vars:
     username: emmett
     usergrp: emmett
