@@ -22,7 +22,7 @@
           (py-pkgs: with py-pkgs; [ virtualenv requests ipython ]);
       };
     in {
-      nixosConfigurations.hell = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
           # Overlays-module makes "pkgs.unstable" available in configuration.nix

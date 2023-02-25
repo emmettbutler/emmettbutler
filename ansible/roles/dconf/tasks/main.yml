@@ -184,6 +184,13 @@
     value: "false"
     state: present
 
+- name: Create .local/share/backgrounds
+  file:
+    dest: "{{ homedir }}/.local/share/backgrounds"
+    state: directory
+    owner: "{{ username }}"
+    recurse: yes
+
 - name: Copy wallpaper
   copy:
     src: "{{ inventory_dir }}/roles/dconf/files/topo.png"
