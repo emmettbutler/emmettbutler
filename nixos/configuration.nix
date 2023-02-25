@@ -176,6 +176,7 @@
       rsync
       shellcheck
       shfmt
+      slack
       sops
       stow
       pkgs.gnome.gnome-terminal

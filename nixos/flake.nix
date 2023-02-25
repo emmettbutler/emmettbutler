@@ -22,6 +22,16 @@
           (py-pkgs: with py-pkgs; [ virtualenv requests ipython ]);
       };
     in {
+      nixosConfigurations.hell = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          # Overlays-module makes "pkgs.unstable" available in configuration.nix
+          # This makes my custom overlay available for others to use.
+          ({ config, pkgs, ... }: { nixpkgs.overlays = [ my-custom-overlay ]; })
+          ./configuration.nix
+        ];
+      };
+
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
