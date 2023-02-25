@@ -184,6 +184,42 @@
     value: "false"
     state: present
 
+- name: Copy wallpaper
+  copy:
+    src: "{{ inventory_dir }}/roles/dconf/files/topo.png"
+    dest: "{{ homedir }}/.local/share/backgrounds/topo.png"
+    owner: "{{ username }}"
+
+- name: Set screensaver options
+  community.general.dconf:
+    key: "/org/gnome/desktop/screensaver/picture-options"
+    value: "'zoom'"
+    state: present
+
+- name: Set screensaver uri
+  community.general.dconf:
+    key: "/org/gnome/desktop/screensaver/picture-uri"
+    value: "'file:///home/emmett/.local/share/backgrounds/topo.png'"
+    state: present
+
+- name: Set background options
+  community.general.dconf:
+    key: "/org/gnome/desktop/background/picture-options"
+    value: "'zoom'"
+    state: present
+
+- name: Set background uri
+  community.general.dconf:
+    key: "/org/gnome/desktop/background/picture-uri"
+    value: "'file:///home/emmett/.local/share/backgrounds/topo.png'"
+    state: present
+
+- name: Set background dark uri
+  community.general.dconf:
+    key: "/org/gnome/desktop/background/picture-uri-dark"
+    value: "'file:///home/emmett/.local/share/backgrounds/topo.png'"
+    state: present
+
 - name: Check if themes dir exists
   stat:
     path: "{{ homedir }}/.themes/Tokyonight-Dark-B-LB/index.theme"
