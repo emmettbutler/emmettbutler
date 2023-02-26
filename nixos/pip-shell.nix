@@ -10,9 +10,6 @@
       python39
       python39Packages.pip
       python39Packages.virtualenv
-      postgresql
-      openjdk8
-      leiningen
     ]);
   runScript = "bash";
 }).env

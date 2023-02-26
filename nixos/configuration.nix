@@ -42,7 +42,7 @@
   };
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  # services.fprintd.enable = true;
+  services.fprintd.enable = true;
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
@@ -206,6 +206,7 @@
   security.pam.services.gdm.enableGnomeKeyring = true;
 
   # Can't be enabled if running nomad
+  virtualisation.docker.enable = true;
   virtualisation.docker.extraOptions = "--userns-remap='emmett'";
 
   # Open ports in the firewall.
