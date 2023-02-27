@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, inputs, lib, ... }:
 
 {
   imports = [ /etc/nixos/hardware-configuration.nix ./zsh.nix ];
@@ -43,6 +43,8 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.fprintd.enable = true;
+
+  services.dbus.packages = [ pkgs.gcr ];
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
@@ -131,6 +133,15 @@
     shell = pkgs.bash;
   };
 
+  services.pcscd.enable = true;
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
+  services.gnome.gnome-online-accounts.enable = lib.mkForce false;
+  services.gnome.gnome-keyring.enable = lib.mkForce false;
+  programs.seahorse.enable = lib.mkForce false;
+
   nixpkgs.overlays = [
     (self: super: {
       zoomUsFixed = pkgs.zoom-us.overrideAttrs (old: {
@@ -171,7 +182,7 @@
       jq
       lf
       nix-direnv
-      pinentry-curses
+      pinentry
       pythonEnv
       rsync
       shellcheck
@@ -199,8 +210,6 @@
       git
       wget
     ]);
-
-  programs.seahorse.enable = true;
 
   # List services that you want to enable:
   security.pam.services.gdm.enableGnomeKeyring = true;
