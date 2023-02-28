@@ -311,6 +311,12 @@
     value: "true"
     state: present
 
+- name: Set touchpad natrual-scroll
+  community.general.dconf:
+    key: "/org/gnome/desktop/peripherals/mouse/natural-scroll"
+    value: "false"
+    state: present
+
 - name: Set session idle-delay
   community.general.dconf:
     key: "/org/gnome/desktop/session/idle-delay"
