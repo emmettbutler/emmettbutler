@@ -155,6 +155,13 @@
         '';
       });
     })
+    (self: super: {
+      slack = super.slack.overrideAttrs (oldAttrs: {
+        postInstall = (oldAttrs.postInstall or "") + ''
+          sed -i -E "s/^Icon=.+$/Icon=\/home\/emmett\/.icons\/candy-icons-master\/apps\/scalable\/slack.svg/" $out/share/applications/slack.desktop
+        '';
+      });
+    })
   ];
 
   environment.systemPackages =
