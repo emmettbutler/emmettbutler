@@ -392,6 +392,7 @@ require("indent_blankline").setup {
 vim.g.floaterm_opener = "edit"
 vim.g.floaterm_width = 0.99
 vim.g.floaterm_height = 0.99
+vim.g.lf_command_override = 'lf -command "set hidden"'
 vim.api.nvim_set_keymap('n', '<leader>m', '<cmd>Lf<cr>', { noremap = true });
 vim.api.nvim_set_keymap('n', '<leader>n', '<cmd>LfWorkingDirectory<cr>', { noremap = true});
 
