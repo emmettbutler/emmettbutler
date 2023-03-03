@@ -335,6 +335,12 @@
     value: "'last_modified'"
     state: present
 
+- name: Set nautilus zoom level
+  community.general.dconf:
+    key: "/org/gnome/nautilus/list-view/default-zoom-level"
+    value: "'small'"
+    state: present
+
 - name: Set power button suspend
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/power/power-button-action"
