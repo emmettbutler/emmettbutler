@@ -81,10 +81,3 @@
   shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   args:
     creates: "{{ homedir }}/.oh-my-zsh"
-
-- name: Copy zshrc
-  copy:
-    src: "{{ role_path }}/files/zshrc"
-    dest: "{{ homedir }}/.zshrc"
-    owner: "{{ username }}"
-    group: "{{ usergrp }}"

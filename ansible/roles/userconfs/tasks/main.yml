@@ -15,3 +15,10 @@
     src: "{{ inventory_dir }}/roles/userconfs/files/tmux.conf"
     dest: "{{ homedir }}/.tmux.conf"
     owner: "{{ username }}"
+
+- name: Copy zshrc
+  copy:
+    src: "{{ role_path }}/files/zshrc"
+    dest: "{{ homedir }}/.zshrc"
+    owner: "{{ username }}"
+    group: "{{ usergrp }}"
