@@ -164,59 +164,70 @@
     })
   ];
 
-  environment.systemPackages =
-    let pythonEnv = pkgs.python310.withPackages (p: with p; [ psutil ]);
-    in (with pkgs; [
-      neovimeb.neovimEB
-      ack
-      amazon-ecr-credential-helper
-      ansible
-      awscli2
-      direnv
-      dnsutils
-      docker-compose
-      devpi-client
-      doctl
-      fzf
-      gh
-      glab
-      gitAndTools.delta
-      gnomeExtensions.system-monitor
-      pkgs.gnome3.gnome-tweaks
-      gnumake
-      gnupg
-      hyperfine
-      jq
-      lf
-      nix-direnv
-      pinentry
-      pythonEnv
-      rsync
-      shellcheck
-      shfmt
-      slack
-      sops
-      stow
-      pkgs.gnome.gnome-terminal
-      tmux
-      tmux-xpanes
+  environment.systemPackages = let
+    pythonEnv = pkgs.python310.withPackages (p: with p; [ psutil ]);
+    nixpkgs = import <nixpkgs> { };
+    allPkgs = pkgs;
+    callPackage = path: overrides:
+      let f = import path;
+      in f ((builtins.intersectAttrs (builtins.functionArgs f) allPkgs)
+        // overrides);
+    pkgs = with nixpkgs; {
+      nix-zshell =
+        callPackage /home/emmett/git/emmettbutler/nixos/nix-zshell.nix { };
+    };
+  in (with pkgs; [
+    neovimeb.neovimEB
+    nix-zshell
+    ack
+    amazon-ecr-credential-helper
+    ansible
+    awscli2
+    direnv
+    dnsutils
+    docker-compose
+    devpi-client
+    doctl
+    fzf
+    gh
+    glab
+    gitAndTools.delta
+    gnomeExtensions.system-monitor
+    pkgs.gnome3.gnome-tweaks
+    gnumake
+    gnupg
+    hyperfine
+    jq
+    lf
+    nix-direnv
+    pinentry
+    pythonEnv
+    rsync
+    shellcheck
+    shfmt
+    slack
+    sops
+    stow
+    pkgs.gnome.gnome-terminal
+    tmux
+    tmux-xpanes
 
-      iptables
-      google-chrome
-      discord
-      enpass
-      spotify
-      vlc
-      zoom
+    iptables
+    google-chrome
+    discord
+    enpass
+    spotify
+    vlc
+    zoom
 
-      unzip
-      yq
-      zip
-      openvpn
-      openssl
-      git
-      wget
-    ]);
+    unzip
+    yq
+    zip
+    openvpn
+    openssl
+    git
+    wget
+  ]);
 
   # List services that you want to enable:
   security.pam.services.gdm.enableGnomeKeyring = true;
