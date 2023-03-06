@@ -164,70 +164,79 @@
     })
   ];
 
-  environment.systemPackages = let
-    pythonEnv = pkgs.python310.withPackages (p: with p; [ psutil ]);
-    nixpkgs = import <nixpkgs> { };
-    allPkgs = pkgs;
-    callPackage = path: overrides:
-      let f = import path;
-      in f ((builtins.intersectAttrs (builtins.functionArgs f) allPkgs)
-        // overrides);
-    pkgs = with nixpkgs; {
-      nix-zshell =
-        callPackage /home/emmett/git/emmettbutler/nixos/nix-zshell.nix { };
-    };
-  in (with pkgs; [
-    neovimeb.neovimEB
-    nix-zshell
-    ack
-    amazon-ecr-credential-helper
-    ansible
-    awscli2
-    direnv
-    dnsutils
-    docker-compose
-    devpi-client
-    doctl
-    fzf
-    gh
-    glab
-    gitAndTools.delta
-    gnomeExtensions.system-monitor
-    pkgs.gnome3.gnome-tweaks
-    gnumake
-    gnupg
-    hyperfine
-    jq
-    lf
-    nix-direnv
-    pinentry
-    pythonEnv
-    rsync
-    shellcheck
-    shfmt
-    slack
-    sops
-    stow
-    pkgs.gnome.gnome-terminal
-    tmux
-    tmux-xpanes
+  environment.systemPackages = with pkgs;
+    let
+      mypkgs = with pkgs; {
+        pythonEnv = python310.withPackages (p: with p; [ psutil ]);
+        nixzshell = stdenvNoCC.mkDerivation {
+          name = "nix-zshell";
 
-    iptables
-    google-chrome
-    discord
-    enpass
-    spotify
-    vlc
-    zoom
+          script = substituteAll {
+            src = /home/emmett/git/emmettbutler/nixos/nix-zshell;
+            inherit zsh bashInteractive;
+          };
 
-    unzip
-    yq
-    zip
-    openvpn
-    openssl
-    git
-    wget
-  ]);
+          phases = [ "buildPhase" ];
+
+          buildPhase = ''
+            mkdir -p $out/bin
+            cat $script > $out/bin/nix-zshell
+            chmod +x $out/bin/nix-zshell
+          '';
+        };
+      };
+    in ([
+      neovimeb.neovimEB
+      mypkgs.nixzshell
+      ack
+      amazon-ecr-credential-helper
+      ansible
+      awscli2
+      direnv
+      dnsutils
+      docker-compose
+      devpi-client
+      doctl
+      fzf
+      gh
+      glab
+      gitAndTools.delta
+      gnomeExtensions.system-monitor
+      pkgs.gnome3.gnome-tweaks
+      gnumake
+      gnupg
+      hyperfine
+      jq
+      lf
+      nix-direnv
+      pinentry
+      mypkgs.pythonEnv
+      rsync
+      shellcheck
+      shfmt
+      slack
+      sops
+      stow
+      pkgs.gnome.gnome-terminal
+      tmux
+      tmux-xpanes
+
+      iptables
+      google-chrome
+      discord
+      enpass
+      spotify
+      vlc
+      zoom
+
+      unzip
+      yq
+      zip
+      openvpn
+      openssl
+      git
+      wget
+    ]);
 
   # List services that you want to enable:
   security.pam.services.gdm.enableGnomeKeyring = true;
