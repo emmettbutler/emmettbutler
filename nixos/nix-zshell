@@ -3,13 +3,12 @@
 # entrypoint called by nix-shell when pointed to by $NIX_BUILD_SHELL
 
 if [[ "$1" != "--rcfile" ]]; then
-  echo "Something is wrong: invoked as:" >&2
-  echo "$0 $@" >&2
-  exit 1
+    echo "Something is wrong: invoked as:" >&2
+    echo "$0 $@" >&2
+    exit 1
 fi
 
 rcfile="$2"
 source "$rcfile"
 
-exec @zsh@/bin/zsh --emulate zsh
-
+exec @zsh@/bin/zsh --emulate zsh -c 'SHELL=`which bash`; zsh -i'

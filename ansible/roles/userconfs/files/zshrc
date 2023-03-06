@@ -100,10 +100,15 @@ if [[ ! $IS_NIXOS ]]; then
     alias pipu="pip install --upgrade --upgrade-strategy only-if-needed"
 fi
 
-if [[ -n "$IN_NIX_SHELL" ]]; then
+if [[ -n "$IN_NIX_SHELL" || -n $IN_DOCKER_SHELL ]]; then
+    if [[ -n "$IN_DOCKER_SHELL" ]]; then
+        HOST_ALIAS="docker container"
+    fi
+    if [[ -n "$IN_NIX_SHELL" ]]; then
+        HOST_ALIAS="nix-shell"
+    fi
     # copypasta from the rkj-repos zsh theme
-    PROMPT=$'%{$fg_bold[blue]%}┌─[%{$fg_bold[green]%}%n%b%{$fg[black]%}@%{$fg[cyan]%}nix-shell%{$fg_bold[blue]%}]%{$reset_color%} - %{$fg_bold[blue]%}[%{$fg_bold[default]%}%~%{$fg_bold[blue]%}]%{$reset_color%} - %{$fg_bold[blue]%}[%b%{$fg[yellow]%}'%D{"%Y-%m-%d %I:%M:%S"}%b$'%{$fg_bold[blue]%}]
+    PROMPT=$'%{$fg_bold[blue]%}┌─[%{$fg_bold[green]%}%n%b%{$fg[black]%}@%{$fg[cyan]%}'${HOST_ALIAS}'%{$fg_bold[blue]%}]%{$reset_color%} - %{$fg_bold[blue]%}[%{$fg_bold[default]%}%~%{$fg_bold[blue]%}]%{$reset_color%} - %{$fg_bold[blue]%}[%b%{$fg[yellow]%}'%D{"%Y-%m-%d %I:%M:%S"}%b$'%{$fg_bold[blue]%}]
     %{$fg_bold[blue]%}└─[%{$fg_bold[magenta]%}%?$(retcode)%{$fg_bold[blue]%}] <$(mygit)$(hg_prompt_info)>%{$reset_color%} '
     PS2=$' \e[0;34m%}%B>%{\e[0m%}%b '
 fi
-
