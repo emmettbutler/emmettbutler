@@ -186,8 +186,6 @@
         };
       };
     in ([
-      neovimeb.neovimEB
-      mypkgs.nixzshell
       ack
       amazon-ecr-credential-helper
       ansible
@@ -199,43 +197,44 @@
       doctl
       fzf
       gh
+      git
       glab
       gitAndTools.delta
       gnomeExtensions.system-monitor
-      pkgs.gnome3.gnome-tweaks
       gnumake
       gnupg
       hyperfine
+      iptables
       jq
       lf
       nix-direnv
+      openssl
       pinentry
-      mypkgs.pythonEnv
+      pkgs.gnome.gnome-terminal
+      pkgs.gnome3.gnome-tweaks
       rsync
       shellcheck
       shfmt
-      slack
       sops
       stow
-      pkgs.gnome.gnome-terminal
       tmux
       tmux-xpanes
+      unzip
+      wget
+      yq
+      zip
 
-      iptables
-      google-chrome
       discord
       enpass
+      google-chrome
+      slack
       spotify
       vlc
       zoom
 
-      unzip
-      yq
-      zip
-      openvpn
-      openssl
-      git
-      wget
+      neovimeb.neovimEB
+      mypkgs.nixzshell
+      mypkgs.pythonEnv
     ]);
 
   # List services that you want to enable:
