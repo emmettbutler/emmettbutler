@@ -10,6 +10,24 @@
     value: "['system-monitor@paradoxxx.zero.gmail.com', 'user-theme@gnome-shell-extensions.gcampax.github.com']"
     state: present
 
+- name: Set edge tiling
+  community.general.dconf:
+    key: "/org/gnome/mutter/edge-tiling"
+    value: "true"
+    state: present
+
+- name: Set power profile
+  community.general.dconf:
+    key: "/org/gnome/shell/last-selected-power-profile"
+    value: "'power-saver'"
+    state: present
+
+- name: Set remember mount password
+  community.general.dconf:
+    key: "/org/gnome/shell/remember-mount-password"
+    value: "true"
+    state: present
+
 - name: Set system-monitor center-display
   community.general.dconf:
     key: "/org/gnome/shell/extensions/system-monitor/center-display"
@@ -345,6 +363,18 @@
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/power/power-button-action"
     value: "'suspend'"
+    state: present
+
+- name: Set AC power sleep action
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/power/sleep-inactive-ac-type"
+    value: "'nothing'"
+    state: present
+
+- name: Set inactive battery timeout
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/power/sleep-inactive-battery-timeout"
+    value: "900"
     state: present
 
 - name: Set console shortcuts
