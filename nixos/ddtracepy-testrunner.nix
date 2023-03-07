@@ -6,11 +6,13 @@ pkgs.mkShell {
     pkgs.python310Packages.virtualenv
     pkgs.python310Packages.cython
     pkgs.gcc
+    pkgs.pandoc
   ];
   shellHook = ''
     python -m virtualenv .venv
     source .venv/bin/activate
     sudo .venv/bin/pip install -e .
+    sudo .venv/bin/pip install reno
     sudo .venv/bin/python setup.py develop
     if [[ -f ../riot/setup.py ]]; then
         echo "Using local riot"
