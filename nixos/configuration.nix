@@ -240,9 +240,7 @@
   # List services that you want to enable:
   security.pam.services.gdm.enableGnomeKeyring = true;
 
-  # Can't be enabled if running nomad
   virtualisation.docker.enable = true;
-  virtualisation.docker.extraOptions = "--userns-remap='emmett'";
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
