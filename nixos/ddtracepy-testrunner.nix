@@ -4,12 +4,12 @@ pkgs.mkShell {
     pkgs.python310
     pkgs.python310Packages.pip
     pkgs.python310Packages.virtualenv
+    pkgs.python310Packages.cython
     pkgs.gcc
   ];
   shellHook = ''
     python -m virtualenv .venv
     source .venv/bin/activate
-    sudo .venv/bin/pip install Cython
     sudo .venv/bin/pip install -e .
     sudo .venv/bin/python setup.py develop
     if [[ -f ../riot/setup.py ]]; then
