@@ -1,7 +1,7 @@
 {
   description = "My Completely Inelegant Neovim Flake";
 
-  inputs = { nixpkgs.url = "nixpkgs/nixos-unstable"; };
+  inputs = { nixpkgs.url = "nixpkgs/nixos-22.11"; };
 
   outputs = { self, nixpkgs, ... }@inputs:
     let
