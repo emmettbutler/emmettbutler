@@ -1,13 +1,7 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { config, pkgs, inputs, lib, ... }:
 
 {
   imports = [ /etc/nixos/hardware-configuration.nix ./zsh.nix ];
-  # Enable flakes
-  # Keep outputs and derivations for nix-direnv
   nix = {
     package = pkgs.nixUnstable;
     extraOptions = ''
@@ -20,10 +14,8 @@
 
   environment.pathsToLink = [ "/share/nix-direnv" ];
 
-  # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
@@ -31,34 +23,26 @@
   boot.kernelParams = [ "mem_sleep_default=deep" ];
 
   networking.networkmanager.enable = true;
-  networking.hostName = "hell"; # Define your hostname.
+  networking.hostName = "hell";
+  networking.useDHCP = false;
+  networking.firewall.enable = false;
 
-  # Typical system config
   time.timeZone = "America/Los_Angeles";
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
     font = "Lat2-Terminus16";
     keyMap = "us";
   };
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-  services.fprintd.enable = true;
-
-  services.dbus.packages = [ pkgs.gcr ];
-
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
 
   environment.gnome.excludePackages = with pkgs.gnome; [
-    eog # image viewer
-    epiphany # web browser
-    simple-scan # document scanner
-    totem # video player
-    yelp # help viewer
-    evince # document viewer
-    geary # email client
-    seahorse # password manager
+    eog
+    epiphany
+    simple-scan
+    totem
+    yelp
+    evince
+    geary
+    seahorse
 
     gnome-calculator
     gnome-calendar
@@ -73,33 +57,9 @@
     gnome-weather
   ];
 
-  # Configure keymap in X11
-  services.xserver = {
-    layout = "us";
-    xkbVariant = "";
-  };
-
-  # Enable sound with pipewire.
   sound.enable = true;
   hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
 
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
-  };
-
-  networking.useDHCP = false;
-
-  # Users/Groups
-  # Don't forget to set a password with ‘passwd’.
   users.groups.emmett.gid = 1000;
   users.users.emmett = {
     uid = 1000;
@@ -133,13 +93,10 @@
     shell = pkgs.bash;
   };
 
-  services.pcscd.enable = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
   };
-  services.gnome.gnome-online-accounts.enable = lib.mkForce false;
-  services.gnome.gnome-keyring.enable = lib.mkForce false;
   programs.seahorse.enable = lib.mkForce false;
 
   nixpkgs.overlays = [
@@ -170,14 +127,11 @@
         pythonEnv = python310.withPackages (p: with p; [ psutil ]);
         nixzshell = stdenvNoCC.mkDerivation {
           name = "nix-zshell";
-
           script = substituteAll {
             src = /home/emmett/git/emmettbutler/nixos/nix-zshell;
             inherit zsh bashInteractive;
           };
-
           phases = [ "buildPhase" ];
-
           buildPhase = ''
             mkdir -p $out/bin
             cat $script > $out/bin/nix-zshell
@@ -187,18 +141,14 @@
       };
     in ([
       ack
-      amazon-ecr-credential-helper
       ansible
-      awscli2
       direnv
       dnsutils
       docker-compose
-      devpi-client
       doctl
       fzf
       gh
       git
-      glab
       gitAndTools.delta
       gnomeExtensions.system-monitor
       gnumake
@@ -237,29 +187,33 @@
       mypkgs.pythonEnv
     ]);
 
-  # List services that you want to enable:
-  security.pam.services.gdm.enableGnomeKeyring = true;
+  services.xserver.enable = true;
+  services.fprintd.enable = true;
+  services.pcscd.enable = true;
+  services.dbus.packages = [ pkgs.gcr ];
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+  services.xserver = {
+    layout = "us";
+    xkbVariant = "";
+  };
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+  services.gnome.gnome-online-accounts.enable = lib.mkForce false;
+  services.gnome.gnome-keyring.enable = lib.mkForce false;
 
   virtualisation.docker.enable = true;
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  networking.firewall.enable = false;
-
-  # Allow sudo to last for a little bit
   security.sudo.extraConfig = ''
-    Defaults    timestamp_timeout=30
+    Defaults    timestamp_timeout=90
     Defaults    timestamp_type=global
   '';
+  security.rtkit.enable = true;
+  security.pam.services.gdm.enableGnomeKeyring = true;
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "22.11"; # Did you read the comment?
-
+  system.stateVersion = "22.11";
 }
