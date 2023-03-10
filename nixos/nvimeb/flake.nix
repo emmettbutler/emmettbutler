@@ -51,7 +51,6 @@
                 lua << EOF
                 ${pkgs.lib.readFile ./init.lua}
                 EOF
-                let g:ale_python_black_change_directory = 0
               '';
               packages.myPlugins = with vimPlugins; {
                 start = [
