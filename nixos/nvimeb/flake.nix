@@ -26,6 +26,16 @@
           })
         ];
       };
+      black-vim = pkgs.vimUtils.buildVimPlugin {
+        name = "black-vim";
+        src = pkgs.fetchFromGitHub {
+          owner = "psf";
+          repo = "black";
+          rev = "d852af71672ce22646017e4ca7a8878ca7bdfe39";
+          sha256 =
+            "c72fca000ed3e420230dc4370e4c118a5024191dd6f5eebf624881a9a5cc3a1a";
+        };
+      };
     in rec {
       # For nix < 2.7
       # For nix >= 2.7 they should grab automatically from:
@@ -51,6 +61,9 @@
                 lua << EOF
                 ${pkgs.lib.readFile ./init.lua}
                 EOF
+                let g:python3_host_prog = '${mypython}/bin/python'
+                let g:black_virtualenv = '${mypython}'
+                let g:ale_python_black_executable = '${mypython}/bin/python -m black'
               '';
               packages.myPlugins = with vimPlugins; {
                 start = [
@@ -72,6 +85,7 @@
                   vim-floaterm
 
                   # The rest
+                  black-vim
                   vim-commentary
                   vim-surround
                   vim-repeat

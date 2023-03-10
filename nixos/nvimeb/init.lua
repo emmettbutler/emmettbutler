@@ -424,6 +424,7 @@ function _G.toggle_ale_linting()
         vim.g.ale_lint_on_text_changed = 0
     end
 end
+
 vim.g.ale_linters = {
     sh = { "shellcheck", },
     python = { "flake8" },
