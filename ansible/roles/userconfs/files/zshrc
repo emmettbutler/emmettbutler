@@ -16,6 +16,26 @@ export ZSH_TMUX_AUTOSTART=true
 if [[ $IS_NIXOS ]]; then
     touch ~/.zshrc
     export NIX_BUILD_SHELL=nix-zshell
+
+    function updateallflakes {
+        for lockfile in $(find /home -name flake.lock 2>/dev/null)
+        do
+            sudo nix flake update $(dirname $lockfile) --experimental-features 'nix-command flakes'
+        done
+    }
+    function rebuildandswitch {
+        for lockfile in $(find /home -name flake.lock 2>/dev/null)
+        do
+            if [[ -f $(dirname $lockfile)/root-flake ]]
+            then
+                sudo nixos-rebuild switch --impure --verbose --flake $(dirname $lockfile)
+            fi
+        done
+    }
+    function update {
+        updateallflakes
+        rebuildandswitch
+    }
 else
     alias pipu="pip install --upgrade --upgrade-strategy only-if-needed"
     if [[ $IS_MACOS ]]; then

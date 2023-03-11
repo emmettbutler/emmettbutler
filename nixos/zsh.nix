@@ -3,13 +3,7 @@
 {
   programs.zsh = {
     enable = true;
-    shellAliases = {
-      vim = "nvim";
-      update =
-        "sudo nix flake update /home/emmett/git/emmettbutler/nixos/nvimeb --experimental-features 'nix-command flakes' && sudo nix flake update /home/emmett/git/emmettbutler/nixos --experimental-features 'nix-command flakes' && sudo nixos-rebuild switch --flake /home/emmett/git/emmettbutler/nixos --impure --verbose";
-      updatenoflakes =
-        "sudo nixos-rebuild switch --flake /home/emmett/git/emmettbutler/nixos --impure --verbose";
-    };
+    shellAliases = { vim = "nvim"; };
     ohMyZsh = {
       enable = true;
       theme = "rkj-repos";
