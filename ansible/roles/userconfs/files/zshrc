@@ -17,6 +17,7 @@ if [[ $IS_NIXOS ]]; then
     touch ~/.zshrc
     export NIX_BUILD_SHELL=nix-zshell
 else
+    alias pipu="pip install --upgrade --upgrade-strategy only-if-needed"
     if [[ $IS_MACOS ]]; then
         eval $(/opt/homebrew/bin/brew shellenv)
     fi
@@ -42,7 +43,6 @@ else
         fi
     fi
     source $ZSH/oh-my-zsh.sh
-    alias pipu="pip install --upgrade --upgrade-strategy only-if-needed"
 fi
 
 if [[ -n "$IN_NIX_SHELL" || -n $IN_DOCKER_SHELL ]]; then
