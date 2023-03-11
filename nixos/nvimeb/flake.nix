@@ -1,11 +1,19 @@
 {
   description = "My Completely Inelegant Neovim Flake";
 
-  inputs = { nixpkgs.url = "nixpkgs/nixos-22.11"; };
+  inputs = {
+    nixpkgs.url = "nixpkgs/nixos-22.11";
+    nixpkgs-oldblack.url = "nixpkgs/89d5f4b3d09f86ffe9d9335c37d1f7e2dccaa5dc";
+  };
 
-  outputs = { self, nixpkgs, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-oldblack, ... }@inputs:
     let
       system = "x86_64-linux";
+      pkgs-oldblack = import nixpkgs-oldblack {
+        inherit system;
+        overlays =
+          [ (self: super: { oldblack = super.python3Packages.black; }) ];
+      };
       pkgs = import nixpkgs {
         inherit system;
         # This is where I import any custom packages that I want to install. By
@@ -18,8 +26,7 @@
             # Wasn't packaged
             flake8-isort =
               super.python3Packages.callPackage ./nix/flake8-isort.nix { };
-            myclick = super.python3Packages.callPackage ./nix/click.nix { };
-            myblack = super.python3Packages.callPackage ./nix/black.nix { };
+            myblack = pkgs-oldblack.oldblack;
             # Python with linting and such
             mypython = super.python3Packages.callPackage ./nix/mypython.nix { };
             # Wasn't packaged
