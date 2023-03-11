@@ -1,4 +1,4 @@
-{ python3, flake8-isort }:
+{ python3, flake8-isort, black }:
 
 let
   my-python-packages = python-packages:

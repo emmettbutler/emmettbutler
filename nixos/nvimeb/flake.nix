@@ -18,6 +18,7 @@
             # Wasn't packaged
             flake8-isort =
               super.python3Packages.callPackage ./nix/flake8-isort.nix { };
+            black = super.python3Packages.callPackage ./nix/black.nix { };
             # Python with linting and such
             mypython = super.python3Packages.callPackage ./nix/mypython.nix { };
             # Wasn't packaged
