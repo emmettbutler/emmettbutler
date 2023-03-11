@@ -18,6 +18,9 @@
             # Wasn't packaged
             flake8-isort =
               super.python3Packages.callPackage ./nix/flake8-isort.nix { };
+            # click and black customized here to use an older version of black that supports targeting 2.7
+            click804 = super.python3Packages.callPackage ./nix/click.nix { };
+            myblack = super.python3Packages.callPackage ./nix/black.nix { };
             # Python with linting and such
             mypython = super.python3Packages.callPackage ./nix/mypython.nix { };
             # Wasn't packaged
