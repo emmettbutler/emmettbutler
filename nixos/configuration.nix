@@ -128,7 +128,7 @@
         nixzshell = stdenvNoCC.mkDerivation {
           name = "nix-zshell";
           script = substituteAll {
-            src = /home/emmett/git/emmettbutler/nixos/nix-zshell;
+            src = ./nix-zshell;
             inherit zsh bashInteractive;
           };
           phases = [ "buildPhase" ];
