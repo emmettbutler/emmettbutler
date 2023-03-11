@@ -5,6 +5,15 @@ buildPythonPackage rec {
   version = "21.4b2";
   src = fetchPypi {
     inherit pname version;
-    sha256 = "fc9bcf3b482b05c1f35f6a882c079dc01b9c7795827532f4cc43c0ec88067bbc";
+    sha256 = "/JvPO0grBcHzX2qILAedwBucd5WCdTL0zEPA7IgGe7w=";
   };
+  checkInputs = with python3Packages; [
+    setuptools_scm
+    regex
+    pathspec
+    mypy-extensions
+    toml
+    appdirs
+    click
+  ];
 }

@@ -1,4 +1,4 @@
-{ python3, flake8-isort, black }:
+{ python3, flake8-isort, myblack }:
 
 let
   my-python-packages = python-packages:
@@ -7,7 +7,7 @@ let
       flake8
       flake8-isort
       isort
-      black
+      myblack
     ];
   mypython = python3.withPackages my-python-packages;
 in mypython
