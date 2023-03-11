@@ -15,25 +15,9 @@
         "type": "indirect"
       }
     },
-    "nixpkgs-oldblack": {
-      "locked": {
-        "lastModified": 1622717073,
-        "narHash": "sha256-UimNLDnQ5VPhafOaeg6nfiThUjCsTV/c2Jr7dK10Jng=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "89d5f4b3d09f86ffe9d9335c37d1f7e2dccaa5dc",
-        "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "rev": "89d5f4b3d09f86ffe9d9335c37d1f7e2dccaa5dc",
-        "type": "indirect"
-      }
-    },
     "root": {
       "inputs": {
-        "nixpkgs": "nixpkgs",
-        "nixpkgs-oldblack": "nixpkgs-oldblack"
+        "nixpkgs": "nixpkgs"
       }
     }
   },
