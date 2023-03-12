@@ -24,7 +24,6 @@ pkgs.mkShell {
         echo "Using riot from pypi"
         sudo .venv/bin/pip install riot
     fi
-    alias pipu="pip install --upgrade --upgrade-strategy only-if-needed"
   '';
 }
 
