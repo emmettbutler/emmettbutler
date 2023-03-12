@@ -10,12 +10,17 @@ $ git clone https://github.com/emmettbutler/emmettbutler.git
 Mac:
 ```
 $ cd emmettbutler/ansible
+$ brew install ansible
 $ ansible-playbook -i inventory mac.yml -c local --extra-vars "username=$USER homedir=~"`
 ```
 
 Ubuntu:
+
+[Install Ansible](https://docs.ansible.com/ansible/latest/installation_guide/installation_distros.html\#installing-ansible-on-ubuntu)
+
 ```
 $ cd emmettbutler/ansible
+$ apt install ansible
 $ ansible-playbook -i inventory ubuntu.yml -c local --extra-vars "username=$USER homedir=~"`
 ```
 
