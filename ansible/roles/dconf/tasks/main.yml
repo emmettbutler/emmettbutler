@@ -166,6 +166,12 @@
     value: "'#e0006eff'"
     state: present
 
+- name: Set fullscreen toggle key
+  community.general.dconf:
+    key: "/org/gnome/desktop/wm/keybindings/toggle-fullscreen"
+    value: "['F11']"
+    state: present
+
 - name: Set interface color-scheme
   community.general.dconf:
     key: "/org/gnome/desktop/interface/color-scheme"
