@@ -70,6 +70,7 @@
                   ack-vim
                   vim-angry-reviewer
                   LanguageTool-nvim
+                  vim-tmux-clipboard
                 ];
               };
             };

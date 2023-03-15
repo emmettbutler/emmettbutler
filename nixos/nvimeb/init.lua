@@ -25,6 +25,7 @@ end
 -- https://icyphox.sh/blog/nvim-lua/
 vim.api.nvim_set_keymap('n', '<Space>', '', {})
 vim.g.mapleader = ' '
+vim.o.clipboard = "unnamedplus"
 -- Set spaces > tabs, 4 as default
 vim.o.expandtab = true
 vim.o.tabstop = 4

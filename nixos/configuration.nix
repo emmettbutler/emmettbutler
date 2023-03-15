@@ -185,6 +185,7 @@
       tmux-xpanes
       unzip
       wget
+      xclip
       yq
       zip
 
