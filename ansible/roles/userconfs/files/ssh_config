@@ -1,8 +1,5 @@
 Host *
-    StrictHostKeyChecking no
-    CheckHostIP no
     AddKeysToAgent yes
-    IdentityFile ~/.ssh/id_rsa
 
 Host *.github.com
     AddKeysToAgent yes

@@ -61,8 +61,11 @@ else
     export PYENV_VIRTUALENV_DISABLE_PROMPT=1
     export PYENV_ROOT="$HOME/.pyenv"
     if [[ ! -n $IN_DOCKER_SHELL ]]; then
-        eval `keychain --eval --agents ssh id_rsa`
-        eval `keychain --eval --agents ssh id_ed25519`
+        if [[ ! -n $IS_MACOS ]]; then
+            eval `keychain --eval --agents ssh id_ed25519`
+        else
+            eval `ssh-add id_ed25519`
+        fi
     fi
     eval "$(pyenv init --path)"
     if command -v pyenv 1>/dev/null 2>&1; then
