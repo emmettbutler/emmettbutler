@@ -10,7 +10,7 @@
       keep-derivations = true
     '';
   };
-  nix.trustedUsers = [ "root" "emmett" ];
+  nix.settings.trusted-users = [ "root" "emmett" ];
 
   environment.pathsToLink = [ "/share/nix-direnv" ];
 
@@ -108,7 +108,7 @@
     enableCompletion = true;
     autosuggestions.enable = true;
     interactiveShellInit = ''
-      ${pkgs.lib.readFile ../ansible/roles/userconfs/files/zshrc}
+      ${pkgs.lib.readFile ../ansible/roles/linux_base/files/zshrc}
     '';
     promptInit = "";
   };
