@@ -89,7 +89,9 @@ else
             eval "$(pyenv virtualenv-init -)"
         fi
     fi
-    source $ZSH/oh-my-zsh.sh
+    if [[ ! -n $IS_MACOS ]]; then
+        source $ZSH/oh-my-zsh.sh
+    fi
 fi
 
 if [[ -n "$IN_NIX_SHELL" || -n $IN_DOCKER_SHELL ]]; then
@@ -129,4 +131,7 @@ else
         fi
     fi
     zplug load
+    if [[ -n $IS_MACOS ]]; then
+        source $ZSH/oh-my-zsh.sh
+    fi
 fi
