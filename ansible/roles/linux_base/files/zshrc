@@ -37,7 +37,7 @@ function zshssh {
         sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)";
         echo "if test -t 1; then zsh -i; fi" > ~/.bashrc
     '
-    scp ~/.zshrc "$1":/home/"$2"/.zshrc
+    scp $HOME/git/emmettbutler/ansible/roles/linux_base/files/zshrc "$1":/home/"$2"/.zshrc
     ssh "$1"
 }
 
@@ -89,6 +89,7 @@ else
             eval "$(pyenv virtualenv-init -)"
         fi
     fi
+    source $ZSH/oh-my-zsh.sh
 fi
 
 if [[ -n "$IN_NIX_SHELL" || -n $IN_DOCKER_SHELL ]]; then
@@ -128,7 +129,4 @@ else
         fi
     fi
     zplug load
-    if [[ ! -n $IS_NIXOS ]]; then
-        source $ZSH/oh-my-zsh.sh
-    fi
 fi
