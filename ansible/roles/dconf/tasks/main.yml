@@ -314,7 +314,7 @@
 - name: Set mouse speed
   community.general.dconf:
     key: "/org/gnome/desktop/peripherals/mouse/speed"
-    value: "0.76363636363636367"
+    value: "0.86363636363636367"
     state: present
 
 - name: Set touchpad speed
