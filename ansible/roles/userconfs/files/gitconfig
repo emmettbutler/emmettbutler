@@ -9,5 +9,7 @@
     denyNonFastForwards = true
 [rerere]
     enabled = true
+[commit]
+    gpgsign = true
 [url "ssh://git@github.com/DataDog"]
     insteadOf = https://github.com/DataDog
