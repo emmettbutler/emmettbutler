@@ -224,7 +224,7 @@
   virtualisation.docker.enable = true;
 
   security.sudo.extraConfig = ''
-    Defaults    timestamp_timeout=90
+    Defaults    timestamp_timeout=500
     Defaults    timestamp_type=global
   '';
   security.rtkit.enable = true;
