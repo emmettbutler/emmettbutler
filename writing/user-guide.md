@@ -97,9 +97,7 @@ switching into information-gathering mode would be.
 I’m working on catching my triggers before I act on them, especially those that push me to respond with annoyance or
 defensiveness.
 
-## What I expect from people I manage
-
-### I think people I manage are doing a good job if they are:
+### I think people I work with are doing a good job if they are:
 
 * Setting goals that are achievable and slightly outside of their comfort zone
 * Frequently making new and different mistakes
@@ -108,7 +106,7 @@ defensiveness.
 * Balancing self-teaching with an understanding of what they can learn from others
 * Trusting me to accept them as they are
 
-### I think people I manage are doing a bad job if they are:
+### I think people I work with are doing a bad job if they are:
 
 * Doing work that I can’t easily learn about asynchronously
 * Making the same mistake multiple times
@@ -116,7 +114,7 @@ defensiveness.
 * Not admitting when they don’t know something
 * Ignoring non-code contributions or team process
 
-I focus intensely on empathy and continuous learning, probably more than the average manager.
+I focus intensely on empathy and continuous learning, probably more than the average engineer.
 
 ## How I give and receive feedback
 
