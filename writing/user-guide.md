@@ -14,17 +14,14 @@ I wrote this guide to show you my authentic self as it’s relevant to work. I b
 collaboration occurs between people who see and are seen, and I want to give you a leg up in seeing me. I hope that
 this guide helps us be effective communicators and collaborators.
 
-At work, I identify as a data engineer who cares deeply about his team’s well-being. I have influence within Parse.ly,
-and I commit to using that power to make everyone’s work more fulfilling and enjoyable.
-
 ## How I view success
 
 As a flawed human, being good at my job means being at peace with not knowing everything, and constantly learning more.
-As a manager, being good at my job means being surrounded by happy, motivated people. As a programmer, being good at my
+As a leader, being good at my job means being surrounded by happy, motivated people. As a programmer, being good at my
 job means using code to make those peoples’ jobs easier and more enjoyable.
 
-Success as a manager as I see it means finding the middle path between the growth goals of a person I manage and the
-company’s goals. If the people I manage are learning and growing in ways that feel meaningful to them, and doing it
+Success as I see it means finding the middle path between the growth goals of the people on my team and the
+company’s goals. If the people on my team are learning and growing in ways that feel meaningful to them, and doing it
 while helping the organization progress, I think I’m doing a good job at that moment.
 
 ## How I communicate
