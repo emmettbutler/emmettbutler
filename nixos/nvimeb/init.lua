@@ -427,6 +427,7 @@ vim.g.ale_linters = {
     nix = { "nix" },
     lua = { "luacheck" },
     javascript = { "jshint" },
+    rust = { "analyzer" },
 }
 vim.g.ale_fixers = {
     sh = { "shfmt", },
@@ -435,6 +436,7 @@ vim.g.ale_fixers = {
     nix = { "nixfmt" },
     lua = { "stylua" },
     javascript = { "eslint" },
+    rust = { "rustfmt", "trim_whitespace", "remove_trailing_lines" },
 }
 
 -- osc-yank

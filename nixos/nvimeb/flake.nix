@@ -96,6 +96,10 @@
                   hadolint
                   nixfmt
                   languagetool
+                  rustfmt
+                  rust-analyzer
+                  cargo
+                  rustc
                 ]
               }
               makeWrapper ${myneovim}/bin/nvim $out/bin/nvim --prefix PATH : $BINPATH

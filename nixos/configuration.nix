@@ -156,6 +156,7 @@
     in ([
       ack
       ansible
+      cargo
       direnv
       dnsutils
       docker-compose
@@ -177,6 +178,7 @@
       pkgs.gnome.gnome-terminal
       pkgs.gnome3.gnome-tweaks
       rsync
+      rustc
       shellcheck
       shfmt
       sops
