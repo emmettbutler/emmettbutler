@@ -58,7 +58,23 @@
   ];
 
   sound.enable = true;
+  services.avahi.enable = true;
+  services.avahi.nssmdns = true;
   hardware.pulseaudio.enable = false;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+  systemd.user.services.raop = {
+    description =
+      "Load and run Pipewire's RAOP discovery module, allowing audio output via AirTunes";
+    script = ''
+      /run/current-system/sw/bin/pw-cli -m load-module libpipewire-module-raop-discover
+    '';
+    wantedBy = [ "default.target" ];
+  };
 
   users.groups.emmett.gid = 1000;
   users.users.emmett = {
@@ -213,12 +229,6 @@
   services.xserver = {
     layout = "us";
     xkbVariant = "";
-  };
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
   };
   services.gnome.gnome-online-accounts.enable = lib.mkForce false;
   services.gnome.gnome-keyring.enable = lib.mkForce false;
