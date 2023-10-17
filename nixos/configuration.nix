@@ -211,7 +211,6 @@
       enpass
       google-chrome
       slack
-      spotify
       vlc
       zoom
 
