@@ -420,7 +420,7 @@ function _G.toggle_ale_linting()
 end
 vim.g.ale_linters = {
     sh = { "shellcheck", },
-    python = { "flake8" },
+    python = { "flake8", "ruff" },
     dockerfile = { "hadolint" },
     terraform = { "terraform_ls" },
     markdown = { "vale" },
