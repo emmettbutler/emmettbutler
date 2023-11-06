@@ -209,6 +209,7 @@
 
       discord
       enpass
+      gimp
       google-chrome
       slack
       vlc
