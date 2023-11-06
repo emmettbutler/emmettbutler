@@ -420,7 +420,7 @@ function _G.toggle_ale_linting()
 end
 vim.g.ale_linters = {
     sh = { "shellcheck", },
-    python = { "flake8", "ruff" },
+    python = { "ruff" },
     dockerfile = { "hadolint" },
     terraform = { "terraform_ls" },
     markdown = { "vale" },
@@ -431,7 +431,7 @@ vim.g.ale_linters = {
 }
 vim.g.ale_fixers = {
     sh = { "shfmt", },
-    python = { "isort", "black", "ruff" },
+    python = { "isort", "black" },
     terraform = { "terraform" },
     nix = { "nixfmt" },
     lua = { "stylua" },
