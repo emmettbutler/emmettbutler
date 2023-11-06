@@ -400,8 +400,9 @@ vim.g.ale_fix_on_save = 1
 vim.g.ale_lint_on_insert_leave = 1
 vim.g.ale_fix_on_insert_leave = 1
 vim.g.ale_lint_on_text_changed = 1
-vim.g.ale_python_flake8_options = '--max-line-length=120'
-vim.g.ale_python_black_change_directory = 1
+vim.g.ale_python_auto_virtualenv = 1
+vim.g.ale_python_black_change_directory = 0
+vim.g.ale_python_ruff_change_directory = 1
 -- Custom function for completely toggling ale linting
 function _G.toggle_ale_linting()
     if (vim.g.ale_lint_on_insert_leave == 0) then
@@ -431,7 +432,7 @@ vim.g.ale_linters = {
 }
 vim.g.ale_fixers = {
     sh = { "shfmt", },
-    python = { "isort", "black" },
+    python = { "ruff", "black" },
     terraform = { "terraform" },
     nix = { "nixfmt" },
     lua = { "stylua" },

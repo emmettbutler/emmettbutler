@@ -1,12 +1,6 @@
-{ python3, flake8-isort, myblack }:
+{ python3, python3Packages }:
 
 let
-  my-python-packages = python-packages:
-    with python-packages; [
-      flake8
-      flake8-isort
-      isort
-      myblack
-    ];
+  my-python-packages = python-packages: with python-packages; [ ruff-lsp ];
   mypython = python3.withPackages my-python-packages;
 in mypython

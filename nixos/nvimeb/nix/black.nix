@@ -1,19 +1,18 @@
-{ stdenv, lib, buildPythonPackage, dataclasses, fetchPypi, pythonOlder
-, pytestCheckHook, aiohttp, aiohttp-cors, appdirs, click804, colorama
-, hatch-fancy-pypi-readme, hatch-vcs, hatchling, mypy-extensions, pathspec
-, parameterized, platformdirs, regex, toml, tomli, typed-ast, typing-extensions
-, uvloop }:
+{ stdenv, lib, buildPythonPackage, fetchPypi, pythonOlder, pytestCheckHook
+, aiohttp, aiohttp-cors, appdirs, click, colorama, hatch-fancy-pypi-readme
+, hatch-vcs, hatchling, mypy-extensions, pathspec, parameterized, platformdirs
+, regex, toml, tomli, typed-ast, typing-extensions, uvloop }:
 
 buildPythonPackage rec {
   pname = "black";
-  version = "21.4b2";
+  version = "23.10.1";
   format = "pyproject";
 
   disabled = pythonOlder "3.7";
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-/JvPO0grBcHzX2qILAedwBucd5WCdTL0zEPA7IgGe7w=";
+    sha256 = "H4zjFnU0KP9odJxlpfeERjGqGMhnnf08qdwaKJl5wlg=";
   };
 
   nativeBuildInputs = [ hatch-fancy-pypi-readme hatch-vcs hatchling ];
@@ -52,15 +51,14 @@ buildPythonPackage rec {
     aiohttp
     aiohttp-cors
     appdirs
-    click804
+    click
     mypy-extensions
     pathspec
     platformdirs
     regex
     toml
     tomli
-  ] ++ lib.optional (pythonOlder "3.7") dataclasses
-    ++ lib.optional (pythonOlder "3.8") typed-ast
+  ] ++ lib.optional (pythonOlder "3.8") typed-ast
     ++ lib.optional (pythonOlder "3.10") typing-extensions;
 
   passthru.optional-dependencies = {

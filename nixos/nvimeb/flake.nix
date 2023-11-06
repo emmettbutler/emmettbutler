@@ -1,7 +1,7 @@
 {
   description = "My Completely Inelegant Neovim Flake";
 
-  inputs = { nixpkgs.url = "nixpkgs/nixos-22.11"; };
+  inputs = { nixpkgs.url = "nixpkgs/nixos-23.05"; };
 
   outputs = { self, nixpkgs, ... }@inputs:
     let
@@ -10,16 +10,11 @@
         inherit system;
         overlays = [
           (self: super: {
-            # Kept having issues with ones in stable and unstable so built custom revision
-            vale = super.callPackage ./nix/vale.nix { };
-            # click and black customized here to use an older version of black that supports targeting 2.7
-            click804 = super.python3Packages.callPackage ./nix/click.nix { };
-            myblack = super.python3Packages.callPackage ./nix/black.nix { };
-            mypython = super.python3Packages.callPackage ./nix/mypython.nix { };
+            myblack = super.python311Packages.callPackage ./nix/black.nix { };
+            mypython = pkgs.python311.withPackages
+              (p: with p; [ ruff-lsp pkgs.myblack packaging ]);
             vim-angry-reviewer =
               super.callPackage ./nix/vim-angry-reviewer.nix { };
-            flake8-isort =
-              super.python3Packages.callPackage ./nix/flake8-isort.nix { };
           })
         ];
       };
@@ -34,6 +29,8 @@
       packages.${system} = with pkgs;
         let
           myneovim = (neovim.override {
+            withPython3 = true;
+            extraPython3Packages = p: with p; [ pkgs.myblack ];
             configure = {
               customRC = ''
                 lua << EOF
@@ -96,6 +93,7 @@
                   hadolint
                   nixfmt
                   languagetool
+                  ruff
                   rustfmt
                   rust-analyzer
                   cargo
