@@ -37,6 +37,7 @@
       - lf
       - neovim
       - rust
+      - ruff
     state: present
 
 - name: Install casks
