@@ -154,7 +154,7 @@
   environment.systemPackages = with pkgs;
     let
       mypkgs = with pkgs; {
-        pythonEnv = python310.withPackages (p: with p; [ psutil ]);
+        pythonEnv = python311.withPackages (p: with p; [ psutil ]);
         nixzshell = stdenvNoCC.mkDerivation {
           name = "nix-zshell";
           script = substituteAll {
@@ -264,5 +264,5 @@
   security.rtkit.enable = true;
   security.pam.services.gdm.enableGnomeKeyring = true;
 
-  system.stateVersion = "22.11";
+  system.stateVersion = "23.05";
 }

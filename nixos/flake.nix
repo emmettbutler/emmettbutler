@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-22.11";
+    nixpkgs.url = "nixpkgs/nixos-23.05";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
     # https://github.com/NixOS/nix/issues/3978
     neovimeb.url = "path:/home/emmett/git/emmettbutler/nixos/nvimeb";
@@ -15,7 +15,7 @@
           config.allowUnfree = true;
         };
         neovimeb = inputs.neovimeb.packages.${prev.system};
-        mypython310 = pkgs.python310.withPackages
+        mypython311 = pkgs.python311.withPackages
           (py-pkgs: with py-pkgs; [ virtualenv requests ipython ]);
       };
     in {
