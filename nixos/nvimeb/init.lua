@@ -404,6 +404,7 @@ vim.g.ale_python_auto_virtualenv = 1
 vim.g.ale_python_black_change_directory = 0
 vim.g.ale_python_ruff_change_directory = 1
 vim.g.ale_python_flake8_options = '--max-line-length=120'
+vim.g.ale_python_black_options = '--line-length=120'
 -- Custom function for completely toggling ale linting
 function _G.toggle_ale_linting()
     if (vim.g.ale_lint_on_insert_leave == 0) then
