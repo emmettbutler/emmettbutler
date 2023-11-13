@@ -23,7 +23,7 @@ alias pipu="pip install --upgrade --upgrade-strategy only-if-needed"
 function ddtracepy-testrunner {
     docker run --network host --userns=host --rm -w /root/project -v $PWD/:/root/project \
         -v $HOME/git/emmettbutler/ansible/roles/linux_base/files/zshrc:/root/.zshrc \
-        -it ghcr.io/datadog/dd-trace-py/testrunner:18436fd8b4646ba6ac195edaad9661f8ecd81ebc@sha256:b82c9f708ea971e6e174b6293357f6ad9b13c8f13c3a071dcf5c492efa82fa62 \
+        -it ghcr.io/datadog/dd-trace-py/testrunner \
         bash -c "apt-get update && apt-get install -y zsh && wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | \
             zsh || true && git config --global --add safe.directory /root/project && pip install riot==0.17.7 hatch && zsh -c 'export IN_DOCKER_SHELL=1; zsh -i'"
 }
