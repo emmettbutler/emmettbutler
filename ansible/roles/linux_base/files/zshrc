@@ -25,7 +25,8 @@ function ddtracepy-testrunner {
         -v $HOME/git/emmettbutler/ansible/roles/linux_base/files/zshrc:/root/.zshrc \
         -it ghcr.io/datadog/dd-trace-py/testrunner \
         bash -c "apt-get update && apt-get install -y zsh && wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | \
-            zsh || true && git config --global --add safe.directory /root/project && pip install riot==0.17.7 hatch && zsh -c 'export IN_DOCKER_SHELL=1; zsh -i'"
+            zsh || true && git config --global --add safe.directory /root/project && pip install riot==0.19.0 hatch==1.7.0 hatch-containers==0.7.0 \
+            && zsh -c 'export IN_DOCKER_SHELL=1; zsh -i'"
 }
 
 function zshssh {
