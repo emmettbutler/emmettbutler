@@ -13,3 +13,5 @@
     gpgsign = true
 [url "ssh://git@github.com/DataDog"]
     insteadOf = https://github.com/DataDog
+[tag]
+	forceSignAnnotated = true
