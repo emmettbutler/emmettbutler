@@ -66,6 +66,7 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    jack.enable = true;
   };
   systemd.user.services.raop = {
     description =
@@ -207,6 +208,8 @@
       yq
       zip
 
+      ardour
+      pavucontrol
       discord
       enpass
       gimp
