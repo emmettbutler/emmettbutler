@@ -209,6 +209,7 @@
       zip
 
       ardour
+      gxplugins-lv2
       pavucontrol
       discord
       enpass
@@ -223,6 +224,7 @@
       mypkgs.pythonEnv
     ]);
 
+  services.printing.enable = true;
   services.xserver.enable = true;
   services.fprintd.enable = true;
   services.pcscd.enable = true;
