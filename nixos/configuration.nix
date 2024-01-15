@@ -215,6 +215,7 @@
       enpass
       gimp
       google-chrome
+      qpwgraph
       slack
       vlc
       zoom
