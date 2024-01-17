@@ -208,17 +208,19 @@
       yq
       zip
 
-      ardour
-      gxplugins-lv2
-      pavucontrol
       discord
       enpass
+      firefox
       gimp
       google-chrome
-      qpwgraph
       slack
       vlc
       zoom
+
+      ardour
+      gxplugins-lv2
+      pavucontrol
+      qpwgraph
 
       neovimeb.neovimEB
       mypkgs.nixzshell
@@ -270,5 +272,5 @@
   security.rtkit.enable = true;
   security.pam.services.gdm.enableGnomeKeyring = true;
 
-  system.stateVersion = "23.05";
+  system.stateVersion = "23.11";
 }
