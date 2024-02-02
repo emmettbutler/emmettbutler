@@ -1,5 +1,7 @@
 { config, pkgs, inputs, lib, ... }:
 
+with lib;
+
 {
   imports = [ /etc/nixos/hardware-configuration.nix ];
   nix = {
@@ -56,6 +58,22 @@
     pkgs.gnome-photos
     gnome-weather
   ];
+
+  environment.variables = let
+    makePluginPath = format:
+      (makeSearchPath format [
+        "$HOME/.nix-profile/lib"
+        "/run/current-system/sw/lib"
+        "/etc/profiles/per-user/$USER/lib"
+      ]) + ":$HOME/.${format}";
+  in {
+    DSSI_PATH = makePluginPath "dssi";
+    LADSPA_PATH = makePluginPath "ladspa";
+    LV2_PATH = makePluginPath "lv2";
+    LXVST_PATH = makePluginPath "lxvst";
+    VST_PATH = makePluginPath "vst";
+    VST3_PATH = makePluginPath "vst3";
+  };
 
   sound.enable = true;
   services.avahi.enable = true;
@@ -221,6 +239,8 @@
       gxplugins-lv2
       pavucontrol
       qpwgraph
+      surge
+      surge-XT
 
       neovimeb.neovimEB
       mypkgs.nixzshell
