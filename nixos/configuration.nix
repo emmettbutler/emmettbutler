@@ -231,6 +231,7 @@ with lib;
       firefox
       gimp
       google-chrome
+      handbrake
       slack
       vlc
       zoom
