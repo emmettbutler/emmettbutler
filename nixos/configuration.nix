@@ -78,7 +78,14 @@ with lib;
   sound.enable = true;
   services.avahi.enable = true;
   services.avahi.nssmdns = true;
+  services.avahi.publish.enable = true;
+  services.avahi.publish.userServices = true;
+  services.avahi.publish.addresses = true;
   hardware.pulseaudio.enable = false;
+  hardware.sane = {
+    enable = true;
+    extraBackends = [ pkgs.hplipWithPlugin ];
+  };
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -100,7 +107,7 @@ with lib;
     uid = 1000;
     shell = pkgs.zsh;
     isNormalUser = true;
-    extraGroups = [ "wheel" "docker" "libvirtd" ];
+    extraGroups = [ "wheel" "docker" "libvirtd" "scanner" "lp" ];
   };
   users.users.emmett.subUidRanges = [
     {
@@ -249,6 +256,7 @@ with lib;
     ]);
 
   services.printing.enable = true;
+  services.printing.drivers = [ pkgs.hplipWithPlugin ];
   services.xserver.enable = true;
   services.fprintd.enable = true;
   services.pcscd.enable = true;

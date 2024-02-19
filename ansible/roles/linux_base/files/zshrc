@@ -65,6 +65,8 @@ if [[ $IS_NIXOS ]]; then
         updateallflakes
         rebuildandswitch
     }
+
+    alias scantotiff="scanimage -d 'hpaio:/net/DeskJet_3700_series?ip=10.0.0.35' --resolution 300dpi --mode Gray --output-file "
 else
     export PATH=$PATH:/sbin
     export PATH=$PATH:$HOME/opt/bin
