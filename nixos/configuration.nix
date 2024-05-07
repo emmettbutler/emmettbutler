@@ -249,6 +249,8 @@ with lib;
       qpwgraph
       surge
       surge-XT
+      inkscape
+      scribus
 
       neovimeb.neovimEB
       mypkgs.nixzshell
