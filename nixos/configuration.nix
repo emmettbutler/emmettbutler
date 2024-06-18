@@ -13,12 +13,14 @@ with lib;
     '';
   };
   nix.settings.trusted-users = [ "root" "emmett" ];
+  nix.gc.automatic = true;
 
   environment.pathsToLink = [ "/share/nix-direnv" ];
 
   nixpkgs.config.allowUnfree = true;
 
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 5;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.kernelPackages = pkgs.linuxPackages_latest;
