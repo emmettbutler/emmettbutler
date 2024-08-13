@@ -253,6 +253,7 @@ with lib;
       surge-XT
       inkscape
       scribus
+      wine
 
       neovimeb.neovimEB
       mypkgs.nixzshell
