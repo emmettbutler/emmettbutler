@@ -241,6 +241,7 @@ with lib;
       gimp
       google-chrome
       handbrake
+      obs-studio
       slack
       vlc
       zoom
