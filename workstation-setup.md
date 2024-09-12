@@ -11,7 +11,7 @@ Mac:
 ```
 $ cd emmettbutler/ansible
 $ brew install ansible
-$ ansible-playbook -i inventory mac.yml -c local --extra-vars "username=$USER homedir=~"`
+$ ansible-playbook -i inventory mac.yml --ask-become-pass -c local --extra-vars "username=$USER homedir=~"`
 ```
 
 Ubuntu:
@@ -21,7 +21,7 @@ Ubuntu:
 ```
 $ cd emmettbutler/ansible
 $ apt install ansible
-$ ansible-playbook -i inventory ubuntu.yml -c local --extra-vars "username=$USER homedir=~"`
+$ ansible-playbook -i inventory ubuntu.yml --ask-become-pass -c local --extra-vars "username=$USER homedir=~"`
 ```
 
 Nixos:

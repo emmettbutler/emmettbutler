@@ -29,6 +29,11 @@
   homebrew: update_homebrew=yes
   become: no
 
+- name: Tap hmarr
+  community.general.homebrew_tap:
+    name: homebrew/hmarr
+    url: 'git@github.com:hmarr/homebrew-tap'
+
 - name: Install brew packages
   homebrew:
     name:
@@ -38,6 +43,7 @@
       - neovim
       - rust
       - ruff
+      - codeowners
     state: present
 
 - name: Install casks
