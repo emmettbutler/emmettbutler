@@ -44,6 +44,7 @@
       - rust
       - ruff
       - codeowners
+      - python@3.12
     state: present
 
 - name: Install casks
