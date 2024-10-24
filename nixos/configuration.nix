@@ -252,6 +252,7 @@ with lib;
       qpwgraph
       surge
       surge-XT
+      tap-plugins
       inkscape
       scribus
       wine
