@@ -58,7 +58,6 @@ with lib;
     gnome-maps
     gnome-music
     pkgs.gnome-photos
-    gnome-weather
   ];
 
   environment.variables = let
