@@ -208,7 +208,7 @@ with lib;
       gh
       git
       gitAndTools.delta
-      gnomeExtensions.system-monitor
+      gnomeExtensions.vitals
       gnumake
       gnupg
       hyperfine
