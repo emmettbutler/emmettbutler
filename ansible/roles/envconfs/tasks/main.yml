@@ -68,8 +68,7 @@
   git:
     repo: https://github.com/pyenv/pyenv.git
     dest: "{{ homedir }}/.pyenv"
-    update: no
-  when: not pyenvconf.stat.exists
+    update: yes
 
 - name: Install pyenv-virtualenv
   git:
@@ -77,6 +76,9 @@
     dest: "{{ homedir }}/.pyenv/plugins/pyenv-virtualenv"
     update: no
   when: not pyenvconf.stat.exists
+
+- name: Install Pyenv version 3.13
+  command: pyenv install -s 3.13.1
 
 - name: Install oh-my-zsh
   shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"

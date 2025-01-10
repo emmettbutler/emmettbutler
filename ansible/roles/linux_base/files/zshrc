@@ -94,7 +94,7 @@ else
             eval "$(pyenv virtualenv-init -)"
         fi
     fi
-    pyenv shell 3.10.9
+    pyenv shell 3.13.1
     if [[ ! -n $IS_MACOS ]]; then
         source $ZSH/oh-my-zsh.sh
     fi
