@@ -5,7 +5,7 @@ with lib;
 {
   imports = [ /etc/nixos/hardware-configuration.nix ];
   nix = {
-    package = pkgs.nixUnstable;
+    package = pkgs.nixVersions.git;
     extraOptions = ''
       experimental-features = nix-command flakes
       keep-outputs = true
@@ -76,7 +76,6 @@ with lib;
     VST3_PATH = makePluginPath "vst3";
   };
 
-  sound.enable = true;
   services.avahi.enable = true;
   services.avahi.nssmdns = true;
   services.avahi.publish.enable = true;
@@ -219,7 +218,7 @@ with lib;
       openssl
       pinentry
       pkgs.gnome.gnome-terminal
-      pkgs.gnome3.gnome-tweaks
+      pkgs.gnome.gnome-tweaks
       rsync
       rustc
       shellcheck
@@ -307,5 +306,5 @@ with lib;
   security.rtkit.enable = true;
   security.pam.services.gdm.enableGnomeKeyring = true;
 
-  system.stateVersion = "23.11";
+  system.stateVersion = "24.11";
 }
