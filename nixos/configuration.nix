@@ -38,28 +38,6 @@ with lib;
     keyMap = "us";
   };
 
-  environment.gnome.excludePackages = with pkgs.gnome; [
-    eog
-    epiphany
-    simple-scan
-    totem
-    yelp
-    evince
-    geary
-    seahorse
-
-    gnome-calculator
-    gnome-calendar
-    gnome-characters
-    gnome-clocks
-    gnome-contacts
-    gnome-font-viewer
-    gnome-logs
-    gnome-maps
-    gnome-music
-    pkgs.gnome-photos
-  ];
-
   environment.variables = let
     makePluginPath = format:
       (makeSearchPath format [
@@ -77,7 +55,7 @@ with lib;
   };
 
   services.avahi.enable = true;
-  services.avahi.nssmdns = true;
+  services.avahi.nssmdns4 = true;
   services.avahi.publish.enable = true;
   services.avahi.publish.userServices = true;
   services.avahi.publish.addresses = true;
@@ -217,8 +195,8 @@ with lib;
       nix-direnv
       openssl
       pinentry
-      pkgs.gnome.gnome-terminal
-      pkgs.gnome.gnome-tweaks
+      gnome-terminal
+      gnome-tweaks
       rsync
       rustc
       shellcheck
@@ -269,11 +247,12 @@ with lib;
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
   services.xserver = {
-    layout = "us";
-    xkbVariant = "";
+    xkb.layout = "us";
+    xkb.variant = "";
   };
   services.gnome.gnome-online-accounts.enable = lib.mkForce false;
   services.gnome.gnome-keyring.enable = lib.mkForce false;
+  services.gnome.core-utilities.enable = false;
 
   security.pam.services.login.fprintAuth = false;
   security.pam.services.gdm-fingerprint =
@@ -285,15 +264,15 @@ with lib;
         auth       required                    ${pkgs.fprintd}/lib/security/pam_fprintd.so
         auth       optional                    pam_permit.so
         auth       required                    pam_env.so
-        auth       [success=ok default=1]      ${pkgs.gnome.gdm}/lib/security/pam_gdm.so
-        auth       optional                    ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so
+        auth       [success=ok default=1]      ${pkgs.gdm}/lib/security/pam_gdm.so
+        auth       optional                    ${pkgs.gnome-keyring}/lib/security/pam_gnome_keyring.so
 
         account    include                     login
 
         password   required                    pam_deny.so
 
         session    include                     login
-        session    optional                    ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so auto_start
+        session    optional                    ${pkgs.gnome-keyring}/lib/security/pam_gnome_keyring.so auto_start
       '';
     };
 
