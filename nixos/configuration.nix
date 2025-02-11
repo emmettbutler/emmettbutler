@@ -223,12 +223,13 @@ with lib;
       zoom
 
       ardour
+      drumgizmo
       gxplugins-lv2
+      lsp-plugins
       pavucontrol
       qpwgraph
       surge
       surge-XT
-      tap-plugins
       inkscape
       scribus
       wine
