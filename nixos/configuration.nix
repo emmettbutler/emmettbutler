@@ -38,6 +38,28 @@ with lib;
     keyMap = "us";
   };
 
+  environment.gnome.excludePackages = with pkgs; [
+    eog
+    epiphany
+    simple-scan
+    totem
+    yelp
+    evince
+    geary
+    seahorse
+
+    gnome-calculator
+    gnome-calendar
+    gnome-characters
+    gnome-clocks
+    gnome-contacts
+    gnome-font-viewer
+    gnome-logs
+    gnome-maps
+    gnome-music
+    pkgs.gnome-photos
+  ];
+
   environment.variables = let
     makePluginPath = format:
       (makeSearchPath format [
@@ -253,7 +275,6 @@ with lib;
   };
   services.gnome.gnome-online-accounts.enable = lib.mkForce false;
   services.gnome.gnome-keyring.enable = lib.mkForce false;
-  services.gnome.core-utilities.enable = false;
 
   security.pam.services.login.fprintAuth = false;
   security.pam.services.gdm-fingerprint =
