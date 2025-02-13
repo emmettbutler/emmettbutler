@@ -445,9 +445,6 @@ vim.g.ale_fixers = {
 -- osc-yank
 vim.api.nvim_set_keymap('n', '<leader>y', '<cmd>OSCYankReg 0<cr>', { noremap = true })
 
--- vim-angry-reviewer
-vim.g.AngryReviewerEnglish = 'american'
-
 -- ack.vim
 vim.cmd([[
   nnoremap <leader>/ :call AckSearch()<CR><c-w><c-p>

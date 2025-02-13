@@ -13,8 +13,6 @@
             myblack = super.python311Packages.callPackage ./nix/black.nix { };
             mypython = pkgs.python311.withPackages
               (p: with p; [ ruff-lsp pkgs.myblack packaging flake8 ]);
-            vim-angry-reviewer =
-              super.callPackage ./nix/vim-angry-reviewer.nix { };
           })
         ];
       };
@@ -65,7 +63,6 @@
                   goyo-vim
                   vim-oscyank
                   ack-vim
-                  vim-angry-reviewer
                   LanguageTool-nvim
                   vim-tmux-clipboard
                 ];
