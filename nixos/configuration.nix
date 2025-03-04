@@ -24,7 +24,9 @@ with lib;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelParams = [ "mem_sleep_default=deep" ];
+  # beware: on framework laptop BIOS >=3.19, setting this to "deep" causes suspend to lock the machine
+  # such that the only way to unlock it is by opening the chassis and powercycling it
+  boot.kernelParams = [ "mem_sleep_default=s2idle" ];
 
   networking.networkmanager.enable = true;
   networking.hostName = "hell";
