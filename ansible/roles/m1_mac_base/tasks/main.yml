@@ -60,9 +60,16 @@
       - 732710998  # enpass
     state: present
 
-- name: Symlink python command
+- name: Symlink python binary
   file:
     src: /opt/homebrew/bin/python3
     dest: /usr/local/bin/python
+    state: link
+  become: true
+
+- name: Symlink pip binary
+  file:
+    src: /opt/homebrew/bin/pip3
+    dest: /usr/local/bin/pip3
     state: link
   become: true

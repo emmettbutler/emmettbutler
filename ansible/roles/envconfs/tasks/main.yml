@@ -46,18 +46,17 @@
 
 - name: Install global python packages
   ansible.builtin.pip:
-    executable: pip3
-    state: forcereinstall
+    executable: /opt/homebrew/bin/pip3
     name:
       - black==23.10.1
       - click==8.0.2
-      - jedi-language-server==0.40.0
+      - jedi-language-server==0.43.1
       - flake8==6.0.0
       - flake8-isort==6.0.0
       - isort==5.11.4
       - pynvim==0.4.3
       - virtualenv==20.26.5
-    extra_args: "-U"
+    extra_args: "-U --break-system-packages"
 
 - name: Check if pyenv conf exists
   stat:
