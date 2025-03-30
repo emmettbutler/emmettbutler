@@ -26,7 +26,7 @@ with lib;
   boot.kernelPackages = pkgs.linuxPackages_latest;
   # beware: on framework laptop BIOS >=3.19, setting this to "deep" causes suspend to lock the machine
   # such that the only way to unlock it is by opening the chassis and powercycling it
-  boot.kernelParams = [ "mem_sleep_default=s2idle" ];
+  boot.kernelParams = [ "mem_sleep_default=s2idle" "acpi=force" ];
 
   networking.networkmanager.enable = true;
   networking.hostName = "hell";
@@ -246,6 +246,7 @@ with lib;
       vlc
       zoom
 
+      airwindows-lv2
       ardour
       drumgizmo
       gxplugins-lv2
