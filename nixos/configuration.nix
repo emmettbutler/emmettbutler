@@ -109,7 +109,8 @@ with lib;
     uid = 1000;
     shell = pkgs.zsh;
     isNormalUser = true;
-    extraGroups = [ "wheel" "docker" "libvirtd" "scanner" "lp" ];
+    extraGroups =
+      [ "wheel" "docker" "libvirtd" "scanner" "lp" "realtime" "audio" ];
   };
   users.users.emmett.subUidRanges = [
     {
@@ -177,6 +178,7 @@ with lib;
         '';
       });
     })
+    (self: super: { wine = super.wineWowPackages.stable; })
   ];
 
   environment.systemPackages = with pkgs;
@@ -258,6 +260,9 @@ with lib;
       inkscape
       scribus
       wine
+      wine64
+      yabridge
+      yabridgectl
 
       neovimeb.neovimEB
       mypkgs.nixzshell
