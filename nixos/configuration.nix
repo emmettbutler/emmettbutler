@@ -19,19 +19,29 @@ with lib;
 
   nixpkgs.config.allowUnfree = true;
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.configurationLimit = 5;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-  # beware: on framework laptop BIOS >=3.19, setting this to "deep" causes suspend to lock the machine
-  # such that the only way to unlock it is by opening the chassis and powercycling it
-  boot.kernelParams = [ "mem_sleep_default=s2idle" "acpi=force" ];
+  boot = {
+    loader = {
+      systemd-boot = {
+        enable = true;
+        configurationLimit = 5;
+      };
+      efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot/efi";
+      };
+    };
+    kernelPackages = pkgs.linuxPackages_latest;
+    # beware: on framework laptop BIOS >=3.19, setting this to "deep" causes suspend to lock the machine
+    # such that the only way to unlock it is by opening the chassis and powercycling it
+    kernelParams = [ "mem_sleep_default=s2idle" "acpi=force" ];
+  };
 
-  networking.networkmanager.enable = true;
-  networking.hostName = "hell";
-  networking.useDHCP = false;
-  networking.firewall.enable = false;
+  networking = {
+    networkmanager.enable = true;
+    hostName = "hell";
+    useDHCP = false;
+    firewall.enable = false;
+  };
 
   time.timeZone = "America/Los_Angeles";
   i18n.defaultLocale = "en_US.UTF-8";
@@ -78,11 +88,15 @@ with lib;
     VST3_PATH = makePluginPath "vst3";
   };
 
-  services.avahi.enable = true;
-  services.avahi.nssmdns4 = true;
-  services.avahi.publish.enable = true;
-  services.avahi.publish.userServices = true;
-  services.avahi.publish.addresses = true;
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    publish = {
+      enable = true;
+      userServices = true;
+      addresses = true;
+    };
+  };
   hardware.pulseaudio.enable = false;
   hardware.sane = {
     enable = true;
@@ -269,20 +283,24 @@ with lib;
       mypkgs.pythonEnv
     ]);
 
-  services.printing.enable = true;
-  services.printing.drivers = [ pkgs.hplipWithPlugin ];
-  services.xserver.enable = true;
+  services.printing = {
+    enable = true;
+    drivers = [ pkgs.hplipWithPlugin ];
+  };
   services.fprintd.enable = true;
   services.pcscd.enable = true;
   services.dbus.packages = [ pkgs.gcr ];
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
   services.xserver = {
+    enable = true;
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
     xkb.layout = "us";
     xkb.variant = "";
   };
-  services.gnome.gnome-online-accounts.enable = lib.mkForce false;
-  services.gnome.gnome-keyring.enable = lib.mkForce true;
+  services.gnome = {
+    gnome-online-accounts.enable = lib.mkForce false;
+    gnome-keyring.enable = lib.mkForce true;
+  };
 
   virtualisation.docker.enable = true;
 
@@ -291,7 +309,16 @@ with lib;
     Defaults    timestamp_type=global
   '';
   security.rtkit.enable = true;
-  security.pam.services.gdm.enableGnomeKeyring = true;
+  security.pam = {
+    services.gdm.enableGnomeKeyring = true;
+    # this silences a warning thrown by yabridge
+    loginLimits = [{
+      domain = "*";
+      type = "-";
+      item = "memlock";
+      value = "infinity";
+    }];
+  };
 
   system.stateVersion = "24.11";
 }
