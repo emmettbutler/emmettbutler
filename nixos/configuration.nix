@@ -174,18 +174,6 @@ with lib;
 
   nixpkgs.overlays = [
     (self: super: {
-      zoomUsFixed = pkgs.zoom-us.overrideAttrs (old: {
-        postFixup = old.postFixup + ''
-          wrapProgram $out/bin/zoom-us --unset XDG_SESSION_TYPE
-        '';
-      });
-      zoom = pkgs.zoom-us.overrideAttrs (old: {
-        postFixup = old.postFixup + ''
-          wrapProgram $out/bin/zoom --unset XDG_SESSION_TYPE
-        '';
-      });
-    })
-    (self: super: {
       slack = super.slack.overrideAttrs (oldAttrs: {
         postInstall = (oldAttrs.postInstall or "") + ''
           sed -i -E "s/^Icon=.+$/Icon=\/home\/emmett\/.icons\/candy-icons-master\/apps\/scalable\/slack.svg/" $out/share/applications/slack.desktop
@@ -260,7 +248,7 @@ with lib;
       obs-studio
       slack
       vlc
-      zoom
+      zoom-us
 
       airwindows-lv2
       ardour
@@ -320,5 +308,5 @@ with lib;
     }];
   };
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 }

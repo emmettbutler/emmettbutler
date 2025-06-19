@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-24.11";
+    nixpkgs.url = "nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
     # https://github.com/NixOS/nix/issues/3978
     neovimeb.url = "path:/home/emmett/git/emmettbutler/nixos/nvimeb";
