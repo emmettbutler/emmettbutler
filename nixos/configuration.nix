@@ -214,6 +214,7 @@ with lib;
       git
       gitAndTools.delta
       gnomeExtensions.vitals
+      gnomeExtensions.user-themes
       gnumake
       gnupg
       hyperfine
