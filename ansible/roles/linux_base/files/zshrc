@@ -22,15 +22,6 @@ alias pipu="pip install --upgrade --upgrade-strategy only-if-needed"
 alias ggc="git -c commit.gpgsign=false commit "
 alias ggl="git -c commit.gpgsign=false pull "
 
-function ddtracepy-testrunner {
-    docker run --network host --userns=host --rm -w /root/project -v $PWD/:/root/project \
-        -v $HOME/git/emmettbutler/ansible/roles/linux_base/files/zshrc:/root/.zshrc \
-        -it ghcr.io/datadog/dd-trace-py/testrunner \
-        bash -c "rm /etc/apt/sources.list.d/mariadb.list && apt-get update && apt-get install -y zsh && wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | \
-            zsh || true && git config --global --add safe.directory /root/project && pip install riot==0.19.0 hatch==1.7.0 hatch-containers==0.7.0 \
-            && zsh -c 'export IN_DOCKER_SHELL=1; zsh -i'"
-}
-
 function zshssh {
     # TODO make this better
     # https://github.com/romkatv/dotfiles-public/blob/0c9998c34a2769543fa825cc851dfcac4b6a0fcb/bin/ssh.zsh
