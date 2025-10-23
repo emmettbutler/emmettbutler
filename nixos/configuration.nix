@@ -185,6 +185,7 @@ with lib;
 
   environment.systemPackages = with pkgs;
     let
+      unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
       mypkgs = with pkgs; {
         pythonEnv = python311.withPackages (p: with p; [ psutil ]);
         nixzshell = stdenvNoCC.mkDerivation {
@@ -258,6 +259,7 @@ with lib;
       lsp-plugins
       pavucontrol
       qpwgraph
+      unstable.shotcut
       surge
       surge-XT
       inkscape
