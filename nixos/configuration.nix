@@ -188,19 +188,6 @@ with lib;
       unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
       mypkgs = with pkgs; {
         pythonEnv = python311.withPackages (p: with p; [ psutil ]);
-        nixzshell = stdenvNoCC.mkDerivation {
-          name = "nix-zshell";
-          script = substituteAll {
-            src = ./nix-zshell;
-            inherit zsh bashInteractive;
-          };
-          phases = [ "buildPhase" ];
-          buildPhase = ''
-            mkdir -p $out/bin
-            cat $script > $out/bin/nix-zshell
-            chmod +x $out/bin/nix-zshell
-          '';
-        };
       };
     in ([
       ack
@@ -213,7 +200,6 @@ with lib;
       fzf
       gh
       git
-      gitAndTools.delta
       gnomeExtensions.vitals
       gnomeExtensions.user-themes
       gnumake
@@ -224,7 +210,7 @@ with lib;
       lf
       nix-direnv
       openssl
-      pinentry
+      pinentry-gnome3
       gnome-terminal
       gnome-tweaks
       rsync
@@ -263,6 +249,7 @@ with lib;
       surge
       surge-XT
       inkscape
+      samplv1
       scribus
       wine
       wine64
@@ -270,7 +257,6 @@ with lib;
       yabridgectl
 
       neovimeb.neovimEB
-      mypkgs.nixzshell
       mypkgs.pythonEnv
     ]);
 
@@ -311,5 +297,5 @@ with lib;
     }];
   };
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "25.11";
 }

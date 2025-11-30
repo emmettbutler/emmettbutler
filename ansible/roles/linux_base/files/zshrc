@@ -37,7 +37,6 @@ function zshssh {
 
 if [[ $IS_NIXOS ]]; then
     touch ~/.zshrc
-    export NIX_BUILD_SHELL=nix-zshell
 
     function updateallflakes {
         for lockfile in $(find /home -name flake.lock 2>/dev/null)
@@ -60,6 +59,7 @@ if [[ $IS_NIXOS ]]; then
     }
 
     alias scantotiff="scanimage -d 'hpaio:/net/DeskJet_3700_series?ip=10.0.0.35' --resolution 300dpi --mode Gray --output-file "
+    alias nix-shell='nix-shell --run $SHELL'
 else
     export PATH=$PATH:/sbin
     export PATH=$PATH:$HOME/opt/bin
