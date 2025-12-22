@@ -36,6 +36,7 @@
       - tmux
       - git
       - vlc
+      - crane
       - keychain
       - build-essential
       - wmctrl

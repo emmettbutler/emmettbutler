@@ -40,11 +40,12 @@
       - mas
       - tmux
       - lf
+      - crane
       - neovim
       - rust
       - ruff
       - codeowners
-      - python@3.13
+      - python@3.14
     state: present
 
 - name: Install casks

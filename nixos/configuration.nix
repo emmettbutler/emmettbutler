@@ -193,6 +193,7 @@ with lib;
       ack
       ansible
       cargo
+      crane
       direnv
       dnsutils
       docker-compose
