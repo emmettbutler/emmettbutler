@@ -242,16 +242,18 @@ with lib;
       airwindows-lv2
       ardour
       drumgizmo
+      guitarix
       gxplugins-lv2
+      inkscape
       lsp-plugins
       pavucontrol
       qpwgraph
       unstable.shotcut
       surge
       surge-XT
-      inkscape
       samplv1
       scribus
+      tamgamp-lv2
       wine
       wine64
       yabridge
