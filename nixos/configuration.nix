@@ -192,6 +192,7 @@ with lib;
     in ([
       ack
       ansible
+      ast-grep
       cargo
       crane
       direnv
@@ -228,14 +229,10 @@ with lib;
       yq
       zip
 
-      discord
       enpass
-      firefox
       gimp
       google-chrome
       handbrake
-      obs-studio
-      slack
       vlc
       zoom-us
 

@@ -37,15 +37,16 @@
 - name: Install brew packages
   homebrew:
     name:
-      - mas
-      - tmux
-      - lf
-      - crane
-      - neovim
-      - rust
-      - ruff
+      - ast-grep
       - codeowners
+      - crane
+      - lf
+      - mas
+      - neovim
       - python@3.14
+      - ruff
+      - rust
+      - tmux
     state: present
 
 - name: Install casks
