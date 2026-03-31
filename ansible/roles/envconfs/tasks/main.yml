@@ -30,7 +30,7 @@
 
 - name: Copy nvim confs
   copy:
-    src: "{{ role_path }}/files/vim/"
+    src: "{{ role_path }}/files/nvim/"
     dest: "{{ homedir }}/.config/nvim"
     owner: "{{ username }}"
     group: "{{ usergrp }}"
@@ -43,41 +43,6 @@
     owner: "{{ username }}"
     group: "{{ usergrp }}"
     mode: u+x
-
-- name: Install global python packages
-  ansible.builtin.pip:
-    executable: /opt/homebrew/bin/pip3
-    name:
-      - black==23.10.1
-      - click==8.0.2
-      - jedi-language-server==0.43.1
-      - flake8==6.0.0
-      - flake8-isort==6.0.0
-      - isort==5.11.4
-      - pynvim==0.4.3
-      - virtualenv==20.26.5
-    extra_args: "-U --break-system-packages"
-
-- name: Check if pyenv conf exists
-  stat:
-    path: "{{ homedir }}/.pyenv"
-  register: pyenvconf
-
-- name: Install pyenv
-  git:
-    repo: https://github.com/pyenv/pyenv.git
-    dest: "{{ homedir }}/.pyenv"
-    update: yes
-
-- name: Install pyenv-virtualenv
-  git:
-    repo: https://github.com/pyenv/pyenv-virtualenv.git
-    dest: "{{ homedir }}/.pyenv/plugins/pyenv-virtualenv"
-    update: no
-  when: not pyenvconf.stat.exists
-
-- name: Install Pyenv version 3.13
-  command: pyenv install -s 3.13.1
 
 - name: Install oh-my-zsh
   shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"

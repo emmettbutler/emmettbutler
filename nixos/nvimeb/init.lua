@@ -201,7 +201,7 @@ vim.o.statusline = table.concat(status_line)
 -- don't run this section on NixOS
 if not string.find(vim.loop.os_uname().version, "NixOS") then
 
-    vim.g.python3_host_prog = "/usr/bin/python3"
+    vim.g.python3_host_prog = "/Users/emmett.butler/.venv_nvim/bin/python"
 
     -- Options for all my plugins
     -- Install with the :PlugInstall vim command
