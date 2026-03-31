@@ -1,4 +1,6 @@
 return {
+	{ "nvim-tree/nvim-web-devicons", opts = {} },
+
   -- Telescope configuration (extends NvChad defaults)
   {
     "nvim-telescope/telescope.nvim",
