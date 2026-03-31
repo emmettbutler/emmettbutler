@@ -4,7 +4,7 @@ local map = vim.keymap.set
 
 -- Your custom mappings
 map("n", ";", ":", { desc = "CMD enter command mode", nowait = true })
-map("i", "jk", "<ESC>", { desc = "Exit insert mode" })
+map("i", "jj", "<ESC>", { desc = "Exit insert mode" })
 map("n", "<leader>bd", "<cmd>bd<CR>", { desc = "Close buffer" })
 map("n", "<leader>x", "<cmd>bd<CR>", { desc = "Close buffer" })
 map("n", "<leader>ba", "<cmd>%bd|e#<cr>", { desc = "Close all but current" })
