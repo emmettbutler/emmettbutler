@@ -40,13 +40,26 @@
       - ast-grep
       - codeowners
       - crane
+      - golines
       - lf
+      - luarocks
       - mas
       - neovim
+      - node
+      - prettier
+      - pyright
       - python@3.14
+      - python-lsp-server
+      - python-packaging
       - ruff
       - rust
+      - ripgrep
+      - shfmt
+      - stylua
+      - sqlfluff
       - tmux
+      - tree-sitter
+      - yamlfmt
     state: present
 
 - name: Install casks
