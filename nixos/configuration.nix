@@ -243,6 +243,7 @@ with lib;
       gxplugins-lv2
       inkscape
       lsp-plugins
+      kmetronome
       pavucontrol
       qpwgraph
       unstable.shotcut
