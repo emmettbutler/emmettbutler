@@ -87,7 +87,11 @@ with lib;
     VST_PATH = makePluginPath "vst";
     VST3_PATH = makePluginPath "vst3";
   };
-
+  services.plex = {
+    enable = true;
+    openFirewall = true;
+    user = "emmett";
+  };
   services.avahi = {
     enable = true;
     nssmdns4 = true;
@@ -215,10 +219,13 @@ with lib;
       pinentry-gnome3
       gnome-terminal
       gnome-tweaks
+      radarr
       rsync
       rustc
+      sabnzbd
       shellcheck
       shfmt
+      sonarr
       sops
       stow
       tmux
