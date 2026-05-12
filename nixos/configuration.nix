@@ -41,6 +41,14 @@ with lib;
     hostName = "hell";
     useDHCP = false;
     firewall.enable = false;
+    extraHosts = ''
+      127.0.0.1 pandaemonium
+      127.0.0.1 plex.pandaemonium
+      127.0.0.1 sonarr.pandaemonium
+      127.0.0.1 radarr.pandaemonium
+      127.0.0.1 overseerr.pandaemonium
+      127.0.0.1 sabnzbd.pandaemonium
+    '';
   };
 
   time.timeZone = "America/Los_Angeles";
@@ -95,7 +103,7 @@ with lib;
 
   services.nginx = {
     enable = true;
-    virtualHosts."plex.localhost" = {
+    virtualHosts."plex.pandaemonium" = {
       locations."/".extraConfig = ''
         proxy_pass    http://127.0.0.1:32400;
       '';
@@ -114,22 +122,22 @@ with lib;
         proxy_buffering off;
       '';
     };
-    virtualHosts."sabnzbd.localhost" = {
+    virtualHosts."sabnzbd.pandaemonium" = {
       locations."/".extraConfig = ''
         proxy_pass    http://127.0.0.1:8080;
       '';
     };
-    virtualHosts."radarr.localhost" = {
+    virtualHosts."radarr.pandaemonium" = {
       locations."/".extraConfig = ''
         proxy_pass    http://127.0.0.1:7878;
       '';
     };
-    virtualHosts."sonarr.localhost" = {
+    virtualHosts."sonarr.pandaemonium" = {
       locations."/".extraConfig = ''
         proxy_pass    http://127.0.0.1:8989;
       '';
     };
-    virtualHosts."overseerr.localhost" = {
+    virtualHosts."overseerr.pandaemonium" = {
       locations."/".extraConfig = ''
         proxy_pass    http://127.0.0.1:5055;
       '';
@@ -192,12 +200,36 @@ with lib;
       '';
       wantedBy = [ "default.target" ];
     };
-    tunnel = {
-      description = "Cloudflare Tunnel";
+    tunnel-overseerr = {
+      description = "Cloudflare tunnel exposing Overseerr";
       wantedBy = [ "default.target" ];
       script = ''
         /run/current-system/sw/bin/cloudflared tunnel login
         /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/emmett/.tunneltoken-overseerr`
+      '';
+    };
+    tunnel-plex = {
+      description = "Cloudflare tunnel exposing Plex";
+      wantedBy = [ "default.target" ];
+      script = ''
+        /run/current-system/sw/bin/cloudflared tunnel login
+        /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/emmett/.tunneltoken-plex`
+      '';
+    };
+    tunnel-sonarr = {
+      description = "Cloudflare tunnel exposing Sonarr";
+      wantedBy = [ "default.target" ];
+      script = ''
+        /run/current-system/sw/bin/cloudflared tunnel login
+        /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/emmett/.tunneltoken-sonarr`
+      '';
+    };
+    tunnel-radarr = {
+      description = "Cloudflare tunnel exposing Radarr";
+      wantedBy = [ "default.target" ];
+      script = ''
+        /run/current-system/sw/bin/cloudflared tunnel login
+        /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/emmett/.tunneltoken-radarr`
       '';
     };
   };
@@ -278,7 +310,6 @@ with lib;
       ansible
       ast-grep
       cargo
-      cloudflared
       crane
       direnv
       dnsutils
@@ -300,13 +331,10 @@ with lib;
       pinentry-gnome3
       gnome-terminal
       gnome-tweaks
-      radarr
       rsync
       rustc
-      sabnzbd
       shellcheck
       shfmt
-      sonarr
       stow
       tmux
       tmux-xpanes
@@ -315,6 +343,11 @@ with lib;
       xclip
       yq
       zip
+
+      cloudflared
+      radarr
+      sabnzbd
+      sonarr
 
       enpass
       gimp
