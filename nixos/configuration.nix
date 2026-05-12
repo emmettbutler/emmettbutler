@@ -87,11 +87,60 @@ with lib;
     VST_PATH = makePluginPath "vst";
     VST3_PATH = makePluginPath "vst3";
   };
+  security.acme = {
+    acceptTerms = true;
+    defaults = { email = "emmett.butler321@gmail.com"; };
+  };
+  services.openssh.enable = true;
+
+  services.nginx = {
+    enable = true;
+    virtualHosts."plex.localhost" = {
+      locations."/".extraConfig = ''
+        proxy_pass    http://127.0.0.1:32400;
+      '';
+      extraConfig = ''
+        proxy_set_header Host "127.0.0.1:32400";
+        proxy_set_header Referer "";
+        proxy_set_header Origin "http://127.0.0.1:32400";
+            proxy_set_header Sec-WebSocket-Extensions $http_sec_websocket_extensions;
+        proxy_set_header Sec-WebSocket-Key $http_sec_websocket_key;
+        proxy_set_header Sec-WebSocket-Version $http_sec_websocket_version;
+
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_redirect off;
+        proxy_buffering off;
+      '';
+    };
+    virtualHosts."sabnzbd.localhost" = {
+      locations."/".extraConfig = ''
+        proxy_pass    http://127.0.0.1:8080;
+      '';
+    };
+    virtualHosts."radarr.localhost" = {
+      locations."/".extraConfig = ''
+        proxy_pass    http://127.0.0.1:7878;
+      '';
+    };
+    virtualHosts."sonarr.localhost" = {
+      locations."/".extraConfig = ''
+        proxy_pass    http://127.0.0.1:8989;
+      '';
+    };
+    virtualHosts."overseerr.localhost" = {
+      locations."/".extraConfig = ''
+        proxy_pass    http://127.0.0.1:5055;
+      '';
+    };
+  };
   services.plex = {
     enable = true;
     openFirewall = true;
     user = "emmett";
   };
+  services.overseerr = { enable = true; };
   services.avahi = {
     enable = true;
     nssmdns4 = true;
@@ -113,13 +162,44 @@ with lib;
     pulse.enable = true;
     jack.enable = true;
   };
-  systemd.user.services.raop = {
-    description =
-      "Load and run Pipewire's RAOP discovery module, allowing audio output via AirTunes";
-    script = ''
-      /run/current-system/sw/bin/pw-cli -m load-module libpipewire-module-raop-discover
-    '';
-    wantedBy = [ "default.target" ];
+  systemd.user.services = {
+    raop = {
+      description =
+        "Load and run Pipewire's RAOP discovery module, allowing audio output via AirTunes";
+      script = ''
+        /run/current-system/sw/bin/pw-cli -m load-module libpipewire-module-raop-discover
+      '';
+      wantedBy = [ "default.target" ];
+    };
+    sonarr = {
+      description = "TV show NZB finder";
+      script = ''
+        /run/current-system/sw/bin/Sonarr
+      '';
+      wantedBy = [ "default.target" ];
+    };
+    radarr = {
+      description = "Movie NZB finder";
+      script = ''
+        /run/current-system/sw/bin/Radarr
+      '';
+      wantedBy = [ "default.target" ];
+    };
+    sabnzbd = {
+      description = "NZB downloader";
+      script = ''
+        /run/current-system/sw/bin/sabnzbd
+      '';
+      wantedBy = [ "default.target" ];
+    };
+    tunnel = {
+      description = "Cloudflare Tunnel";
+      wantedBy = [ "default.target" ];
+      script = ''
+        /run/current-system/sw/bin/cloudflared tunnel login
+        /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/emmett/.tunneltoken-overseerr`
+      '';
+    };
   };
 
   users.groups.emmett.gid = 1000;
@@ -198,6 +278,7 @@ with lib;
       ansible
       ast-grep
       cargo
+      cloudflared
       crane
       direnv
       dnsutils
@@ -226,7 +307,6 @@ with lib;
       shellcheck
       shfmt
       sonarr
-      sops
       stow
       tmux
       tmux-xpanes
