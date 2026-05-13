@@ -42,12 +42,12 @@ with lib;
     useDHCP = false;
     firewall.enable = false;
     extraHosts = ''
-      127.0.0.1 pandaemonium
-      127.0.0.1 plex.pandaemonium
-      127.0.0.1 sonarr.pandaemonium
-      127.0.0.1 radarr.pandaemonium
-      127.0.0.1 overseerr.pandaemonium
-      127.0.0.1 sabnzbd.pandaemonium
+      10.0.0.41 pandaemonium
+      10.0.0.41 plex.pandaemonium
+      10.0.0.41 sonarr.pandaemonium
+      10.0.0.41 radarr.pandaemonium
+      10.0.0.41 overseerr.pandaemonium
+      10.0.0.41 sabnzbd.pandaemonium
     '';
   };
 
@@ -95,60 +95,8 @@ with lib;
     VST_PATH = makePluginPath "vst";
     VST3_PATH = makePluginPath "vst3";
   };
-  security.acme = {
-    acceptTerms = true;
-    defaults = { email = "emmett.butler321@gmail.com"; };
-  };
   services.openssh.enable = true;
 
-  services.nginx = {
-    enable = true;
-    virtualHosts."plex.pandaemonium" = {
-      locations."/".extraConfig = ''
-        proxy_pass    http://127.0.0.1:32400;
-      '';
-      extraConfig = ''
-        proxy_set_header Host "127.0.0.1:32400";
-        proxy_set_header Referer "";
-        proxy_set_header Origin "http://127.0.0.1:32400";
-            proxy_set_header Sec-WebSocket-Extensions $http_sec_websocket_extensions;
-        proxy_set_header Sec-WebSocket-Key $http_sec_websocket_key;
-        proxy_set_header Sec-WebSocket-Version $http_sec_websocket_version;
-
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "Upgrade";
-        proxy_redirect off;
-        proxy_buffering off;
-      '';
-    };
-    virtualHosts."sabnzbd.pandaemonium" = {
-      locations."/".extraConfig = ''
-        proxy_pass    http://127.0.0.1:8080;
-      '';
-    };
-    virtualHosts."radarr.pandaemonium" = {
-      locations."/".extraConfig = ''
-        proxy_pass    http://127.0.0.1:7878;
-      '';
-    };
-    virtualHosts."sonarr.pandaemonium" = {
-      locations."/".extraConfig = ''
-        proxy_pass    http://127.0.0.1:8989;
-      '';
-    };
-    virtualHosts."overseerr.pandaemonium" = {
-      locations."/".extraConfig = ''
-        proxy_pass    http://127.0.0.1:5055;
-      '';
-    };
-  };
-  services.plex = {
-    enable = true;
-    openFirewall = true;
-    user = "emmett";
-  };
-  services.overseerr = { enable = true; };
   services.avahi = {
     enable = true;
     nssmdns4 = true;
@@ -178,59 +126,6 @@ with lib;
         /run/current-system/sw/bin/pw-cli -m load-module libpipewire-module-raop-discover
       '';
       wantedBy = [ "default.target" ];
-    };
-    sonarr = {
-      description = "TV show NZB finder";
-      script = ''
-        /run/current-system/sw/bin/Sonarr
-      '';
-      wantedBy = [ "default.target" ];
-    };
-    radarr = {
-      description = "Movie NZB finder";
-      script = ''
-        /run/current-system/sw/bin/Radarr
-      '';
-      wantedBy = [ "default.target" ];
-    };
-    sabnzbd = {
-      description = "NZB downloader";
-      script = ''
-        /run/current-system/sw/bin/sabnzbd
-      '';
-      wantedBy = [ "default.target" ];
-    };
-    tunnel-overseerr = {
-      description = "Cloudflare tunnel exposing Overseerr";
-      wantedBy = [ "default.target" ];
-      script = ''
-        /run/current-system/sw/bin/cloudflared tunnel login
-        /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/emmett/.tunneltoken-overseerr`
-      '';
-    };
-    tunnel-plex = {
-      description = "Cloudflare tunnel exposing Plex";
-      wantedBy = [ "default.target" ];
-      script = ''
-        /run/current-system/sw/bin/cloudflared tunnel login
-        /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/emmett/.tunneltoken-plex`
-      '';
-    };
-    tunnel-sonarr = {
-      description = "Cloudflare tunnel exposing Sonarr";
-      wantedBy = [ "default.target" ];
-      script = ''
-        /run/current-system/sw/bin/cloudflared tunnel login
-        /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/emmett/.tunneltoken-sonarr`
-      '';
-    };
-    tunnel-radarr = {
-      description = "Cloudflare tunnel exposing Radarr";
-      wantedBy = [ "default.target" ];
-      script = ''
-        /run/current-system/sw/bin/cloudflared tunnel login
-        /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/emmett/.tunneltoken-radarr`
-      '';
     };
   };
 
@@ -343,11 +238,6 @@ with lib;
       xclip
       yq
       zip
-
-      cloudflared
-      radarr
-      sabnzbd
-      sonarr
 
       enpass
       gimp
