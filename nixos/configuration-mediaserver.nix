@@ -32,6 +32,7 @@
   };
 
   services.openssh = { enable = true; };
+  systemd.tmpfiles.rules = [ "f /var/lib/systemd/linger/nixos" ];
 
   services.nginx = {
     enable = true;
