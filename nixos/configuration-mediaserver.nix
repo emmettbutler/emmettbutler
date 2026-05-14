@@ -10,9 +10,11 @@
 
   time.timeZone = "America/Los_Angeles";
 
-  users.users.nixos = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+  users.users = {
+    nixos = {
+      isNormalUser = true;
+      extraGroups = [ "wheel" ];
+    };
   };
 
   networking = {
@@ -29,7 +31,7 @@
     '';
   };
 
-  services.openssh.enable = true;
+  services.openssh = { enable = true; };
 
   services.nginx = {
     enable = true;
