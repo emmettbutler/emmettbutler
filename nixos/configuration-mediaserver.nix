@@ -13,13 +13,14 @@
   users.users = {
     nixos = {
       isNormalUser = true;
-      extraGroups = [ "wheel" ];
+      extraGroups = [ "wheel" "docker" ];
     };
   };
 
   networking = {
     networkmanager.enable = true;
     hostName = "pandaemonium";
+    useDHCP = false;
     firewall.enable = false;
     extraHosts = ''
       127.0.0.1 pandaemonium
@@ -28,6 +29,8 @@
       127.0.0.1 radarr.pandaemonium
       127.0.0.1 overseerr.pandaemonium
       127.0.0.1 sabnzbd.pandaemonium
+      127.0.0.1 stats.pandaemonium
+      127.0.0.1 wizarr.pandaemonium
     '';
   };
 
@@ -55,6 +58,16 @@
         proxy_buffering off;
       '';
     };
+    virtualHosts."stats.pandaemonium" = {
+      locations."/".extraConfig = ''
+        proxy_pass    http://127.0.0.1:8181;
+      '';
+    };
+    virtualHosts."wizarr.pandaemonium" = {
+      locations."/".extraConfig = ''
+        proxy_pass    http://127.0.0.1:5690;
+      '';
+    };
     virtualHosts."sabnzbd.pandaemonium" = {
       locations."/".extraConfig = ''
         proxy_pass    http://127.0.0.1:8080;
@@ -76,12 +89,28 @@
       '';
     };
   };
-  services.plex = {
-    enable = true;
-    openFirewall = true;
-    user = "nixos";
+  virtualisation.oci-containers.containers."wizarr" = {
+    image = "ghcr.io/wizarrrr/wizarr";
+    environment = {
+      "DISABLE_BUILTIN_AUTH" = "false";
+      "PGID" = "1000";
+      "PUID" = "1000";
+      "TZ" = "US/Pacific";
+    };
+    volumes = [ "/home/nixos/wizarr:/data:rw" ];
+    ports = [ "5690:5690/tcp" ];
+    log-driver = "journald";
+    extraOptions = [ "--network=host" ];
   };
-  services.overseerr = { enable = true; };
+  services = {
+    plex = {
+      enable = true;
+      openFirewall = true;
+      user = "nixos";
+    };
+    overseerr = { enable = true; };
+    tautulli = { enable = true; };
+  };
 
   systemd.user.services = {
     sonarr = {
@@ -119,6 +148,14 @@
       script = ''
         /run/current-system/sw/bin/cloudflared tunnel login
         /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-plex`
+      '';
+    };
+    tunnel-wizarr = {
+      description = "Cloudflare tunnel exposing Wizarr";
+      wantedBy = [ "default.target" ];
+      script = ''
+        /run/current-system/sw/bin/cloudflared tunnel login
+        /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-wizarr`
       '';
     };
     tunnel-sonarr = {
