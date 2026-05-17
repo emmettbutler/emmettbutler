@@ -260,6 +260,17 @@
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-radarr`
         '';
       };
+      tunnel-ssh = {
+        # client side needs the following in ssh config:
+        # Host sh.pandaemonium.biz
+        # ProxyCommand /run/current-system/sw/bin/cloudflared access ssh --hostname %h
+        description = "Cloudflare tunnel exposing SSH";
+        wantedBy = [ "default.target" ];
+        script = ''
+          /run/current-system/sw/bin/cloudflared tunnel login
+          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-ssh`
+        '';
+      };
     };
   };
   environment.systemPackages = with pkgs;

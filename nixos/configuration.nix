@@ -208,6 +208,7 @@ with lib;
       ansible
       ast-grep
       cargo
+      cloudflared
       crane
       direnv
       dnsutils
