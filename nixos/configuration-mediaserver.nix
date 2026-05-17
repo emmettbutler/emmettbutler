@@ -149,67 +149,117 @@
     tautulli = { enable = true; };
   };
 
-  systemd.user.services = {
-    sonarr = {
-      description = "TV show NZB finder";
-      script = ''
-        /run/current-system/sw/bin/Sonarr
-      '';
-      wantedBy = [ "default.target" ];
+  systemd = {
+    tmpfiles.settings = {
+      "media-mount-point" = {
+        "/var/lib/plex/media" = {
+          d = {
+            user = "nixos";
+            group = "users";
+            mode = "706";
+          };
+        };
+      };
+      "tdarr-directories" = {
+        "/var/lib/tdarr" = {
+          d = {
+            user = "root";
+            group = "root";
+            mode = "757";
+          };
+        };
+        "/transcode_cache" = {
+          d = {
+            user = "nixos";
+            group = "1000";
+            mode = "755";
+          };
+        };
+        "/var/lib/tdarr/server" = {
+          d = {
+            user = "nixos";
+            group = "1000";
+            mode = "757";
+          };
+        };
+        "/var/lib/tdarr/logs" = {
+          d = {
+            user = "nixos";
+            group = "1000";
+            mode = "757";
+          };
+        };
+        "/var/lib/tdarr/configs" = {
+          d = {
+            user = "nixos";
+            group = "1000";
+            mode = "757";
+          };
+        };
+      };
     };
-    radarr = {
-      description = "Movie NZB finder";
-      script = ''
-        /run/current-system/sw/bin/Radarr
-      '';
-      wantedBy = [ "default.target" ];
-    };
-    sabnzbd = {
-      description = "NZB downloader";
-      script = ''
-        /run/current-system/sw/bin/sabnzbd
-      '';
-      wantedBy = [ "default.target" ];
-    };
-    tunnel-overseerr = {
-      description = "Cloudflare tunnel exposing Overseerr";
-      wantedBy = [ "default.target" ];
-      script = ''
-        /run/current-system/sw/bin/cloudflared tunnel login
-        /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-overseerr`
-      '';
-    };
-    tunnel-plex = {
-      description = "Cloudflare tunnel exposing Plex";
-      wantedBy = [ "default.target" ];
-      script = ''
-        /run/current-system/sw/bin/cloudflared tunnel login
-        /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-plex`
-      '';
-    };
-    tunnel-wizarr = {
-      description = "Cloudflare tunnel exposing Wizarr";
-      wantedBy = [ "default.target" ];
-      script = ''
-        /run/current-system/sw/bin/cloudflared tunnel login
-        /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-wizarr`
-      '';
-    };
-    tunnel-sonarr = {
-      description = "Cloudflare tunnel exposing Sonarr";
-      wantedBy = [ "default.target" ];
-      script = ''
-        /run/current-system/sw/bin/cloudflared tunnel login
-        /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-sonarr`
-      '';
-    };
-    tunnel-radarr = {
-      description = "Cloudflare tunnel exposing Radarr";
-      wantedBy = [ "default.target" ];
-      script = ''
-        /run/current-system/sw/bin/cloudflared tunnel login
-        /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-radarr`
-      '';
+    user.services = {
+      sonarr = {
+        description = "TV show NZB finder";
+        script = ''
+          /run/current-system/sw/bin/Sonarr
+        '';
+        wantedBy = [ "default.target" ];
+      };
+      radarr = {
+        description = "Movie NZB finder";
+        script = ''
+          /run/current-system/sw/bin/Radarr
+        '';
+        wantedBy = [ "default.target" ];
+      };
+      sabnzbd = {
+        description = "NZB downloader";
+        script = ''
+          /run/current-system/sw/bin/sabnzbd
+        '';
+        wantedBy = [ "default.target" ];
+      };
+      tunnel-overseerr = {
+        description = "Cloudflare tunnel exposing Overseerr";
+        wantedBy = [ "default.target" ];
+        script = ''
+          /run/current-system/sw/bin/cloudflared tunnel login
+          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-overseerr`
+        '';
+      };
+      tunnel-plex = {
+        description = "Cloudflare tunnel exposing Plex";
+        wantedBy = [ "default.target" ];
+        script = ''
+          /run/current-system/sw/bin/cloudflared tunnel login
+          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-plex`
+        '';
+      };
+      tunnel-wizarr = {
+        description = "Cloudflare tunnel exposing Wizarr";
+        wantedBy = [ "default.target" ];
+        script = ''
+          /run/current-system/sw/bin/cloudflared tunnel login
+          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-wizarr`
+        '';
+      };
+      tunnel-sonarr = {
+        description = "Cloudflare tunnel exposing Sonarr";
+        wantedBy = [ "default.target" ];
+        script = ''
+          /run/current-system/sw/bin/cloudflared tunnel login
+          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-sonarr`
+        '';
+      };
+      tunnel-radarr = {
+        description = "Cloudflare tunnel exposing Radarr";
+        wantedBy = [ "default.target" ];
+        script = ''
+          /run/current-system/sw/bin/cloudflared tunnel login
+          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-radarr`
+        '';
+      };
     };
   };
   environment.systemPackages = with pkgs;
