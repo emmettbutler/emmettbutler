@@ -31,6 +31,7 @@
       127.0.0.1 sabnzbd.pandaemonium
       127.0.0.1 stats.pandaemonium
       127.0.0.1 wizarr.pandaemonium
+      127.0.0.1 tdarr.pandaemonium
     '';
   };
 
@@ -68,6 +69,11 @@
         proxy_pass    http://127.0.0.1:5690;
       '';
     };
+    virtualHosts."tdarr.pandaemonium" = {
+      locations."/".extraConfig = ''
+        proxy_pass    http://127.0.0.1:8265;
+      '';
+    };
     virtualHosts."sabnzbd.pandaemonium" = {
       locations."/".extraConfig = ''
         proxy_pass    http://127.0.0.1:8080;
@@ -102,6 +108,37 @@
     log-driver = "journald";
     extraOptions = [ "--network=host" ];
   };
+  virtualisation.oci-containers.containers."tdarr" = {
+    image = "ghcr.io/haveagitgat/tdarr:latest";
+    environment = {
+      "PGID" = "1000";
+      "PUID" = "1000";
+      "TZ" = "US/Pacific";
+      "UMASK_SET" = "002";
+      "auth" = "false";
+      "cronPluginUpdate" = "";
+      "ffmpegVersion" = "7";
+      "inContainer" = "true";
+      "internalNode" = "true";
+      "maxLogSizeMB" = "10";
+      "nodeName" = "MyInternalNode";
+      "openBrowser" = "true";
+      "serverIP" = "0.0.0.0";
+      "serverPort" = "8266";
+      "webUIPort" = "8265";
+    };
+    volumes = [
+      "/var/lib/tdarr/configs:/app/configs:rw"
+      "/var/lib/tdarr/logs:/app/logs:rw"
+      "/var/lib/tdarr/server:/app/server:rw"
+      "/transcode_cache:/temp:rw"
+      "/var/lib/plex/media:/media:rw"
+    ];
+    ports = [ "8265:8265/tcp" "8266:8266/tcp" ];
+    log-driver = "journald";
+    extraOptions = [ "--network=host" ];
+  };
+
   services = {
     plex = {
       enable = true;
