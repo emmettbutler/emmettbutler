@@ -121,14 +121,26 @@ with lib;
     pulse.enable = true;
     jack.enable = true;
   };
-  systemd.user.services = {
-    raop = {
-      description =
-        "Load and run Pipewire's RAOP discovery module, allowing audio output via AirTunes";
-      script = ''
-        /run/current-system/sw/bin/pw-cli -m load-module libpipewire-module-raop-discover
-      '';
-      wantedBy = [ "default.target" ];
+  systemd = {
+    services = {
+      vpn = {
+        description = "VPN Connection";
+        script = ''
+          /run/current-system/sw/bin/wgnord l `cat /home/emmett/.nordkey`
+          /run/current-system/sw/bin/wgnord c Seattle
+        '';
+        wantedBy = [ "default.target" ];
+      };
+    };
+    user.services = {
+      raop = {
+        description =
+          "Load and run Pipewire's RAOP discovery module, allowing audio output via AirTunes";
+        script = ''
+          /run/current-system/sw/bin/pw-cli -m load-module libpipewire-module-raop-discover
+        '';
+        wantedBy = [ "default.target" ];
+      };
     };
   };
 
@@ -226,6 +238,7 @@ with lib;
       jq
       lf
       nix-direnv
+      openresolv
       openssl
       pinentry-gnome3
       gnome-terminal
@@ -239,6 +252,8 @@ with lib;
       tmux-xpanes
       unzip
       wget
+      wgnord
+      wireguard-tools
       xclip
       yq
       zip

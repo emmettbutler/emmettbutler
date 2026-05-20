@@ -36,7 +36,6 @@
   };
 
   services.openssh = { enable = true; };
-  systemd.tmpfiles.rules = [ "f /var/lib/systemd/linger/nixos" ];
 
   services.nginx = {
     enable = true;
@@ -150,52 +149,81 @@
   };
 
   systemd = {
-    tmpfiles.settings = {
-      "media-mount-point" = {
-        "/var/lib/plex/media" = {
-          d = {
-            user = "nixos";
-            group = "users";
-            mode = "706";
+    tmpfiles = {
+      rules = [ "f /var/lib/systemd/linger/nixos" ];
+      settings = {
+        "media-mount-point" = {
+          "/var/lib/plex/media" = {
+            d = {
+              user = "nixos";
+              group = "users";
+              mode = "706";
+            };
+          };
+        };
+        "vpn-directories" = {
+          "/etc/wireguard" = {
+            d = {
+              user = "root";
+              group = "root";
+              mode = "757";
+            };
+          };
+          "/var/lib/wgnord" = {
+            d = {
+              user = "root";
+              group = "root";
+              mode = "757";
+            };
+          };
+        };
+        "tdarr-directories" = {
+          "/var/lib/tdarr" = {
+            d = {
+              user = "root";
+              group = "root";
+              mode = "757";
+            };
+          };
+          "/transcode_cache" = {
+            d = {
+              user = "nixos";
+              group = "1000";
+              mode = "755";
+            };
+          };
+          "/var/lib/tdarr/server" = {
+            d = {
+              user = "nixos";
+              group = "1000";
+              mode = "757";
+            };
+          };
+          "/var/lib/tdarr/logs" = {
+            d = {
+              user = "nixos";
+              group = "1000";
+              mode = "757";
+            };
+          };
+          "/var/lib/tdarr/configs" = {
+            d = {
+              user = "nixos";
+              group = "1000";
+              mode = "757";
+            };
           };
         };
       };
-      "tdarr-directories" = {
-        "/var/lib/tdarr" = {
-          d = {
-            user = "root";
-            group = "root";
-            mode = "757";
-          };
-        };
-        "/transcode_cache" = {
-          d = {
-            user = "nixos";
-            group = "1000";
-            mode = "755";
-          };
-        };
-        "/var/lib/tdarr/server" = {
-          d = {
-            user = "nixos";
-            group = "1000";
-            mode = "757";
-          };
-        };
-        "/var/lib/tdarr/logs" = {
-          d = {
-            user = "nixos";
-            group = "1000";
-            mode = "757";
-          };
-        };
-        "/var/lib/tdarr/configs" = {
-          d = {
-            user = "nixos";
-            group = "1000";
-            mode = "757";
-          };
-        };
+    };
+    services = {
+      vpn = {
+        description = "VPN Connection";
+        script = ''
+          /run/current-system/sw/bin/wgnord l `cat /home/nixos/.nordkey`
+          /run/current-system/sw/bin/wgnord c Seattle
+        '';
+        wantedBy = [ "default.target" ];
       };
     };
     user.services = {
@@ -275,7 +303,15 @@
   };
   environment.systemPackages = with pkgs;
     let
-    in ([ cloudflared radarr sabnzbd sonarr ]);
+    in ([
+      cloudflared
+      openresolv
+      radarr
+      sabnzbd
+      sonarr
+      wgnord
+      wireguard-tools
+    ]);
 
   system.stateVersion = "25.11";
 }
