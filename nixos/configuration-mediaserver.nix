@@ -36,7 +36,6 @@
   };
 
   services.openssh = { enable = true; };
-
   services.nginx = {
     enable = true;
     virtualHosts."plex.pandaemonium" = {
@@ -305,6 +304,9 @@
     let
     in ([
       cloudflared
+      ftop
+      htop
+      nload
       openresolv
       radarr
       sabnzbd
