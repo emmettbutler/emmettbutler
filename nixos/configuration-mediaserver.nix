@@ -47,7 +47,7 @@
         proxy_set_header Host "127.0.0.1:32400";
         proxy_set_header Referer "";
         proxy_set_header Origin "http://127.0.0.1:32400";
-            proxy_set_header Sec-WebSocket-Extensions $http_sec_websocket_extensions;
+        proxy_set_header Sec-WebSocket-Extensions $http_sec_websocket_extensions;
         proxy_set_header Sec-WebSocket-Key $http_sec_websocket_key;
         proxy_set_header Sec-WebSocket-Version $http_sec_websocket_version;
 
