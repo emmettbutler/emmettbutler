@@ -287,6 +287,22 @@
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-radarr`
         '';
       };
+      tunnel-tautulli = {
+        description = "Cloudflare tunnel exposing Tautulli";
+        wantedBy = [ "default.target" ];
+        script = ''
+          /run/current-system/sw/bin/cloudflared tunnel login
+          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-tautulli`
+        '';
+      };
+      tunnel-tdarr = {
+        description = "Cloudflare tunnel exposing Tdarr";
+        wantedBy = [ ];  # don't autostart because there's no auth
+        script = ''
+          /run/current-system/sw/bin/cloudflared tunnel login
+          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-tdarr`
+        '';
+      };
       tunnel-ssh = {
         # client side needs the following in ssh config:
         # Host sh.pandaemonium.biz
