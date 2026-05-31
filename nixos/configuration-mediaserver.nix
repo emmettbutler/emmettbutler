@@ -145,6 +145,7 @@
     };
     overseerr = { enable = true; };
     tautulli = { enable = true; };
+    resolved = { enable = true; };
   };
 
   systemd = {
@@ -157,22 +158,6 @@
               user = "nixos";
               group = "users";
               mode = "706";
-            };
-          };
-        };
-        "vpn-directories" = {
-          "/etc/wireguard" = {
-            d = {
-              user = "root";
-              group = "root";
-              mode = "757";
-            };
-          };
-          "/var/lib/wgnord" = {
-            d = {
-              user = "root";
-              group = "root";
-              mode = "757";
             };
           };
         };
@@ -215,14 +200,51 @@
         };
       };
     };
-    services = {
-      vpn = {
-        description = "VPN Connection";
-        script = ''
-          /run/current-system/sw/bin/wgnord l `cat /home/nixos/.nordkey`
-          /run/current-system/sw/bin/wgnord c Seattle
-        '';
-        wantedBy = [ "default.target" ];
+    services.wgnord = let
+      country = "United States";
+      tokenFile = "/home/nixos/.nordkey";
+      # This template works as is but you can customise it if you want
+      template = pkgs.writeText "template.conf" ''
+        [Interface]
+        PrivateKey = PRIVKEY
+        Address = 10.5.0.2/32
+        MTU = 1350
+        DNS = 103.86.96.100 103.86.99.100
+
+        [Peer]
+        PublicKey = SERVER_PUBKEY
+        AllowedIPs = 0.0.0.0/0, ::/0
+        Endpoint = SERVER_IP:51820
+        PersistentKeepalive = 25
+      '';
+    in {
+      unitConfig = {
+        Description = "Nord Wireguard VPN";
+        After = [ "network-online.target" ];
+        Wants = [ "network-online.target" ];
+        StartLimitBurst = 3;
+        StartLimitIntervalSec = 30;
+      };
+
+      serviceConfig = {
+        Type = "oneshot";
+        StateDirectory = "wgnord";
+        StateDirectoryMode = "0700";
+        ConfigurationDirectory = "wireguard";
+        ConfigurationDirectoryMode = "0700";
+        ExecStartPre = [
+          "${
+            lib.getExe' pkgs.coreutils "ln"
+          } -fs ${template} /var/lib/wgnord/template.conf"
+          "${lib.getExe' pkgs.bash "sh"} -c '${
+            lib.getExe pkgs.wgnord
+          } login \"$(<${tokenFile})\"'"
+        ];
+        ExecStart = ''${lib.getExe pkgs.wgnord} connect "${country}"'';
+        ExecStop = "-${lib.getExe pkgs.wgnord} disconnect";
+        Restart = "on-failure";
+        RestartSec = 10;
+        RemainAfterExit = "yes";
       };
     };
     user.services = {
@@ -297,7 +319,7 @@
       };
       tunnel-tdarr = {
         description = "Cloudflare tunnel exposing Tdarr";
-        wantedBy = [ ];  # don't autostart because there's no auth
+        wantedBy = [ ]; # don't autostart because there's no auth
         script = ''
           /run/current-system/sw/bin/cloudflared tunnel login
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-tdarr`
