@@ -152,6 +152,24 @@
     tmpfiles = {
       rules = [ "f /var/lib/systemd/linger/nixos" ];
       settings = {
+        "openvpn" = {
+          "/etc/openvpn" = {
+            d = {
+              user = "nixos";
+              group = "users";
+              mode = "757";
+            };
+          };
+        };
+        "custom-bins" = {
+          "/opt/bin" = {
+            d = {
+              user = "nixos";
+              group = "users";
+              mode = "757";
+            };
+          };
+        };
         "media-mount-point" = {
           "/var/lib/plex/media" = {
             d = {
@@ -200,26 +218,9 @@
         };
       };
     };
-    services.wgnord = let
-      country = "United States";
-      tokenFile = "/home/nixos/.nordkey";
-      # This template works as is but you can customise it if you want
-      template = pkgs.writeText "template.conf" ''
-        [Interface]
-        PrivateKey = PRIVKEY
-        Address = 10.5.0.2/32
-        MTU = 1350
-        DNS = 103.86.96.100 103.86.99.100
-
-        [Peer]
-        PublicKey = SERVER_PUBKEY
-        AllowedIPs = 0.0.0.0/0, ::/0
-        Endpoint = SERVER_IP:51820
-        PersistentKeepalive = 25
-      '';
-    in {
+    services.vpn = {
       unitConfig = {
-        Description = "Nord Wireguard VPN";
+        Description = "Namespaced OpenVPN NordVPN";
         After = [ "network-online.target" ];
         Wants = [ "network-online.target" ];
         StartLimitBurst = 3;
@@ -227,21 +228,9 @@
       };
 
       serviceConfig = {
-        Type = "oneshot";
-        StateDirectory = "wgnord";
-        StateDirectoryMode = "0700";
-        ConfigurationDirectory = "wireguard";
-        ConfigurationDirectoryMode = "0700";
-        ExecStartPre = [
-          "${
-            lib.getExe' pkgs.coreutils "ln"
-          } -fs ${template} /var/lib/wgnord/template.conf"
-          "${lib.getExe' pkgs.bash "sh"} -c '${
-            lib.getExe pkgs.wgnord
-          } login \"$(<${tokenFile})\"'"
-        ];
-        ExecStart = ''${lib.getExe pkgs.wgnord} connect "${country}"'';
-        ExecStop = "-${lib.getExe pkgs.wgnord} disconnect";
+        Type = "simple";
+        ExecStart =
+          "/opt/bin/namespaced-openvpn --config /etc/openvpn/ovpn_udp/us12527.nordvpn.com.udp.ovpn";
         Restart = "on-failure";
         RestartSec = 10;
         RemainAfterExit = "yes";
@@ -345,12 +334,12 @@
       ftop
       htop
       nload
-      openresolv
+      openvpn
+      python3
       radarr
       sabnzbd
       sonarr
-      wgnord
-      wireguard-tools
+      traceroute
     ]);
 
   system.stateVersion = "25.11";
