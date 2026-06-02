@@ -320,24 +320,29 @@
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-tautulli`
         '';
       };
-      tunnel-tdarr = {
-        description = "Cloudflare tunnel exposing Tdarr";
-        wantedBy = [ ]; # don't autostart because there's no auth
-        script = ''
-          /run/current-system/sw/bin/cloudflared tunnel login
-          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-tdarr`
-        '';
-      };
       tunnel-ssh = {
         # client side needs the following in ssh config:
         # Host sh.pandaemonium.biz
         # ProxyCommand /run/current-system/sw/bin/cloudflared access ssh --hostname %h
-        description = "Cloudflare tunnel exposing SSH";
-        wantedBy = [ "default.target" ];
-        script = ''
-          /run/current-system/sw/bin/cloudflared tunnel login
-          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-ssh`
-        '';
+        unitConfig = {
+          Description = "Cloudflare tunnel exposing SSH";
+          After = [ "network-online.target" ];
+          Wants = [ "network-online.target" ];
+          WantedBy = [ "default.target" ];
+          StartLimitBurst = 3;
+          StartLimitIntervalSec = 30;
+        };
+
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = ''
+            /run/current-system/sw/bin/cloudflared tunnel login
+            /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-ssh`
+          '';
+          Restart = "on-failure";
+          RestartSec = 10;
+          RemainAfterExit = "yes";
+        };
       };
     };
   };
