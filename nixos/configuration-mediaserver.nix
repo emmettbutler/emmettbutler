@@ -218,22 +218,43 @@
         };
       };
     };
-    services.vpn = {
-      unitConfig = {
-        Description = "Namespaced OpenVPN NordVPN";
-        After = [ "network-online.target" ];
-        Wants = [ "network-online.target" ];
-        StartLimitBurst = 3;
-        StartLimitIntervalSec = 30;
-      };
+    services = {
+      vpn = {
+        unitConfig = {
+          Description = "Namespaced OpenVPN NordVPN";
+          After = [ "network-online.target" ];
+          Wants = [ "network-online.target" ];
+          StartLimitBurst = 3;
+          StartLimitIntervalSec = 30;
+        };
 
-      serviceConfig = {
-        Type = "simple";
-        ExecStart =
-          "/opt/bin/namespaced-openvpn --config /etc/openvpn/ovpn_udp/us12527.nordvpn.com.udp.ovpn";
-        Restart = "on-failure";
-        RestartSec = 10;
-        RemainAfterExit = "yes";
+        serviceConfig = {
+          Type = "simple";
+          ExecStart =
+            "/opt/bin/namespaced-openvpn --config /etc/openvpn/ovpn_udp/us12527.nordvpn.com.udp.ovpn";
+          Restart = "on-failure";
+          RestartSec = 10;
+          RemainAfterExit = "yes";
+        };
+      };
+      sabnzbd = {
+        unitConfig = {
+          Description = "SABnzbd downloader";
+          After = [ "network-online.target" ];
+          Wants = [ "network-online.target" ];
+          WantedBy = [ "default.target" ];
+          StartLimitBurst = 3;
+          StartLimitIntervalSec = 30;
+        };
+
+        serviceConfig = {
+          Type = "simple";
+          ExecStart =
+            "/run/current-system/sw/bin/ip netns exec protected /run/wrappers/bin/sudo -u nixos -i /run/current-system/sw/bin/sabnzbd";
+          Restart = "on-failure";
+          RestartSec = 10;
+          RemainAfterExit = "yes";
+        };
       };
     };
     user.services = {
@@ -248,13 +269,6 @@
         description = "Movie NZB finder";
         script = ''
           /run/current-system/sw/bin/Radarr
-        '';
-        wantedBy = [ "default.target" ];
-      };
-      sabnzbd = {
-        description = "NZB downloader";
-        script = ''
-          /run/current-system/sw/bin/sabnzbd
         '';
         wantedBy = [ "default.target" ];
       };
