@@ -359,6 +359,7 @@
       sabnzbd
       sonarr
       traceroute
+      yt-dlp
     ]);
 
   system.stateVersion = "25.11";
