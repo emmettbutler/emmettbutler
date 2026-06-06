@@ -24,7 +24,6 @@
     firewall.enable = false;
     extraHosts = ''
       127.0.0.1 pandaemonium
-      127.0.0.1 plex.pandaemonium
       127.0.0.1 sonarr.pandaemonium
       127.0.0.1 radarr.pandaemonium
       127.0.0.1 overseerr.pandaemonium
@@ -38,25 +37,6 @@
   services.openssh = { enable = true; };
   services.nginx = {
     enable = true;
-    virtualHosts."plex.pandaemonium" = {
-      locations."/".extraConfig = ''
-        proxy_pass    http://127.0.0.1:32400;
-      '';
-      extraConfig = ''
-        proxy_set_header Host "127.0.0.1:32400";
-        proxy_set_header Referer "";
-        proxy_set_header Origin "http://127.0.0.1:32400";
-        proxy_set_header Sec-WebSocket-Extensions $http_sec_websocket_extensions;
-        proxy_set_header Sec-WebSocket-Key $http_sec_websocket_key;
-        proxy_set_header Sec-WebSocket-Version $http_sec_websocket_version;
-
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "Upgrade";
-        proxy_redirect off;
-        proxy_buffering off;
-      '';
-    };
     virtualHosts."stats.pandaemonium" = {
       locations."/".extraConfig = ''
         proxy_pass    http://127.0.0.1:8181;
@@ -139,6 +119,11 @@
 
   services = {
     plex = {
+      enable = true;
+      openFirewall = true;
+      user = "nixos";
+    };
+    jellyfin = {
       enable = true;
       openFirewall = true;
       user = "nixos";
@@ -280,12 +265,12 @@
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-overseerr`
         '';
       };
-      tunnel-plex = {
-        description = "Cloudflare tunnel exposing Plex";
+      tunnel-jellyfin = {
+        description = "Cloudflare tunnel exposing Jellyfin";
         wantedBy = [ "default.target" ];
         script = ''
           /run/current-system/sw/bin/cloudflared tunnel login
-          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-plex`
+          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-jellyfin`
         '';
       };
       tunnel-wizarr = {
