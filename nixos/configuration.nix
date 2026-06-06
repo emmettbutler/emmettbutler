@@ -282,6 +282,7 @@ with lib;
       gnupg
       hyperfine
       iptables
+      jellyfin-desktop
       jq
       lf
       nix-direnv
