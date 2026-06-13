@@ -261,7 +261,6 @@
         description = "Cloudflare tunnel exposing Overseerr";
         wantedBy = [ "default.target" ];
         script = ''
-          /run/current-system/sw/bin/cloudflared tunnel login
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-overseerr`
         '';
       };
@@ -269,7 +268,6 @@
         description = "Cloudflare tunnel exposing Jellyfin";
         wantedBy = [ "default.target" ];
         script = ''
-          /run/current-system/sw/bin/cloudflared tunnel login
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-jellyfin`
         '';
       };
@@ -277,7 +275,6 @@
         description = "Cloudflare tunnel exposing Wizarr";
         wantedBy = [ "default.target" ];
         script = ''
-          /run/current-system/sw/bin/cloudflared tunnel login
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-wizarr`
         '';
       };
@@ -285,7 +282,6 @@
         description = "Cloudflare tunnel exposing Sonarr";
         wantedBy = [ "default.target" ];
         script = ''
-          /run/current-system/sw/bin/cloudflared tunnel login
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-sonarr`
         '';
       };
@@ -293,7 +289,6 @@
         description = "Cloudflare tunnel exposing Radarr";
         wantedBy = [ "default.target" ];
         script = ''
-          /run/current-system/sw/bin/cloudflared tunnel login
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-radarr`
         '';
       };
@@ -301,7 +296,6 @@
         description = "Cloudflare tunnel exposing Tautulli";
         wantedBy = [ "default.target" ];
         script = ''
-          /run/current-system/sw/bin/cloudflared tunnel login
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-tautulli`
         '';
       };
@@ -309,21 +303,17 @@
         # client side needs the following in ssh config:
         # Host sh.pandaemonium.biz
         # ProxyCommand /run/current-system/sw/bin/cloudflared access ssh --hostname %h
-        unitConfig = {
-          Description = "Cloudflare tunnel exposing SSH";
-          After = [ "network-online.target" ];
-          Wants = [ "network-online.target" ];
-          WantedBy = [ "default.target" ];
-          StartLimitBurst = 3;
-          StartLimitIntervalSec = 30;
-        };
-
+        description = "Cloudflare tunnel exposing SSH";
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        startLimitBurst = 3;
+        startLimitIntervalSec = 30;
+        script = ''
+          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-ssh`
+        '';
+        wantedBy = [ "default.target" ];
         serviceConfig = {
           Type = "simple";
-          ExecStart = ''
-            /run/current-system/sw/bin/cloudflared tunnel login
-            /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-ssh`
-          '';
           Restart = "on-failure";
           RestartSec = 10;
           RemainAfterExit = "yes";
