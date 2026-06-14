@@ -17,6 +17,14 @@
     };
   };
 
+  security.sudo.extraRules = [{
+    users = [ "nixos" ];
+    commands = [{
+      command = "/run/current-system/sw/bin/systemctl reboot";
+      options = [ "NOPASSWD" ];
+    }];
+  }];
+
   networking = {
     networkmanager.enable = true;
     hostName = "pandaemonium";
@@ -365,6 +373,7 @@
       ftop
       htop
       nload
+      neovim
       openvpn
       python3
       radarr
