@@ -236,7 +236,7 @@
         description = "Namespaced OpenVPN NordVPN";
         after = [ "network-online.target" ];
         wants = [ "network-online.target" ];
-        wantedBy = [ "default.target" "vpn-veth.service" ];
+        wantedBy = [ "default.target" ];
         startLimitBurst = 3;
         startLimitIntervalSec = 30;
         script = ''
@@ -246,13 +246,13 @@
 
         serviceConfig = { Type = "simple"; };
       };
-      vpn-veth = {
-        description = "veth setup connecting sabnzbd to root network namespace";
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" "vpn.service" ];
-        wantedBy = [ "default.target" "sabnzbd-private.service" ];
+      # bug: for some reason this fails on boot, requires `systemctl restart sabnzbd-private`
+      sabnzbd-private = {
+        description = "SABnzbd downloader behind VPN";
+        wants = [ "network-online.target" "multi-user.target" "vpn.service" ];
+        wantedBy = [ "default.target" ];
         startLimitBurst = 3;
-        startLimitIntervalSec = 30;
+        startLimitIntervalSec = 3;
         script = ''
           /run/current-system/sw/bin/ip link add veth-host type veth peer name veth-ns || true
           /run/current-system/sw/bin/ip link set veth-ns netns protected || true
@@ -260,28 +260,10 @@
           /run/current-system/sw/bin/ip link set veth-host up || true
           /run/current-system/sw/bin/ip netns exec protected /run/current-system/sw/bin/ip addr add 192.168.10.2/24 dev veth-ns || true
           /run/current-system/sw/bin/ip netns exec protected /run/current-system/sw/bin/ip link set veth-ns up || true
+          /run/current-system/sw/bin/ip netns exec protected /run/current-system/sw/bin/sabnzbd -f /home/nixos/.sabnzbd/sabnzbd-private.ini
         '';
 
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = "true";
-        };
-      };
-      # bug: on fresh boot, manual `systemctl restart vpn-veth sabnzbd-private` is required
-      sabnzbd-private = {
-        description = "SABnzbd downloader behind VPN";
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" "vpn-veth.service" ];
-        wantedBy = [ "default.target" ];
-        startLimitBurst = 3;
-        startLimitIntervalSec = 3;
-
-        serviceConfig = {
-          Type = "simple";
-          ExecStart = ''
-            /run/current-system/sw/bin/ip netns exec protected /run/current-system/sw/bin/sabnzbd -f /home/nixos/.sabnzbd/sabnzbd-private.ini
-          '';
-        };
+        serviceConfig = { Type = "simple"; };
       };
       sabnzbd = {
         description = "SABnzbd downloader";
