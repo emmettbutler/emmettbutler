@@ -308,6 +308,16 @@
           /run/current-system/sw/bin/Sonarr
         '';
         wantedBy = [ "default.target" ];
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        startLimitBurst = 3;
+        startLimitIntervalSec = 30;
+        serviceConfig = {
+          Type = "simple";
+          Restart = "on-failure";
+          RestartSec = 10;
+          RemainAfterExit = "yes";
+        };
       };
       radarr = {
         description = "Movie NZB finder";
@@ -315,6 +325,16 @@
           /run/current-system/sw/bin/Radarr
         '';
         wantedBy = [ "default.target" ];
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        startLimitBurst = 3;
+        startLimitIntervalSec = 30;
+        serviceConfig = {
+          Type = "simple";
+          Restart = "on-failure";
+          RestartSec = 10;
+          RemainAfterExit = "yes";
+        };
       };
       tunnel-overseerr = {
         description = "Cloudflare tunnel exposing Overseerr";
@@ -322,6 +342,16 @@
         script = ''
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-overseerr`
         '';
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        startLimitBurst = 3;
+        startLimitIntervalSec = 30;
+        serviceConfig = {
+          Type = "simple";
+          Restart = "on-failure";
+          RestartSec = 10;
+          RemainAfterExit = "yes";
+        };
       };
       tunnel-jellyfin = {
         description = "Cloudflare tunnel exposing Jellyfin";
@@ -329,6 +359,16 @@
         script = ''
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-jellyfin`
         '';
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        startLimitBurst = 3;
+        startLimitIntervalSec = 30;
+        serviceConfig = {
+          Type = "simple";
+          Restart = "on-failure";
+          RestartSec = 10;
+          RemainAfterExit = "yes";
+        };
       };
       tunnel-wizarr = {
         description = "Cloudflare tunnel exposing Wizarr";
@@ -336,6 +376,16 @@
         script = ''
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-wizarr`
         '';
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        startLimitBurst = 3;
+        startLimitIntervalSec = 30;
+        serviceConfig = {
+          Type = "simple";
+          Restart = "on-failure";
+          RestartSec = 10;
+          RemainAfterExit = "yes";
+        };
       };
       tunnel-sonarr = {
         description = "Cloudflare tunnel exposing Sonarr";
@@ -343,6 +393,16 @@
         script = ''
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-sonarr`
         '';
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        startLimitBurst = 3;
+        startLimitIntervalSec = 30;
+        serviceConfig = {
+          Type = "simple";
+          Restart = "on-failure";
+          RestartSec = 10;
+          RemainAfterExit = "yes";
+        };
       };
       tunnel-radarr = {
         description = "Cloudflare tunnel exposing Radarr";
@@ -350,6 +410,16 @@
         script = ''
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-radarr`
         '';
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        startLimitBurst = 3;
+        startLimitIntervalSec = 30;
+        serviceConfig = {
+          Type = "simple";
+          Restart = "on-failure";
+          RestartSec = 10;
+          RemainAfterExit = "yes";
+        };
       };
       tunnel-tautulli = {
         description = "Cloudflare tunnel exposing Tautulli";
@@ -357,20 +427,30 @@
         script = ''
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-tautulli`
         '';
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        startLimitBurst = 3;
+        startLimitIntervalSec = 30;
+        serviceConfig = {
+          Type = "simple";
+          Restart = "on-failure";
+          RestartSec = 10;
+          RemainAfterExit = "yes";
+        };
       };
       tunnel-ssh = {
         # client side needs the following in ssh config:
         # Host sh.pandaemonium.biz
         # ProxyCommand /run/current-system/sw/bin/cloudflared access ssh --hostname %h
         description = "Cloudflare tunnel exposing SSH";
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
-        startLimitBurst = 3;
-        startLimitIntervalSec = 30;
         script = ''
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-ssh`
         '';
         wantedBy = [ "default.target" ];
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        startLimitBurst = 3;
+        startLimitIntervalSec = 30;
         serviceConfig = {
           Type = "simple";
           Restart = "on-failure";
