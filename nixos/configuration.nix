@@ -48,6 +48,7 @@ with lib;
       10.0.0.41 radarr.pandaemonium
       10.0.0.41 overseerr.pandaemonium
       10.0.0.41 sabnzbd.pandaemonium
+      10.0.0.41 sabnzbd-private.pandaemonium
       10.0.0.41 stats.pandaemonium
       10.0.0.41 wizarr.pandaemonium
       10.0.0.41 tdarr.pandaemonium

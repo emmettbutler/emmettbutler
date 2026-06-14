@@ -28,6 +28,7 @@
       127.0.0.1 radarr.pandaemonium
       127.0.0.1 overseerr.pandaemonium
       127.0.0.1 sabnzbd.pandaemonium
+      127.0.0.1 sabnzbd-private.pandaemonium
       127.0.0.1 stats.pandaemonium
       127.0.0.1 wizarr.pandaemonium
       127.0.0.1 tdarr.pandaemonium
@@ -52,9 +53,28 @@
         proxy_pass    http://127.0.0.1:8265;
       '';
     };
+    virtualHosts."sabnzbd-private.pandaemonium" = {
+      #/run/current-system/sw/bin/ip link add veth-host type veth peer name veth-ns || true
+      #/run/current-system/sw/bin/ip link set veth-ns netns protected || true
+      #/run/current-system/sw/bin/ip addr add 192.168.10.1/24 dev veth-host || true
+      #/run/current-system/sw/bin/ip link set veth-host up || true
+      #/run/current-system/sw/bin/ip netns exec protected /run/current-system/sw/bin/ip addr add 192.168.10.2/24 dev veth-ns || true
+      #/run/current-system/sw/bin/ip netns exec protected /run/current-system/sw/bin/ip link set veth-ns up || true
+      locations."/".extraConfig = ''
+        proxy_pass    http://192.168.10.2:8080;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      '';
+    };
     virtualHosts."sabnzbd.pandaemonium" = {
       locations."/".extraConfig = ''
         proxy_pass    http://127.0.0.1:8080;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
       '';
     };
     virtualHosts."radarr.pandaemonium" = {
@@ -205,39 +225,56 @@
     };
     services = {
       vpn = {
-        unitConfig = {
-          Description = "Namespaced OpenVPN NordVPN";
-          After = [ "network-online.target" ];
-          Wants = [ "network-online.target" ];
-          StartLimitBurst = 3;
-          StartLimitIntervalSec = 30;
-        };
+        description = "Namespaced OpenVPN NordVPN";
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        wantedBy = [ "default.target" ];
+        startLimitBurst = 3;
+        startLimitIntervalSec = 30;
 
         serviceConfig = {
           Type = "simple";
-          ExecStart =
-            "/opt/bin/namespaced-openvpn --config /etc/openvpn/ovpn_udp/us12527.nordvpn.com.udp.ovpn";
-          Restart = "on-failure";
-          RestartSec = 10;
-          RemainAfterExit = "yes";
+          # /run/current-system/sw/bin/ip netns delete protected
+          ExecStart = ''
+            /opt/bin/namespaced-openvpn --config /etc/openvpn/ovpn_udp/us12527.nordvpn.com.udp.ovpn
+          '';
+        };
+      };
+      sabnzbd-private = {
+        description = "SABnzbd downloader behind VPN";
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" "vpn.service" ];
+        wantedBy = [ "default.target" ];
+        startLimitBurst = 3;
+        startLimitIntervalSec = 3;
+
+        serviceConfig = {
+          Type = "simple";
+          # /run/current-system/sw/bin/ip link add veth-host type veth peer name veth-ns
+          # /run/current-system/sw/bin/ip link set veth-ns netns protected
+          # /run/current-system/sw/bin/ip addr add 192.168.10.1/24 dev veth-host
+          # /run/current-system/sw/bin/ip link set veth-host up
+          # /run/current-system/sw/bin/ip netns exec protected /run/current-system/sw/bin/ip addr add 192.168.10.2/24 dev veth-ns
+          # /run/current-system/sw/bin/ip netns exec protected /run/current-system/sw/bin/ip link set veth-ns up
+          ExecStart = ''
+            /run/current-system/sw/bin/ip netns exec protected /run/current-system/sw/bin/sabnzbd -f /home/nixos/.sabnzbd/sabnzbd-private.ini
+          '';
         };
       };
       sabnzbd = {
-        unitConfig = {
-          Description = "SABnzbd downloader";
-          After = [ "network-online.target" ];
-          Wants = [ "network-online.target" ];
-          WantedBy = [ "default.target" ];
-          StartLimitBurst = 3;
-          StartLimitIntervalSec = 30;
-        };
+        description = "SABnzbd downloader";
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        wantedBy = [ "default.target" ];
+        startLimitBurst = 3;
+        startLimitIntervalSec = 3;
 
         serviceConfig = {
           Type = "simple";
           ExecStart =
-            "/run/current-system/sw/bin/ip netns exec protected /run/wrappers/bin/sudo -u nixos -i /run/current-system/sw/bin/sabnzbd";
+            "/run/wrappers/bin/sudo -u nixos -i /run/current-system/sw/bin/sabnzbd";
           Restart = "on-failure";
-          RestartSec = 10;
+          RestartSec = 1;
           RemainAfterExit = "yes";
         };
       };
