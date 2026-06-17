@@ -234,8 +234,7 @@
     services = {
       vpn = {
         description = "Namespaced OpenVPN NordVPN";
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
+        wants = [ "multi-user.target" ];
         wantedBy = [ "default.target" ];
         startLimitBurst = 3;
         startLimitIntervalSec = 30;
@@ -246,10 +245,9 @@
 
         serviceConfig = { Type = "simple"; };
       };
-      # bug: for some reason this fails on boot, requires `systemctl restart sabnzbd-private`
       sabnzbd-private = {
         description = "SABnzbd downloader behind VPN";
-        wants = [ "network-online.target" "multi-user.target" "vpn.service" ];
+        wants = [ "vpn.service" ];
         wantedBy = [ "default.target" ];
         startLimitBurst = 3;
         startLimitIntervalSec = 3;
@@ -263,7 +261,12 @@
           /run/current-system/sw/bin/ip netns exec protected /run/current-system/sw/bin/sabnzbd -f /home/nixos/.sabnzbd/sabnzbd-private.ini
         '';
 
-        serviceConfig = { Type = "simple"; };
+        serviceConfig = {
+          Type = "simple";
+          Restart = "on-failure";
+          RestartSec = 1;
+          RemainAfterExit = "yes";
+        };
       };
       sabnzbd = {
         description = "SABnzbd downloader";
