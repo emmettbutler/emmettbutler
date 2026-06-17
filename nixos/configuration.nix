@@ -111,10 +111,7 @@ with lib;
     };
   };
   hardware.pulseaudio.enable = false;
-  hardware.sane = {
-    enable = true;
-    extraBackends = [ pkgs.hplipWithPlugin ];
-  };
+  hardware.sane = { enable = true; };
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -339,10 +336,7 @@ with lib;
       mypkgs.pythonEnv
     ]);
 
-  services.printing = {
-    enable = true;
-    drivers = [ pkgs.hplipWithPlugin ];
-  };
+  services.printing = { enable = true; };
   services.fprintd.enable = true;
   services.pcscd.enable = true;
   services.dbus.packages = [ pkgs.gcr ];
