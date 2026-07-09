@@ -102,7 +102,7 @@
     };
   };
   virtualisation.oci-containers.containers."wizarr" = {
-    image = "ghcr.io/wizarrrr/wizarr";
+    image = "ghcr.io/wizarrrr/wizarr:v2026.7.1";
     environment = {
       "DISABLE_BUILTIN_AUTH" = "false";
       "PGID" = "1000";
