@@ -18,7 +18,15 @@ let
   };
   neuralrack = pkgs.buildFHSEnv {
     name = "neuralrack";
-    targetPkgs = pkgs: [ neuralrackUnwrapped pkgs.libsndfile pkgs.alsa-lib ];
+    targetPkgs = pkgs: [
+      neuralrackUnwrapped
+      pkgs.libsndfile
+      pkgs.alsa-lib
+      pkgs.libuuid
+      pkgs.libxrender
+      pkgs.libxext
+      pkgs.libx11
+    ];
     runScript = "${neuralrackUnwrapped}/bin/Neuralrack";
   };
   neuralrackDesktopItem = pkgs.makeDesktopItem {
