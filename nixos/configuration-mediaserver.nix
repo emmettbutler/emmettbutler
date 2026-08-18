@@ -62,12 +62,6 @@
       '';
     };
     virtualHosts."sabnzbd-private.pandaemonium" = {
-      #/run/current-system/sw/bin/ip link add veth-host type veth peer name veth-ns || true
-      #/run/current-system/sw/bin/ip link set veth-ns netns protected || true
-      #/run/current-system/sw/bin/ip addr add 192.168.10.1/24 dev veth-host || true
-      #/run/current-system/sw/bin/ip link set veth-host up || true
-      #/run/current-system/sw/bin/ip netns exec protected /run/current-system/sw/bin/ip addr add 192.168.10.2/24 dev veth-ns || true
-      #/run/current-system/sw/bin/ip netns exec protected /run/current-system/sw/bin/ip link set veth-ns up || true
       locations."/".extraConfig = ''
         proxy_pass    http://192.168.10.2:8080;
 
@@ -192,6 +186,45 @@
             };
           };
         };
+        "media-mount-point-2" = {
+          "/var/lib/plex/ssd-one" = {
+            d = {
+              user = "nixos";
+              group = "users";
+              mode = "706";
+            };
+          };
+        };
+        "sabnzbd-dl" = {
+          "/home/nixos/Downloads/complete" = {
+            d = {
+              user = "nixos";
+              group = "users";
+              mode = "755";
+            };
+          };
+          "/home/nixos/Downloads/incomplete" = {
+            d = {
+              user = "nixos";
+              group = "users";
+              mode = "755";
+            };
+          };
+          "/home/nixos/Downloads/private-complete" = {
+            d = {
+              user = "nixos";
+              group = "users";
+              mode = "755";
+            };
+          };
+          "/home/nixos/Downloads/private-incomplete" = {
+            d = {
+              user = "nixos";
+              group = "users";
+              mode = "755";
+            };
+          };
+        };
         "tdarr-directories" = {
           "/var/lib/tdarr" = {
             d = {
@@ -258,7 +291,7 @@
           /run/current-system/sw/bin/ip link set veth-host up || true
           /run/current-system/sw/bin/ip netns exec protected /run/current-system/sw/bin/ip addr add 192.168.10.2/24 dev veth-ns || true
           /run/current-system/sw/bin/ip netns exec protected /run/current-system/sw/bin/ip link set veth-ns up || true
-          /run/current-system/sw/bin/ip netns exec protected /run/current-system/sw/bin/sabnzbd -f /home/nixos/.sabnzbd/sabnzbd-private.ini
+          /run/current-system/sw/bin/ip netns exec protected /run/wrappers/bin/sudo -u nixos -i /run/current-system/sw/bin/sabnzbd -f /home/nixos/.sabnzbd/sabnzbd-private.ini
         '';
 
         serviceConfig = {
