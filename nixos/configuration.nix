@@ -42,16 +42,16 @@ with lib;
     useDHCP = false;
     firewall.enable = false;
     extraHosts = ''
-      10.0.0.41 pandaemonium
-      10.0.0.41 plex.pandaemonium
-      10.0.0.41 sonarr.pandaemonium
-      10.0.0.41 radarr.pandaemonium
-      10.0.0.41 overseerr.pandaemonium
-      10.0.0.41 sabnzbd.pandaemonium
-      10.0.0.41 sabnzbd-private.pandaemonium
-      10.0.0.41 stats.pandaemonium
-      10.0.0.41 wizarr.pandaemonium
-      10.0.0.41 tdarr.pandaemonium
+      10.0.0.42 pandaemonium
+      10.0.0.42 plex.pandaemonium
+      10.0.0.42 sonarr.pandaemonium
+      10.0.0.42 radarr.pandaemonium
+      10.0.0.42 overseerr.pandaemonium
+      10.0.0.42 sabnzbd.pandaemonium
+      10.0.0.42 sabnzbd-private.pandaemonium
+      10.0.0.42 stats.pandaemonium
+      10.0.0.42 wizarr.pandaemonium
+      10.0.0.42 tdarr.pandaemonium
     '';
   };
 
