@@ -365,12 +365,26 @@ with lib;
   security.pam = {
     services.gdm.enableGnomeKeyring = true;
     # this silences a warning thrown by yabridge
-    loginLimits = [{
-      domain = "*";
-      type = "-";
-      item = "memlock";
-      value = "infinity";
-    }];
+    loginLimits = [
+      {
+        domain = "*";
+        type = "-";
+        item = "memlock";
+        value = "infinity";
+      }
+      {
+        domain = "@audio";
+        type = "-";
+        item = "rtprio";
+        value = "95";
+      }
+      {
+        domain = "@audio";
+        type = "-";
+        item = "memlock";
+        value = "unlimited";
+      }
+    ];
   };
 
   system.stateVersion = "25.11";
