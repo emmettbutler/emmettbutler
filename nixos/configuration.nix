@@ -273,6 +273,7 @@ with lib;
       doctl
       fzf
       gh
+      ghostty
       git
       gnomeExtensions.vitals
       gnomeExtensions.user-themes
@@ -287,6 +288,7 @@ with lib;
       openresolv
       openssl
       pinentry-gnome3
+      plex-desktop
       gnome-terminal
       gnome-tweaks
       rsync
@@ -308,6 +310,7 @@ with lib;
       gimp
       google-chrome
       handbrake
+      obs-studio
       vlc
       zoom-us
 
