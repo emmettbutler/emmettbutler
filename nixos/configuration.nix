@@ -3,7 +3,8 @@
 with lib;
 
 {
-  imports = [ /etc/nixos/hardware-configuration.nix ];
+  imports =
+    [ /etc/nixos/hardware-configuration.nix ./neuralrack.nix ];
   nix = {
     package = pkgs.nixVersions.git;
     extraOptions = ''
@@ -260,26 +261,6 @@ with lib;
       mypkgs = with pkgs; {
         pythonEnv = python311.withPackages (p: with p; [ psutil ]);
       };
-      neuralrackUnwrapped = stdenv.mkDerivation {
-        pname = "neuralrack-unwrapped";
-        version = "0.4.1";
-        src = fetchurl {
-          url =
-            "https://github.com/brummer10/NeuralRack/releases/download/v0.4.1/NeuralRack-app-v0.4.1-linux-x86_64.tar.xz";
-          hash = "sha256-KAhmynCVqKUrQK/1Y+JdhaGtNac8mW87yOE7sdoG+vQ=";
-        };
-        sourceRoot = ".";
-        dontBuild = true;
-        installPhase = ''
-          mkdir -p $out/bin
-          install -m755 NeuralRack-app-v0.4.1/Neuralrack $out/bin/Neuralrack
-        '';
-      };
-      neuralrack = buildFHSEnv {
-        name = "neuralrack";
-        targetPkgs = pkgs: [ neuralrackUnwrapped libsndfile alsa-lib ];
-        runScript = "${neuralrackUnwrapped}/bin/Neuralrack";
-      };
     in ([
       ack
       ansible
@@ -357,7 +338,6 @@ with lib;
 
       neovimeb.neovimEB
       mypkgs.pythonEnv
-      neuralrack
     ]);
 
   services.printing = { enable = true; };
