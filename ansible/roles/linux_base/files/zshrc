@@ -70,6 +70,8 @@ else
     unset pythonUserBaseDir;
     unset pythonUserBaseBinDir;
     export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+    export CLAUDE_CODE_DISABLE_MOUSE=1
+    export CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN=1
     export PYENV_ROOT="$HOME/.pyenv"
     if [[ ! -n $IN_DOCKER_SHELL ]]; then
         if [[ ! -n $IS_MACOS ]]; then
