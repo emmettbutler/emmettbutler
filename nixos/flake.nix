@@ -1,9 +1,7 @@
 {
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-25.11";
+    nixpkgs.url = "nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
-    # https://github.com/NixOS/nix/issues/3978
-    neovimeb.url = "path:/home/emmett/git/emmettbutler/nixos/nvimeb";
   };
   outputs = { self, nixpkgs, ... }@inputs:
     let
@@ -14,9 +12,6 @@
           system = "${system}";
           config.allowUnfree = true;
         };
-        neovimeb = inputs.neovimeb.packages.${prev.system};
-        mypython311 = pkgs.python311.withPackages
-          (py-pkgs: with py-pkgs; [ virtualenv requests ipython ]);
       };
     in {
       # for the first run on a fresh system, the hostname is "nixos"

@@ -3,8 +3,7 @@
 with lib;
 
 {
-  imports =
-    [ /etc/nixos/hardware-configuration.nix ./neuralrack.nix ];
+  imports = [ /etc/nixos/hardware-configuration.nix ./neuralrack.nix ];
   nix = {
     package = pkgs.nixVersions.git;
     extraOptions = ''
@@ -252,15 +251,15 @@ with lib;
         '';
       });
     })
-    (self: super: { wine = super.wineWowPackages.stable; })
+    (self: super: { wine = super.wineWow64Packages.stable; })
   ];
 
   environment.systemPackages = with pkgs;
     let
       unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-      mypkgs = with pkgs; {
-        pythonEnv = python311.withPackages (p: with p; [ psutil ]);
-      };
+      pkgsOld = import (builtins.fetchTarball {
+      url = "https://github.com/NixOS/nixpkgs/archive/cd648d6ea62bc0ffba91e61fcfe5e33c1e2004b1.tar.gz";
+    }) {};
     in ([
       ack
       ansible
@@ -285,6 +284,7 @@ with lib;
       jellyfin-desktop
       jq
       lf
+      neovim
       nix-direnv
       openresolv
       openssl
@@ -326,18 +326,13 @@ with lib;
       pavucontrol
       qpwgraph
       unstable.shotcut
-      surge
-      surge-XT
+      surge-xt
       samplv1
       scribus
       tamgamp-lv2
-      wine
-      wine64
-      yabridge
+      pkgsOld.wineWowPackages.stable
+      pkgsOld.yabridge
       yabridgectl
-
-      neovimeb.neovimEB
-      mypkgs.pythonEnv
     ]);
 
   services.printing = { enable = true; };
@@ -388,5 +383,5 @@ with lib;
     ];
   };
 
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
 }
