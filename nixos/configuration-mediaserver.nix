@@ -155,6 +155,32 @@
     resolved = { enable = true; };
   };
 
+  services.samba = {
+    enable = true;
+    securityType = "user";
+    openFirewall = true;
+    settings = {
+      global = {
+        "workgroup" = "WORKGROUP";
+        "server string" = "smbnix";
+        "netbios name" = "smbnix";
+        "security" = "user";
+        "hosts allow" = "192.168.0. 127.0.0.1 10.0.0.";
+        "guest account" = "nixos";
+        "map to guest" = "Bad User";
+        "passdb backend" = "tdbsam";
+      };
+      "media" = {
+        "path" = "/var/lib/plex";
+        "writeable" = "yes";
+        "browseable" = "yes";
+        "read only" = "no";
+        "force user" = "nixos";
+        "force group" = "users";
+      };
+    };
+  };
+
   systemd = {
     tmpfiles = {
       rules = [ "f /var/lib/systemd/linger/nixos" ];
