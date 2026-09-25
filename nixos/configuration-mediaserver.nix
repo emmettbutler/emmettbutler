@@ -182,6 +182,17 @@
     };
   };
 
+  fileSystems."/mnt/pool" = {
+    fsType = "fuse.mergerfs";
+    device = "/var/lib/plex/media:/var/lib/plex/ssd-one"; # or use a wildcard like /mnt/disk* depending on setup
+    options = [
+      "cache.files=partial"
+      "dropcacheonclose=true"
+      "category.create=mfs"
+    ];
+    depends = [ "/var/lib/plex/media" "/var/lib/plex/ssd-one" ];
+  };
+
   systemd = {
     tmpfiles = {
       rules = [ "f /var/lib/systemd/linger/nixos" ];
@@ -511,6 +522,7 @@
       cloudflared
       ftop
       htop
+      mergerfs
       nload
       neovim
       openvpn
