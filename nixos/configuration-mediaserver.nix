@@ -131,8 +131,9 @@
       "/var/lib/tdarr/configs:/app/configs:rw"
       "/var/lib/tdarr/logs:/app/logs:rw"
       "/var/lib/tdarr/server:/app/server:rw"
-      "/transcode_cache:/temp:rw"
+      "/var/lib/plex/temp:/temp:rw"
       "/var/lib/plex/media:/media:rw"
+      "/var/lib/plex/ssd-one:/ssd-one:rw"
     ];
     ports = [ "8265:8265/tcp" "8266:8266/tcp" ];
     log-driver = "journald";
@@ -259,11 +260,11 @@
               mode = "757";
             };
           };
-          "/transcode_cache" = {
+          "/var/lib/plex/temp" = {
             d = {
               user = "nixos";
               group = "1000";
-              mode = "755";
+              mode = "777";
             };
           };
           "/var/lib/tdarr/server" = {
