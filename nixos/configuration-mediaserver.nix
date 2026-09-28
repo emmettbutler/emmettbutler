@@ -132,8 +132,8 @@
       "/var/lib/tdarr/logs:/app/logs:rw"
       "/var/lib/tdarr/server:/app/server:rw"
       "/var/lib/plex/temp:/temp:rw"
-      "/var/lib/plex/media:/media:rw"
-      "/var/lib/plex/ssd-one:/ssd-one:rw"
+      "/mnt/movies:/movies_pooled:rw"
+      "/mnt/tv:/tv_pooled:rw"
     ];
     ports = [ "8265:8265/tcp" "8266:8266/tcp" ];
     log-driver = "journald";
@@ -182,9 +182,20 @@
     };
   };
 
-  fileSystems."/mnt/pool" = {
+  fileSystems."/mnt/movies" = {
     fsType = "fuse.mergerfs";
-    device = "/var/lib/plex/media:/var/lib/plex/ssd-one"; # or use a wildcard like /mnt/disk* depending on setup
+    device = "/var/lib/plex/media/movies:/var/lib/plex/ssd-one/movies";
+    options = [
+      "cache.files=partial"
+      "dropcacheonclose=true"
+      "category.create=mfs"
+    ];
+    depends = [ "/var/lib/plex/media" "/var/lib/plex/ssd-one" ];
+  };
+
+  fileSystems."/mnt/tv" = {
+    fsType = "fuse.mergerfs";
+    device = "/var/lib/plex/media/tv:/var/lib/plex/ssd-one/tv";
     options = [
       "cache.files=partial"
       "dropcacheonclose=true"
