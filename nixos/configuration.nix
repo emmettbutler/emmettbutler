@@ -387,7 +387,7 @@ with lib; {
       pathTranslators = builtins.readFile encodedTranslators;
     };
     volumes = ["/home/emmett/smb_root:/smb_share:rw"];
-    autostart = false;
+    autoStart = false;
   };
 
   virtualisation.docker.enable = true;
