@@ -121,7 +121,7 @@
       "inContainer" = "true";
       "internalNode" = "true";
       "maxLogSizeMB" = "10";
-      "nodeName" = "MyInternalNode";
+      "nodeName" = "BeelinkNode";
       "openBrowser" = "true";
       "serverIP" = "0.0.0.0";
       "serverPort" = "8266";
@@ -131,9 +131,10 @@
       "/var/lib/tdarr/configs:/app/configs:rw"
       "/var/lib/tdarr/logs:/app/logs:rw"
       "/var/lib/tdarr/server:/app/server:rw"
-      "/var/lib/plex/temp:/temp:rw"
-      "/mnt/movies:/movies_pooled:rw"
-      "/mnt/tv:/tv_pooled:rw"
+      "/var/lib/smb_root/temp:/temp:rw"
+      "/var/lib/smb_root/movies:/movies:rw"
+      "/var/lib/smb_root/tv:/tv:rw"
+      "/var/lib/smb_root/kids_movies:/kids_movies:rw"
     ];
     ports = [ "8265:8265/tcp" "8266:8266/tcp" ];
     log-driver = "journald";
@@ -171,8 +172,8 @@
         "map to guest" = "Bad User";
         "passdb backend" = "tdbsam";
       };
-      "media" = {
-        "path" = "/var/lib/plex";
+      "smb_root" = {
+        "path" = "/var/lib/smb_root";
         "writeable" = "yes";
         "browseable" = "yes";
         "read only" = "no";
@@ -182,7 +183,7 @@
     };
   };
 
-  fileSystems."/mnt/movies" = {
+  fileSystems."/var/lib/smb_root/movies" = {
     fsType = "fuse.mergerfs";
     device = "/var/lib/plex/media/movies:/var/lib/plex/ssd-one/movies";
     options = [
@@ -193,7 +194,7 @@
     depends = [ "/var/lib/plex/media" "/var/lib/plex/ssd-one" ];
   };
 
-  fileSystems."/mnt/tv" = {
+  fileSystems."/var/lib/smb_root/tv" = {
     fsType = "fuse.mergerfs";
     device = "/var/lib/plex/media/tv:/var/lib/plex/ssd-one/tv";
     options = [
@@ -204,6 +205,17 @@
     depends = [ "/var/lib/plex/media" "/var/lib/plex/ssd-one" ];
   };
 
+  fileSystems."/var/lib/smb_root/kids_movies" = {
+    fsType = "fuse.mergerfs";
+    device = "/var/lib/plex/media/kids_movies:/var/lib/plex/ssd-one/kids";
+    options = [
+      "cache.files=partial"
+      "dropcacheonclose=true"
+      "category.create=mfs"
+    ];
+    depends = [ "/var/lib/plex/media" "/var/lib/plex/ssd-one" ];
+  };
+  
   systemd = {
     tmpfiles = {
       rules = [ "f /var/lib/systemd/linger/nixos" ];
@@ -226,7 +238,7 @@
             };
           };
         };
-        "media-mount-point" = {
+        "media-drive-0" = {
           "/var/lib/plex/media" = {
             d = {
               user = "nixos";
@@ -235,7 +247,7 @@
             };
           };
         };
-        "media-mount-point-2" = {
+        "media-drive-1" = {
           "/var/lib/plex/ssd-one" = {
             d = {
               user = "nixos";
@@ -282,7 +294,14 @@
               mode = "757";
             };
           };
-          "/var/lib/plex/temp" = {
+          "/var/lib/smb_root" = {
+            d = {
+              user = "nixos";
+              group = "1000";
+              mode = "777";
+            };
+          };
+          "/var/lib/smb_root/temp" = {
             d = {
               user = "nixos";
               group = "1000";
@@ -293,7 +312,7 @@
             d = {
               user = "nixos";
               group = "1000";
-              mode = "757";
+              mode = "777";
             };
           };
           "/var/lib/tdarr/logs" = {

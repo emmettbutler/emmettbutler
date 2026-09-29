@@ -359,7 +359,7 @@ with lib; {
     mappings = [
       {
         server = "/temp";
-        # NB this assumes that smb_share is a symlink to a network-attached drive
+        # NB this assumes that smb_share is the mount point of a network-attached drive
         node = "/smb_share/temp";
       }
       {
