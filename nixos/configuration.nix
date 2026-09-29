@@ -355,6 +355,41 @@ with lib; {
     gnome-keyring.enable = lib.mkForce true;
   };
 
+  virtualisation.oci-containers.containers."tdarr" = let
+    mappings = [
+      {
+        server = "/temp";
+        # NB this assumes that smb_share is a symlink to a network-attached drive
+        node = "/smb_share/temp";
+      }
+      {
+        server = "/movies";
+        node = "/smb_share/movies";
+      }
+      {
+        server = "/kids_movies";
+        node = "/smb_share/kids_movies";
+      }
+      {
+        server = "/tv";
+        node = "/smb_share/tv";
+      }
+    ];
+    encodedTranslators = pkgs.runCommand "encode-tdarr-mappings" {} ''
+      echo -n '${builtins.toJSON mappings}' | ${pkgs.coreutils}/bin/base64 -w 0 > $out
+    '';
+  in {
+    image = "ghcr.io/haveagitgat/tdarr_node:2.74.01";
+    environment = {
+      nodeID = "FrameworkNode";
+      serverIP = "10.0.0.42";
+      serverPort = "8266";
+      pathTranslators = builtins.readFile encodedTranslators;
+    };
+    volumes = ["/home/emmett/smb_root:/smb_share:rw"];
+    autostart = false;
+  };
+
   virtualisation.docker.enable = true;
 
   security.sudo.extraConfig = ''
