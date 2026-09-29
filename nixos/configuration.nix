@@ -12,10 +12,10 @@ with lib;
       keep-derivations = true
     '';
   };
-  nix.settings.trusted-users = [ "root" "emmett" ];
+  nix.settings.trusted-users = ["root" "emmett"];
   nix.gc.automatic = true;
 
-  environment.pathsToLink = [ "/share/nix-direnv" ];
+  environment.pathsToLink = ["/share/nix-direnv"];
 
   nixpkgs.config.allowUnfree = true;
 
@@ -33,7 +33,7 @@ with lib;
     kernelPackages = pkgs.linuxPackages_latest;
     # beware: on framework laptop BIOS >=3.19, setting this to "deep" causes suspend to lock the machine
     # such that the only way to unlock it is by opening the chassis and powercycling it
-    kernelParams = [ "mem_sleep_default=s2idle" "acpi=force" ];
+    kernelParams = ["mem_sleep_default=s2idle" "acpi=force"];
   };
 
   networking = {
@@ -90,7 +90,8 @@ with lib;
         "$HOME/.nix-profile/lib"
         "/run/current-system/sw/lib"
         "/etc/profiles/per-user/$USER/lib"
-      ]) + ":$HOME/.${format}";
+      ])
+      + ":$HOME/.${format}";
   in {
     DSSI_PATH = makePluginPath "dssi";
     LADSPA_PATH = makePluginPath "ladspa";
@@ -111,7 +112,7 @@ with lib;
     };
   };
   hardware.pulseaudio.enable = false;
-  hardware.sane = { enable = true; };
+  hardware.sane = {enable = true;};
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -119,21 +120,20 @@ with lib;
     pulse.enable = true;
     jack.enable = true;
   };
-  networking.nameservers =
-    [ "8.8.8.8" ];
+  networking.nameservers = ["8.8.8.8"];
 
   services.resolved = {
     enable = true;
     dnssec = "true";
-    domains = [ "~." ];
-    fallbackDns = [ "8.8.4.4" ];
+    domains = ["~."];
+    fallbackDns = ["8.8.4.4"];
     dnsovertls = "true";
   };
+  services.logind.settings.Login.HandleLidSwitch = "ignore";
   systemd = {
     services.wgnord = let
       country = "United States";
       tokenFile = "/home/emmett/.nordkey";
-      # This template works as is but you can customise it if you want
       template = pkgs.writeText "template.conf" ''
         [Interface]
         PrivateKey = PRIVKEY
@@ -150,8 +150,8 @@ with lib;
     in {
       unitConfig = {
         Description = "Nord Wireguard VPN";
-        After = [ "network-online.target" ];
-        Wants = [ "network-online.target" ];
+        After = ["network-online.target"];
+        Wants = ["network-online.target"];
         StartLimitBurst = 3;
         StartLimitIntervalSec = 30;
       };
@@ -179,12 +179,11 @@ with lib;
     };
     user.services = {
       raop = {
-        description =
-          "Load and run Pipewire's RAOP discovery module, allowing audio output via AirTunes";
+        description = "Load and run Pipewire's RAOP discovery module, allowing audio output via AirTunes";
         script = ''
           /run/current-system/sw/bin/pw-cli -m load-module libpipewire-module-raop-discover
         '';
-        wantedBy = [ "default.target" ];
+        wantedBy = ["default.target"];
       };
     };
   };
@@ -194,8 +193,7 @@ with lib;
     uid = 1000;
     shell = pkgs.zsh;
     isNormalUser = true;
-    extraGroups =
-      [ "wheel" "docker" "libvirtd" "scanner" "lp" "realtime" "audio" ];
+    extraGroups = ["wheel" "docker" "libvirtd" "scanner" "lp" "realtime" "audio"];
   };
   users.users.emmett.subUidRanges = [
     {
@@ -230,7 +228,7 @@ with lib;
   programs.seahorse.enable = lib.mkForce false;
   programs.zsh = {
     enable = true;
-    shellAliases = { vim = "nvim"; };
+    shellAliases = {vim = "nvim";};
     ohMyZsh = {
       enable = true;
       theme = "rkj-repos";
@@ -246,99 +244,102 @@ with lib;
   nixpkgs.overlays = [
     (self: super: {
       slack = super.slack.overrideAttrs (oldAttrs: {
-        postInstall = (oldAttrs.postInstall or "") + ''
-          sed -i -E "s/^Icon=.+$/Icon=\/home\/emmett\/.icons\/candy-icons-master\/apps\/scalable\/slack.svg/" $out/share/applications/slack.desktop
-        '';
+        postInstall =
+          (oldAttrs.postInstall or "")
+          + ''
+            sed -i -E "s/^Icon=.+$/Icon=\/home\/emmett\/.icons\/candy-icons-master\/apps\/scalable\/slack.svg/" $out/share/applications/slack.desktop
+          '';
       });
     })
-    (self: super: { wine = super.wineWow64Packages.stable; })
+    (self: super: {wine = super.wineWow64Packages.stable;})
   ];
 
-  environment.systemPackages = with pkgs;
-    let
-      unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-      pkgsOld = import (builtins.fetchTarball {
+  environment.systemPackages = with pkgs; let
+    unstable = import <nixos-unstable> {config = {allowUnfree = true;};};
+    pkgsOld = import (builtins.fetchTarball {
       url = "https://github.com/NixOS/nixpkgs/archive/cd648d6ea62bc0ffba91e61fcfe5e33c1e2004b1.tar.gz";
     }) {};
-    in ([
-      ack
-      ansible
-      ast-grep
-      cargo
-      cloudflared
-      crane
-      direnv
-      dnsutils
-      docker-compose
-      doctl
-      fzf
-      gh
-      ghostty
-      git
-      gnomeExtensions.vitals
-      gnomeExtensions.user-themes
-      gnumake
-      gnupg
-      hyperfine
-      iptables
-      jellyfin-desktop
-      jq
-      lf
-      neovim
-      nix-direnv
-      openresolv
-      openssl
-      pinentry-gnome3
-      plex-desktop
-      gnome-terminal
-      gnome-tweaks
-      rsync
-      rustc
-      shellcheck
-      shfmt
-      stow
-      tmux
-      tmux-xpanes
-      unzip
-      wget
-      wgnord
-      wireguard-tools
-      xclip
-      yq
-      zip
+  in [
+    ack
+    alejandra
+    ansible
+    ast-grep
+    cargo
+    cifs-utils
+    cloudflared
+    crane
+    direnv
+    dnsutils
+    docker-compose
+    doctl
+    fzf
+    gh
+    ghostty
+    git
+    gnomeExtensions.vitals
+    gnomeExtensions.user-themes
+    gnumake
+    gnupg
+    hyperfine
+    iptables
+    jellyfin-desktop
+    jq
+    lf
+    neovim
+    nix-direnv
+    openresolv
+    openssl
+    pinentry-gnome3
+    plex-desktop
+    gnome-terminal
+    gnome-tweaks
+    rsync
+    rustc
+    shellcheck
+    shfmt
+    stow
+    tmux
+    tmux-xpanes
+    unzip
+    wget
+    wgnord
+    wireguard-tools
+    xclip
+    yq
+    zip
 
-      enpass
-      gimp
-      google-chrome
-      handbrake
-      obs-studio
-      vlc
-      zoom-us
+    enpass
+    gimp
+    google-chrome
+    handbrake
+    obs-studio
+    vlc
+    zoom-us
 
-      airwindows-lv2
-      ardour
-      drumgizmo
-      guitarix
-      gxplugins-lv2
-      inkscape
-      lsp-plugins
-      kmetronome
-      pavucontrol
-      qpwgraph
-      unstable.shotcut
-      surge-xt
-      samplv1
-      scribus
-      tamgamp-lv2
-      pkgsOld.wineWowPackages.stable
-      pkgsOld.yabridge
-      yabridgectl
-    ]);
+    airwindows-lv2
+    ardour
+    drumgizmo
+    guitarix
+    gxplugins-lv2
+    inkscape
+    lsp-plugins
+    kmetronome
+    pavucontrol
+    qpwgraph
+    unstable.shotcut
+    surge-xt
+    samplv1
+    scribus
+    tamgamp-lv2
+    pkgsOld.wineWowPackages.stable
+    pkgsOld.yabridge
+    yabridgectl
+  ];
 
-  services.printing = { enable = true; };
+  services.printing = {enable = true;};
   services.fprintd.enable = true;
   services.pcscd.enable = true;
-  services.dbus.packages = [ pkgs.gcr ];
+  services.dbus.packages = [pkgs.gcr];
   services.xserver = {
     enable = true;
     displayManager.gdm.enable = true;
