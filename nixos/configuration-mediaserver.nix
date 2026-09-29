@@ -1,10 +1,13 @@
-{ config, lib, pkgs, ... }:
-
 {
-  imports = [ ./hardware-configuration.nix ];
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
+  imports = [./hardware-configuration.nix];
 
   nixpkgs.config.allowUnfree = true;
-  nix.settings.trusted-users = [ "root" "emmett" ];
+  nix.settings.trusted-users = ["root" "emmett"];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -13,17 +16,21 @@
   users.users = {
     nixos = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "docker" ];
+      extraGroups = ["wheel" "docker"];
     };
   };
 
-  security.sudo.extraRules = [{
-    users = [ "nixos" ];
-    commands = [{
-      command = "/run/current-system/sw/bin/systemctl reboot";
-      options = [ "NOPASSWD" ];
-    }];
-  }];
+  security.sudo.extraRules = [
+    {
+      users = ["nixos"];
+      commands = [
+        {
+          command = "/run/current-system/sw/bin/systemctl reboot";
+          options = ["NOPASSWD"];
+        }
+      ];
+    }
+  ];
 
   networking = {
     networkmanager.enable = true;
@@ -43,7 +50,7 @@
     '';
   };
 
-  services.openssh = { enable = true; };
+  services.openssh = {enable = true;};
   services.nginx = {
     enable = true;
     virtualHosts."stats.pandaemonium" = {
@@ -103,10 +110,10 @@
       "PUID" = "1000";
       "TZ" = "US/Pacific";
     };
-    volumes = [ "/home/nixos/wizarr:/data:rw" ];
-    ports = [ "5690:5690/tcp" ];
+    volumes = ["/home/nixos/wizarr:/data:rw"];
+    ports = ["5690:5690/tcp"];
     log-driver = "journald";
-    extraOptions = [ "--network=host" ];
+    extraOptions = ["--network=host"];
   };
   virtualisation.oci-containers.containers."tdarr" = {
     image = "ghcr.io/haveagitgat/tdarr:latest";
@@ -136,9 +143,9 @@
       "/var/lib/smb_root/tv:/tv:rw"
       "/var/lib/smb_root/kids_movies:/kids_movies:rw"
     ];
-    ports = [ "8265:8265/tcp" "8266:8266/tcp" ];
+    ports = ["8265:8265/tcp" "8266:8266/tcp"];
     log-driver = "journald";
-    extraOptions = [ "--network=host" ];
+    extraOptions = ["--network=host"];
   };
 
   services = {
@@ -152,9 +159,9 @@
       openFirewall = true;
       user = "nixos";
     };
-    overseerr = { enable = true; };
-    tautulli = { enable = true; };
-    resolved = { enable = true; };
+    overseerr = {enable = true;};
+    tautulli = {enable = true;};
+    resolved = {enable = true;};
   };
 
   services.samba = {
@@ -191,7 +198,7 @@
       "dropcacheonclose=true"
       "category.create=mfs"
     ];
-    depends = [ "/var/lib/plex/media" "/var/lib/plex/ssd-one" ];
+    depends = ["/var/lib/plex/media" "/var/lib/plex/ssd-one"];
   };
 
   fileSystems."/var/lib/smb_root/tv" = {
@@ -202,7 +209,7 @@
       "dropcacheonclose=true"
       "category.create=mfs"
     ];
-    depends = [ "/var/lib/plex/media" "/var/lib/plex/ssd-one" ];
+    depends = ["/var/lib/plex/media" "/var/lib/plex/ssd-one"];
   };
 
   fileSystems."/var/lib/smb_root/kids_movies" = {
@@ -213,12 +220,12 @@
       "dropcacheonclose=true"
       "category.create=mfs"
     ];
-    depends = [ "/var/lib/plex/media" "/var/lib/plex/ssd-one" ];
+    depends = ["/var/lib/plex/media" "/var/lib/plex/ssd-one"];
   };
-  
+
   systemd = {
     tmpfiles = {
-      rules = [ "f /var/lib/systemd/linger/nixos" ];
+      rules = ["f /var/lib/systemd/linger/nixos"];
       settings = {
         "openvpn" = {
           "/etc/openvpn" = {
@@ -335,8 +342,8 @@
     services = {
       vpn = {
         description = "Namespaced OpenVPN NordVPN";
-        wants = [ "multi-user.target" ];
-        wantedBy = [ "default.target" ];
+        wants = ["multi-user.target"];
+        wantedBy = ["default.target"];
         startLimitBurst = 3;
         startLimitIntervalSec = 30;
         script = ''
@@ -344,12 +351,12 @@
           /opt/bin/namespaced-openvpn --config /etc/openvpn/ovpn_udp/us12527.nordvpn.com.udp.ovpn
         '';
 
-        serviceConfig = { Type = "simple"; };
+        serviceConfig = {Type = "simple";};
       };
       sabnzbd-private = {
         description = "SABnzbd downloader behind VPN";
-        wants = [ "vpn.service" ];
-        wantedBy = [ "default.target" ];
+        wants = ["vpn.service"];
+        wantedBy = ["default.target"];
         startLimitBurst = 3;
         startLimitIntervalSec = 3;
         script = ''
@@ -371,16 +378,15 @@
       };
       sabnzbd = {
         description = "SABnzbd downloader";
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
-        wantedBy = [ "default.target" ];
+        after = ["network-online.target"];
+        wants = ["network-online.target"];
+        wantedBy = ["default.target"];
         startLimitBurst = 3;
         startLimitIntervalSec = 3;
 
         serviceConfig = {
           Type = "simple";
-          ExecStart =
-            "/run/wrappers/bin/sudo -u nixos -i /run/current-system/sw/bin/sabnzbd";
+          ExecStart = "/run/wrappers/bin/sudo -u nixos -i /run/current-system/sw/bin/sabnzbd";
           Restart = "on-failure";
           RestartSec = 1;
           RemainAfterExit = "yes";
@@ -393,9 +399,9 @@
         script = ''
           /run/current-system/sw/bin/Sonarr
         '';
-        wantedBy = [ "default.target" ];
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
+        wantedBy = ["default.target"];
+        after = ["network-online.target"];
+        wants = ["network-online.target"];
         startLimitBurst = 3;
         startLimitIntervalSec = 30;
         serviceConfig = {
@@ -410,9 +416,9 @@
         script = ''
           /run/current-system/sw/bin/Radarr
         '';
-        wantedBy = [ "default.target" ];
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
+        wantedBy = ["default.target"];
+        after = ["network-online.target"];
+        wants = ["network-online.target"];
         startLimitBurst = 3;
         startLimitIntervalSec = 30;
         serviceConfig = {
@@ -424,12 +430,12 @@
       };
       tunnel-overseerr = {
         description = "Cloudflare tunnel exposing Overseerr";
-        wantedBy = [ "default.target" ];
+        wantedBy = ["default.target"];
         script = ''
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-overseerr`
         '';
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
+        after = ["network-online.target"];
+        wants = ["network-online.target"];
         startLimitBurst = 3;
         startLimitIntervalSec = 30;
         serviceConfig = {
@@ -441,12 +447,12 @@
       };
       tunnel-jellyfin = {
         description = "Cloudflare tunnel exposing Jellyfin";
-        wantedBy = [ "default.target" ];
+        wantedBy = ["default.target"];
         script = ''
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-jellyfin`
         '';
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
+        after = ["network-online.target"];
+        wants = ["network-online.target"];
         startLimitBurst = 3;
         startLimitIntervalSec = 30;
         serviceConfig = {
@@ -458,12 +464,12 @@
       };
       tunnel-wizarr = {
         description = "Cloudflare tunnel exposing Wizarr";
-        wantedBy = [ "default.target" ];
+        wantedBy = ["default.target"];
         script = ''
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-wizarr`
         '';
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
+        after = ["network-online.target"];
+        wants = ["network-online.target"];
         startLimitBurst = 3;
         startLimitIntervalSec = 30;
         serviceConfig = {
@@ -475,12 +481,12 @@
       };
       tunnel-sonarr = {
         description = "Cloudflare tunnel exposing Sonarr";
-        wantedBy = [ "default.target" ];
+        wantedBy = ["default.target"];
         script = ''
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-sonarr`
         '';
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
+        after = ["network-online.target"];
+        wants = ["network-online.target"];
         startLimitBurst = 3;
         startLimitIntervalSec = 30;
         serviceConfig = {
@@ -492,12 +498,12 @@
       };
       tunnel-radarr = {
         description = "Cloudflare tunnel exposing Radarr";
-        wantedBy = [ "default.target" ];
+        wantedBy = ["default.target"];
         script = ''
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-radarr`
         '';
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
+        after = ["network-online.target"];
+        wants = ["network-online.target"];
         startLimitBurst = 3;
         startLimitIntervalSec = 30;
         serviceConfig = {
@@ -509,12 +515,12 @@
       };
       tunnel-tautulli = {
         description = "Cloudflare tunnel exposing Tautulli";
-        wantedBy = [ "default.target" ];
+        wantedBy = ["default.target"];
         script = ''
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-tautulli`
         '';
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
+        after = ["network-online.target"];
+        wants = ["network-online.target"];
         startLimitBurst = 3;
         startLimitIntervalSec = 30;
         serviceConfig = {
@@ -532,9 +538,9 @@
         script = ''
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-ssh`
         '';
-        wantedBy = [ "default.target" ];
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
+        wantedBy = ["default.target"];
+        after = ["network-online.target"];
+        wants = ["network-online.target"];
         startLimitBurst = 3;
         startLimitIntervalSec = 30;
         serviceConfig = {
@@ -546,23 +552,22 @@
       };
     };
   };
-  environment.systemPackages = with pkgs;
-    let
-    in ([
-      cloudflared
-      ftop
-      htop
-      mergerfs
-      nload
-      neovim
-      openvpn
-      python3
-      radarr
-      sabnzbd
-      sonarr
-      traceroute
-      yt-dlp
-    ]);
+  environment.systemPackages = with pkgs; let
+  in [
+    cloudflared
+    ftop
+    htop
+    mergerfs
+    nload
+    neovim
+    openvpn
+    python3
+    radarr
+    sabnzbd
+    sonarr
+    traceroute
+    yt-dlp
+  ];
 
   system.stateVersion = "25.11";
 }
