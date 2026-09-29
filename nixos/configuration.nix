@@ -1,9 +1,12 @@
-{ config, pkgs, inputs, lib, ... }:
-
-with lib;
-
 {
-  imports = [ /etc/nixos/hardware-configuration.nix ./neuralrack.nix ];
+  config,
+  pkgs,
+  inputs,
+  lib,
+  ...
+}:
+with lib; {
+  imports = [/etc/nixos/hardware-configuration.nix ./neuralrack.nix];
   nix = {
     package = pkgs.nixVersions.git;
     extraOptions = ''
