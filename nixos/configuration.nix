@@ -379,7 +379,7 @@ with lib; {
       echo -n '${builtins.toJSON mappings}' | ${pkgs.coreutils}/bin/base64 -w 0 > $out
     '';
   in {
-    image = "ghcr.io/haveagitgat/tdarr_node:2.74.01";
+    image = "ghcr.io/haveagitgat/tdarr_node:2.87.01";
     environment = {
       nodeID = "FrameworkNode";
       serverIP = "10.0.0.42";

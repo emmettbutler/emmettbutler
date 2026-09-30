@@ -116,7 +116,7 @@
     extraOptions = ["--network=host"];
   };
   virtualisation.oci-containers.containers."tdarr" = {
-    image = "ghcr.io/haveagitgat/tdarr:latest";
+    image = "ghcr.io/haveagitgat/tdarr:2.87.01";
     environment = {
       "PGID" = "1000";
       "PUID" = "1000";
