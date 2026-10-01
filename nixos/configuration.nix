@@ -132,7 +132,6 @@ with lib; {
     fallbackDns = ["8.8.4.4"];
     dnsovertls = "true";
   };
-  services.logind.settings.Login.HandleLidSwitch = "ignore";
   systemd = {
     services.wgnord = let
       country = "United States";
