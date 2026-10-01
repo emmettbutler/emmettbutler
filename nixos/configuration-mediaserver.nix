@@ -439,23 +439,6 @@
           RemainAfterExit = "yes";
         };
       };
-      tunnel-tdarr = {
-        description = "Cloudflare tunnel exposing Tdarr";
-        wantedBy = [ "default.target" ];
-        script = ''
-          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-tdarr`
-        '';
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
-        startLimitBurst = 3;
-        startLimitIntervalSec = 30;
-        serviceConfig = {
-          Type = "simple";
-          Restart = "on-failure";
-          RestartSec = 10;
-          RemainAfterExit = "yes";
-        };
-      };
       tunnel-overseerr = {
         description = "Cloudflare tunnel exposing Overseerr";
         wantedBy = ["default.target"];
