@@ -223,6 +223,17 @@
     depends = ["/var/lib/plex/media" "/var/lib/plex/ssd-one"];
   };
 
+  fileSystems."/mnt/kids_movies" = {
+    fsType = "fuse.mergerfs";
+    device = "/var/lib/plex/media/kids_movies:/var/lib/plex/ssd-one/kids";
+    options = [
+      "cache.files=partial"
+      "dropcacheonclose=true"
+      "category.create=mfs"
+    ];
+    depends = [ "/var/lib/plex/media" "/var/lib/plex/ssd-one" ];
+  };
+
   systemd = {
     tmpfiles = {
       rules = ["f /var/lib/systemd/linger/nixos"];
@@ -428,6 +439,23 @@
           RemainAfterExit = "yes";
         };
       };
+      tunnel-tdarr = {
+        description = "Cloudflare tunnel exposing Tdarr";
+        wantedBy = [ "default.target" ];
+        script = ''
+          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-tdarr`
+        '';
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
+        startLimitBurst = 3;
+        startLimitIntervalSec = 30;
+        serviceConfig = {
+          Type = "simple";
+          Restart = "on-failure";
+          RestartSec = 10;
+          RemainAfterExit = "yes";
+        };
+      };
       tunnel-overseerr = {
         description = "Cloudflare tunnel exposing Overseerr";
         wantedBy = ["default.target"];
@@ -569,5 +597,5 @@
     yt-dlp
   ];
 
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.05";
 }
