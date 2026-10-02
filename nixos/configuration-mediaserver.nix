@@ -231,7 +231,7 @@
       "dropcacheonclose=true"
       "category.create=mfs"
     ];
-    depends = [ "/var/lib/plex/media" "/var/lib/plex/ssd-one" ];
+    depends = ["/var/lib/plex/media" "/var/lib/plex/ssd-one"];
   };
 
   systemd = {

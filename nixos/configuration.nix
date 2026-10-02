@@ -105,6 +105,7 @@ with lib; {
   };
   services.openssh.enable = true;
 
+  hardware.graphics = {enable = true;};
   services.avahi = {
     enable = true;
     nssmdns4 = true;
@@ -195,7 +196,7 @@ with lib; {
     uid = 1000;
     shell = pkgs.zsh;
     isNormalUser = true;
-    extraGroups = ["wheel" "docker" "libvirtd" "scanner" "lp" "realtime" "audio"];
+    extraGroups = ["wheel" "docker" "libvirtd" "scanner" "lp" "realtime" "audio" "video" "render"];
   };
   users.users.emmett.subUidRanges = [
     {
@@ -278,8 +279,9 @@ with lib; {
     gh
     ghostty
     git
-    gnomeExtensions.vitals
+    gnomeExtensions.astra-monitor
     gnomeExtensions.user-themes
+    gnomeExtensions.vitals
     gnumake
     gnupg
     hyperfine
@@ -386,6 +388,7 @@ with lib; {
       pathTranslators = builtins.readFile encodedTranslators;
     };
     volumes = ["/home/emmett/smb_root:/smb_share:rw"];
+    devices = ["/dev/dri:/dev/dri"];
     autoStart = false;
   };
 
