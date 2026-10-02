@@ -102,7 +102,7 @@
       '';
     };
   };
-  virtualisation.oci-containers.containers."wizarr" = {
+  virtualisation.oci-containers.containers.wizarr = {
     image = "ghcr.io/wizarrrr/wizarr:v2026.7.1";
     environment = {
       "DISABLE_BUILTIN_AUTH" = "false";
@@ -115,7 +115,7 @@
     log-driver = "journald";
     extraOptions = ["--network=host"];
   };
-  virtualisation.oci-containers.containers."tdarr" = {
+  virtualisation.oci-containers.containers.tdarr = {
     image = "ghcr.io/haveagitgat/tdarr:2.87.01";
     environment = {
       "PGID" = "1000";
@@ -146,6 +146,17 @@
     ports = ["8265:8265/tcp" "8266:8266/tcp"];
     log-driver = "journald";
     extraOptions = ["--network=host"];
+  };
+  virtualisation.oci-containers.containers.watchstate = {
+    image = "ghcr.io/arabcoders/watchstate:v1.10.8";
+    ports = ["8282:8080"];
+    volumes = [
+      "/var/lib/watchstate:/config:rw"
+    ];
+    environment = {
+      TZ = "America/Los_Angeles";
+    };
+    user = "1000:1000";
   };
 
   services = {
@@ -301,6 +312,15 @@
               user = "nixos";
               group = "users";
               mode = "755";
+            };
+          };
+        };
+        "watchstate" = {
+          "/var/lib/watchstate" = {
+            d = {
+              user = "root";
+              group = "root";
+              mode = "757";
             };
           };
         };
