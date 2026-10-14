@@ -109,6 +109,17 @@
       '';
     };
   };
+  virtualisation.oci-containers.containers."tunnel-ssh" = {
+      image = "cloudflare/cloudflared:latest";
+      environmentFiles = [ "/home/nixos/ssh-tunnel.env" ];
+      cmd = [
+        "tunnel"
+        "--no-autoupdate"
+        "run"
+      ];
+      log-driver = "journald";
+      extraOptions = [ "--network=host" ];
+  };
   virtualisation.oci-containers.containers.wizarr = {
     image = "ghcr.io/wizarrrr/wizarr:v2026.7.1";
     environment = {
@@ -557,26 +568,6 @@
         script = ''
           /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-tautulli`
         '';
-        after = ["network-online.target"];
-        wants = ["network-online.target"];
-        startLimitBurst = 3;
-        startLimitIntervalSec = 30;
-        serviceConfig = {
-          Type = "simple";
-          Restart = "on-failure";
-          RestartSec = 10;
-          RemainAfterExit = "yes";
-        };
-      };
-      tunnel-ssh = {
-        # client side needs the following in ssh config:
-        # Host sh.pandaemonium.biz
-        # ProxyCommand /run/current-system/sw/bin/cloudflared access ssh --hostname %h
-        description = "Cloudflare tunnel exposing SSH";
-        script = ''
-          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-ssh`
-        '';
-        wantedBy = ["default.target"];
         after = ["network-online.target"];
         wants = ["network-online.target"];
         startLimitBurst = 3;
