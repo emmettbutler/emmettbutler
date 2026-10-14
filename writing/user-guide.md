@@ -77,11 +77,11 @@ negative.
 
 ## My strengths
 
-* empathic communication
-* active listening
-* making engineers’ lives better by eliminating toil
-* reading code
-* teaching myself new things
+- empathic communication
+- active listening
+- making engineers’ lives better by eliminating toil
+- reading code
+- teaching myself new things
 
 ## My growth areas
 
@@ -99,20 +99,19 @@ defensiveness.
 
 ### I think people I work with are doing a good job if they are:
 
-* Setting goals that are achievable and slightly outside of their comfort zone
-* Frequently making new and different mistakes
-* Leaving a very visible trail of notes and artifacts as they work
-* Frequently making non-code contributions like Terraform config, monitoring, and documentation about processes and technology
-* Balancing self-teaching with an understanding of what they can learn from others
-* Trusting me to accept them as they are
+- Setting goals that are achievable and slightly outside of their comfort zone
+- Frequently making new and different mistakes
+- Leaving a very visible trail of notes and artifacts as they work
+- Frequently making non-code contributions like Terraform config, monitoring, and documentation about processes and technology
+- Balancing self-teaching with an understanding of what they can learn from others
 
 ### I think people I work with are doing a bad job if they are:
 
-* Doing work that I can’t easily learn about asynchronously
-* Making the same mistake multiple times
-* Not asking for help when they truly need it
-* Not admitting when they don’t know something
-* Ignoring non-code contributions or team process
+- Doing work that I can’t easily learn about asynchronously
+- Making the same mistake multiple times
+- Not asking for help when they truly need it
+- Not admitting when they don’t know something
+- Ignoring non-code contributions or team process
 
 I focus intensely on empathy and continuous learning, probably more than the average engineer.
 
@@ -131,30 +130,17 @@ I like to receive critical feedback on a video call, because it lets me react au
 for misunderstanding. I’ll take positive feedback in any medium you like! I have a hard time believing that I’m good
 enough, and the longer I go without positive external validation, the more miserable I get.
 
-## How I Approach 1:1s
-
-I like to have 1:1 meetings with each team member at least once every two weeks. The purpose of these meetings is to
-demonstrate to each team member that they have my attention for whatever they want to use it for. This often includes
-raising issues, asking for feedback on recent work, figuring out shared goals, planning career growth, and more.
-
-I reserve 30 minutes a week for each team member, and give them the option to skip whenever they like. It’s important
-to me to give my undivided attention to every person every week, if they want it. I also maintain a shared notepad for
-each person’s 1:1, and encourage them to create a plan for each meeting.
-
-Early in my 1:1 relationship with a new team member, I like to ask these questions to set the stage for how we’ll work
-together and relate to one another.
-
 ## How I Think About Software, Framed By Some of My Favorite Books
 
 [The Pragmatic Programmer](https://pragprog.com/tips/) is my ultimate book on engineering approach. These “tips” from
 it are central to how I think about software:
 
-* There Are No Final Decisions
-* Use “Tracer Bullets” to Find the Target
-* You Can’t Write Perfect Software
-* Decoupled Code is Easier to Change
-* Requirements Are Learned in a Feedback Loop
-* Organize Fully Functional Teams
+- There Are No Final Decisions
+- Use “Tracer Bullets” to Find the Target
+- You Can’t Write Perfect Software
+- Decoupled Code is Easier to Change
+- Requirements Are Learned in a Feedback Loop
+- Organize Fully Functional Teams
 
 [Site Reliability Engineering](https://sre.google/sre-book/table-of-contents/) changed the way I think about
 operations. As a member and maintainer of a 24/7 on-call rotation, I know that “partial system failure is inevitable”
