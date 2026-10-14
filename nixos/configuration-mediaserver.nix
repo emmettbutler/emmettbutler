@@ -33,7 +33,14 @@
   ];
 
   networking = {
-    networkmanager.enable = true;
+    networkmanager = {
+        enable = true;
+        settings = {
+            connection = {
+                "autoconnect-retries" = 0;
+            };
+        };
+    };
     hostName = "pandaemonium";
     useDHCP = false;
     firewall.enable = false;
@@ -596,6 +603,7 @@
     radarr
     sabnzbd
     sonarr
+    tmux
     traceroute
     yt-dlp
   ];
