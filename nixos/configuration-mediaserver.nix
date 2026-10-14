@@ -110,7 +110,7 @@
     };
   };
   virtualisation.oci-containers.containers."tunnel-ssh" = {
-      image = "cloudflare/cloudflared:latest";
+      image = "cloudflare/cloudflared:2026.10.0";
       environmentFiles = [ "/home/nixos/ssh-tunnel.env" ];
       cmd = [
         "tunnel"
@@ -121,7 +121,7 @@
       extraOptions = [ "--network=host" ];
   };
   virtualisation.oci-containers.containers.wizarr = {
-    image = "ghcr.io/wizarrrr/wizarr:v2026.7.1";
+    image = "ghcr.io/wizarrrr/wizarr:v2026.10.1";
     environment = {
       "DISABLE_BUILTIN_AUTH" = "false";
       "PGID" = "1000";
@@ -134,7 +134,7 @@
     extraOptions = ["--network=host"];
   };
   virtualisation.oci-containers.containers.tdarr = {
-    image = "ghcr.io/haveagitgat/tdarr:2.87.01";
+    image = "ghcr.io/haveagitgat/tdarr:2.96.01";
     environment = {
       "PGID" = "1000";
       "PUID" = "1000";
