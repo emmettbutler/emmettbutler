@@ -4,7 +4,13 @@
   pkgs,
   ...
 }: {
-  imports = [./hardware-configuration.nix];
+  imports = [
+    ./hardware-configuration.nix
+    (builtins.fetchTarball {
+      url = "https://gitlab.com/simple-nixos-mailserver/nixos-mailserver/-/archive/nixos-26.05/nixos-mailserver-nixos-26.05.tar.gz";
+      sha256 = "0xp7ip4vafi6wx38ghwa191v4d84h2l9pczw2jzxysh5qdcv4akb";
+    })
+  ];
 
   nixpkgs.config.allowUnfree = true;
   nix.settings.trusted-users = ["root" "emmett"];
@@ -20,26 +26,38 @@
     };
   };
 
-  security.sudo.extraRules = [
-    {
-      users = ["nixos"];
-      commands = [
-        {
-          command = "/run/current-system/sw/bin/systemctl reboot";
-          options = ["NOPASSWD"];
-        }
-      ];
-    }
-  ];
+  security = {
+    acme = {
+      acceptTerms = true;
+      defaults.email = "admin@mail.pandaemonium.biz";
+
+      certs."mail.pandaemonium.biz" = {
+        domain = "mail.pandaemonium.biz";
+        environmentFile = "/home/nixos/.acme-creds";
+        postRun = "systemctl reload postfix dovecot";
+      };
+    };
+    sudo.extraRules = [
+      {
+        users = ["nixos"];
+        commands = [
+          {
+            command = "/run/current-system/sw/bin/systemctl reboot";
+            options = ["NOPASSWD"];
+          }
+        ];
+      }
+    ];
+  };
 
   networking = {
     networkmanager = {
-        enable = true;
-        settings = {
-            connection = {
-                "autoconnect-retries" = 0;
-            };
+      enable = true;
+      settings = {
+        connection = {
+          "autoconnect-retries" = 0;
         };
+      };
     };
     hostName = "pandaemonium";
     useDHCP = false;
@@ -60,6 +78,7 @@
   services.openssh = {enable = true;};
   services.nginx = {
     enable = true;
+    virtualHosts.${config.mailserver.fqdn}.enableACME = true;
     virtualHosts."stats.pandaemonium" = {
       locations."/".extraConfig = ''
         proxy_pass    http://127.0.0.1:8181;
@@ -191,6 +210,41 @@
     overseerr = {enable = true;};
     tautulli = {enable = true;};
     resolved = {enable = true;};
+  };
+
+  mailserver = {
+    enable = true;
+    stateVersion = 5;
+    fqdn = "mail.pandaemonium.biz";
+    domains = ["pandaemonium.biz"];
+
+    x509.useACMEHost = config.mailserver.fqdn;
+  };
+
+  services.postfix = {
+    enable = true;
+    settings.main = {
+      relayhost = ["[smtp.mx.cloudflare.net]:465"];
+      smtp_tls_wrappermode = lib.mkForce "yes";
+      smtp_tls_security_level = lib.mkForce "encrypt";
+      smtp_sasl_auth_enable = "yes";
+      smtp_sasl_security_options = "noanonymous";
+      smtp_sasl_password_maps = "texthash:/home/nixos/.smtp-creds";
+      null_sender_rejection_transport = "local";
+      bounce_notice_recipient = "admin@pandaemonium.biz";
+      "2bounce_notice_recipient" = "admin@pandaemonium.biz";
+      myorigin = "pandaemonium.biz";
+    };
+  };
+
+  services.ddclient = {
+    enable = true;
+    interval = "5min";
+    protocol = "cloudflare";
+    zone = "pandaemonium.biz";
+    domains = ["mail.pandaemonium.biz"];
+    username = "token";
+    passwordFile = "/home/nixos/.cloudflare_ddns_token";
   };
 
   services.samba = {
