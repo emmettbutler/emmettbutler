@@ -13,6 +13,7 @@ local options = {
 		-- Web development
 		javascript = { "prettier" },
 		javascriptreact = { "prettier" },
+		nix = { "alejandra" },
 		typescript = { "prettier" },
 		typescriptreact = { "prettier" },
 		vue = { "prettier" },
