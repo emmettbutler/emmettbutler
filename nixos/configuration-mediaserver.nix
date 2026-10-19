@@ -110,15 +110,15 @@
     };
   };
   virtualisation.oci-containers.containers."tunnel-ssh" = {
-      image = "cloudflare/cloudflared:2026.10.0";
-      environmentFiles = [ "/home/nixos/ssh-tunnel.env" ];
-      cmd = [
-        "tunnel"
-        "--no-autoupdate"
-        "run"
-      ];
-      log-driver = "journald";
-      extraOptions = [ "--network=host" ];
+    image = "cloudflare/cloudflared:2026.10.0";
+    environmentFiles = ["/home/nixos/ssh-tunnel.env"];
+    cmd = [
+      "tunnel"
+      "--no-autoupdate"
+      "run"
+    ];
+    log-driver = "journald";
+    extraOptions = ["--network=host"];
   };
   virtualisation.oci-containers.containers.wizarr = {
     image = "ghcr.io/wizarrrr/wizarr:v2026.10.1";
