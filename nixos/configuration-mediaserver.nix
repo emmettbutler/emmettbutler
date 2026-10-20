@@ -3,7 +3,76 @@
   lib,
   pkgs,
   ...
-}: {
+}: let
+  makeService = {
+    description,
+    script ? null,
+    serviceConfig ? {},
+    ...
+  } @ args:
+    {
+      inherit description;
+      wantedBy = ["default.target"];
+      after = ["network-online.target"];
+      wants = ["network-online.target"];
+      startLimitBurst = 3;
+      startLimitIntervalSec = 30;
+      serviceConfig =
+        {
+          Type = "simple";
+          Restart = "on-failure";
+          RestartSec = 10;
+          RemainAfterExit = "yes";
+        }
+        // serviceConfig;
+    }
+    // lib.optionalAttrs (script != null) {inherit script;}
+    // (builtins.removeAttrs args ["description" "script" "serviceConfig"]);
+  makeTunnel = name:
+    makeService {
+      description = "Cloudflare tunnel exposing ${name}";
+      script = "/run/current-system/sw/bin/cloudflared tunnel run --token $(cat /home/nixos/.tunneltoken-${lib.toLower name})";
+    };
+  mkDir = path: {
+    user ? "nixos",
+    group ? "users",
+    mode ? "755",
+  }: {
+    "${path}".d = {inherit user group mode;};
+  };
+  mkDirs = paths: settings:
+    lib.mkMerge (map (path: mkDir path settings) paths);
+  mkMergerfs = {
+    device,
+    depends ? ["/var/lib/plex/media" "/var/lib/plex/ssd-one"],
+  }: {
+    inherit device depends;
+    fsType = "fuse.mergerfs";
+    options = [
+      "cache.files=partial"
+      "dropcacheonclose=true"
+      "category.create=mfs"
+    ];
+  };
+  mkStandardMergerfs = name:
+    mkMergerfs {
+      device = "/var/lib/plex/media/${name}:/var/lib/plex/ssd-one/${name}";
+    };
+  mkProxy = backend: {
+    locations."/".extraConfig = ''
+      proxy_pass    ${backend};
+    '';
+  };
+  mkProxyWithHeaders = backend: {
+    locations."/".extraConfig = ''
+      proxy_pass    ${backend};
+
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    '';
+  };
+in {
   imports = [
     ./hardware-configuration.nix
     (builtins.fetchTarball {
@@ -14,8 +83,10 @@
 
   nixpkgs.config.allowUnfree = true;
   nix.settings.trusted-users = ["root" "emmett"];
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
+  };
 
   time.timeZone = "America/Los_Angeles";
 
@@ -75,128 +146,128 @@
     '';
   };
 
-  services.openssh = {enable = true;};
-  services.nginx = {
-    enable = true;
-    virtualHosts.${config.mailserver.fqdn}.enableACME = true;
-    virtualHosts."stats.pandaemonium" = {
-      locations."/".extraConfig = ''
-        proxy_pass    http://127.0.0.1:8181;
-      '';
+  virtualisation.oci-containers.containers = {
+    "tunnel-ssh" = {
+      image = "cloudflare/cloudflared:2026.10.0";
+      environmentFiles = ["/home/nixos/ssh-tunnel.env"];
+      cmd = [
+        "tunnel"
+        "--no-autoupdate"
+        "run"
+      ];
+      log-driver = "journald";
+      extraOptions = ["--network=host"];
     };
-    virtualHosts."wizarr.pandaemonium" = {
-      locations."/".extraConfig = ''
-        proxy_pass    http://127.0.0.1:5690;
-      '';
+    wizarr = {
+      image = "ghcr.io/wizarrrr/wizarr:v2026.10.1";
+      environment = {
+        "DISABLE_BUILTIN_AUTH" = "false";
+        "PGID" = "1000";
+        "PUID" = "1000";
+        "TZ" = "US/Pacific";
+      };
+      volumes = ["/home/nixos/wizarr:/data:rw"];
+      ports = ["5690:5690/tcp"];
+      log-driver = "journald";
+      extraOptions = ["--network=host"];
     };
-    virtualHosts."tdarr.pandaemonium" = {
-      locations."/".extraConfig = ''
-        proxy_pass    http://127.0.0.1:8265;
-      '';
+    tdarr = {
+      image = "ghcr.io/haveagitgat/tdarr:2.96.01";
+      environment = {
+        "PGID" = "1000";
+        "PUID" = "1000";
+        "TZ" = "US/Pacific";
+        "UMASK_SET" = "002";
+        "auth" = "false";
+        "cronPluginUpdate" = "";
+        "ffmpegVersion" = "7";
+        "inContainer" = "true";
+        "internalNode" = "true";
+        "maxLogSizeMB" = "10";
+        "nodeName" = "BeelinkNode";
+        "openBrowser" = "true";
+        "serverIP" = "0.0.0.0";
+        "serverPort" = "8266";
+        "webUIPort" = "8265";
+      };
+      volumes = [
+        "/var/lib/tdarr/configs:/app/configs:rw"
+        "/var/lib/tdarr/logs:/app/logs:rw"
+        "/var/lib/tdarr/server:/app/server:rw"
+        "/var/lib/smb_root/temp:/temp:rw"
+        "/var/lib/smb_root/movies:/movies:rw"
+        "/var/lib/smb_root/tv:/tv:rw"
+        "/var/lib/smb_root/kids_movies:/kids_movies:rw"
+      ];
+      ports = ["8265:8265/tcp" "8266:8266/tcp"];
+      log-driver = "journald";
+      extraOptions = ["--network=host"];
     };
-    virtualHosts."sabnzbd-private.pandaemonium" = {
-      locations."/".extraConfig = ''
-        proxy_pass    http://192.168.10.2:8080;
-
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      '';
+    watchstate = {
+      image = "ghcr.io/arabcoders/watchstate:v1.10.8";
+      ports = ["8282:8080"];
+      volumes = [
+        "/var/lib/watchstate:/config:rw"
+      ];
+      environment = {
+        TZ = "America/Los_Angeles";
+      };
+      user = "1000:1000";
     };
-    virtualHosts."sabnzbd.pandaemonium" = {
-      locations."/".extraConfig = ''
-        proxy_pass    http://127.0.0.1:8080;
-
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      '';
-    };
-    virtualHosts."radarr.pandaemonium" = {
-      locations."/".extraConfig = ''
-        proxy_pass    http://127.0.0.1:7878;
-      '';
-    };
-    virtualHosts."sonarr.pandaemonium" = {
-      locations."/".extraConfig = ''
-        proxy_pass    http://127.0.0.1:8989;
-      '';
-    };
-    virtualHosts."overseerr.pandaemonium" = {
-      locations."/".extraConfig = ''
-        proxy_pass    http://127.0.0.1:5055;
-      '';
-    };
-  };
-  virtualisation.oci-containers.containers."tunnel-ssh" = {
-    image = "cloudflare/cloudflared:2026.10.0";
-    environmentFiles = ["/home/nixos/ssh-tunnel.env"];
-    cmd = [
-      "tunnel"
-      "--no-autoupdate"
-      "run"
-    ];
-    log-driver = "journald";
-    extraOptions = ["--network=host"];
-  };
-  virtualisation.oci-containers.containers.wizarr = {
-    image = "ghcr.io/wizarrrr/wizarr:v2026.10.1";
-    environment = {
-      "DISABLE_BUILTIN_AUTH" = "false";
-      "PGID" = "1000";
-      "PUID" = "1000";
-      "TZ" = "US/Pacific";
-    };
-    volumes = ["/home/nixos/wizarr:/data:rw"];
-    ports = ["5690:5690/tcp"];
-    log-driver = "journald";
-    extraOptions = ["--network=host"];
-  };
-  virtualisation.oci-containers.containers.tdarr = {
-    image = "ghcr.io/haveagitgat/tdarr:2.96.01";
-    environment = {
-      "PGID" = "1000";
-      "PUID" = "1000";
-      "TZ" = "US/Pacific";
-      "UMASK_SET" = "002";
-      "auth" = "false";
-      "cronPluginUpdate" = "";
-      "ffmpegVersion" = "7";
-      "inContainer" = "true";
-      "internalNode" = "true";
-      "maxLogSizeMB" = "10";
-      "nodeName" = "BeelinkNode";
-      "openBrowser" = "true";
-      "serverIP" = "0.0.0.0";
-      "serverPort" = "8266";
-      "webUIPort" = "8265";
-    };
-    volumes = [
-      "/var/lib/tdarr/configs:/app/configs:rw"
-      "/var/lib/tdarr/logs:/app/logs:rw"
-      "/var/lib/tdarr/server:/app/server:rw"
-      "/var/lib/smb_root/temp:/temp:rw"
-      "/var/lib/smb_root/movies:/movies:rw"
-      "/var/lib/smb_root/tv:/tv:rw"
-      "/var/lib/smb_root/kids_movies:/kids_movies:rw"
-    ];
-    ports = ["8265:8265/tcp" "8266:8266/tcp"];
-    log-driver = "journald";
-    extraOptions = ["--network=host"];
-  };
-  virtualisation.oci-containers.containers.watchstate = {
-    image = "ghcr.io/arabcoders/watchstate:v1.10.8";
-    ports = ["8282:8080"];
-    volumes = [
-      "/var/lib/watchstate:/config:rw"
-    ];
-    environment = {
-      TZ = "America/Los_Angeles";
-    };
-    user = "1000:1000";
   };
 
   services = {
+    postfix = {
+      enable = true;
+      settings.main = {
+        relayhost = ["[smtp.mx.cloudflare.net]:465"];
+        smtp_tls_wrappermode = lib.mkForce "yes";
+        smtp_tls_security_level = lib.mkForce "encrypt";
+        smtp_sasl_auth_enable = "yes";
+        smtp_sasl_security_options = "noanonymous";
+        smtp_sasl_password_maps = "texthash:/home/nixos/.smtp-creds";
+        null_sender_rejection_transport = "local";
+        bounce_notice_recipient = "admin@pandaemonium.biz";
+        "2bounce_notice_recipient" = "admin@pandaemonium.biz";
+        myorigin = "pandaemonium.biz";
+      };
+    };
+
+    ddclient = {
+      enable = true;
+      interval = "5min";
+      protocol = "cloudflare";
+      zone = "pandaemonium.biz";
+      domains = ["mail.pandaemonium.biz"];
+      username = "token";
+      passwordFile = "/home/nixos/.cloudflare_ddns_token";
+    };
+
+    samba = {
+      enable = true;
+      securityType = "user";
+      openFirewall = true;
+      settings = {
+        global = {
+          "workgroup" = "WORKGROUP";
+          "server string" = "smbnix";
+          "netbios name" = "smbnix";
+          "security" = "user";
+          "hosts allow" = "192.168.0. 127.0.0.1 10.0.0.";
+          "guest account" = "nixos";
+          "map to guest" = "Bad User";
+          "passdb backend" = "tdbsam";
+        };
+        "smb_root" = {
+          "path" = "/var/lib/smb_root";
+          "writeable" = "yes";
+          "browseable" = "yes";
+          "read only" = "no";
+          "force user" = "nixos";
+          "force group" = "users";
+        };
+      };
+    };
     plex = {
       enable = true;
       openFirewall = true;
@@ -210,6 +281,21 @@
     overseerr = {enable = true;};
     tautulli = {enable = true;};
     resolved = {enable = true;};
+    openssh = {enable = true;};
+    nginx = {
+      enable = true;
+      virtualHosts = {
+        "${config.mailserver.fqdn}".enableACME = true;
+        "stats.pandaemonium" = mkProxy "http://127.0.0.1:8181";
+        "wizarr.pandaemonium" = mkProxy "http://127.0.0.1:5690";
+        "tdarr.pandaemonium" = mkProxy "http://127.0.0.1:8265";
+        "radarr.pandaemonium" = mkProxy "http://127.0.0.1:7878";
+        "sonarr.pandaemonium" = mkProxy "http://127.0.0.1:8989";
+        "overseerr.pandaemonium" = mkProxy "http://127.0.0.1:5055";
+        "sabnzbd-private.pandaemonium" = mkProxyWithHeaders "http://192.168.10.2:8080";
+        "sabnzbd.pandaemonium" = mkProxyWithHeaders "http://127.0.0.1:8080";
+      };
+    };
   };
 
   mailserver = {
@@ -221,247 +307,71 @@
     x509.useACMEHost = config.mailserver.fqdn;
   };
 
-  services.postfix = {
-    enable = true;
-    settings.main = {
-      relayhost = ["[smtp.mx.cloudflare.net]:465"];
-      smtp_tls_wrappermode = lib.mkForce "yes";
-      smtp_tls_security_level = lib.mkForce "encrypt";
-      smtp_sasl_auth_enable = "yes";
-      smtp_sasl_security_options = "noanonymous";
-      smtp_sasl_password_maps = "texthash:/home/nixos/.smtp-creds";
-      null_sender_rejection_transport = "local";
-      bounce_notice_recipient = "admin@pandaemonium.biz";
-      "2bounce_notice_recipient" = "admin@pandaemonium.biz";
-      myorigin = "pandaemonium.biz";
+  fileSystems = {
+    "/var/lib/smb_root/movies" = mkStandardMergerfs "movies";
+    "/var/lib/smb_root/tv" = mkStandardMergerfs "tv";
+
+    "/var/lib/smb_root/kids_movies" = mkMergerfs {
+      device = "/var/lib/plex/media/kids_movies:/var/lib/plex/ssd-one/kids";
     };
-  };
-
-  services.ddclient = {
-    enable = true;
-    interval = "5min";
-    protocol = "cloudflare";
-    zone = "pandaemonium.biz";
-    domains = ["mail.pandaemonium.biz"];
-    username = "token";
-    passwordFile = "/home/nixos/.cloudflare_ddns_token";
-  };
-
-  services.samba = {
-    enable = true;
-    securityType = "user";
-    openFirewall = true;
-    settings = {
-      global = {
-        "workgroup" = "WORKGROUP";
-        "server string" = "smbnix";
-        "netbios name" = "smbnix";
-        "security" = "user";
-        "hosts allow" = "192.168.0. 127.0.0.1 10.0.0.";
-        "guest account" = "nixos";
-        "map to guest" = "Bad User";
-        "passdb backend" = "tdbsam";
-      };
-      "smb_root" = {
-        "path" = "/var/lib/smb_root";
-        "writeable" = "yes";
-        "browseable" = "yes";
-        "read only" = "no";
-        "force user" = "nixos";
-        "force group" = "users";
-      };
-    };
-  };
-
-  fileSystems."/var/lib/smb_root/movies" = {
-    fsType = "fuse.mergerfs";
-    device = "/var/lib/plex/media/movies:/var/lib/plex/ssd-one/movies";
-    options = [
-      "cache.files=partial"
-      "dropcacheonclose=true"
-      "category.create=mfs"
-    ];
-    depends = ["/var/lib/plex/media" "/var/lib/plex/ssd-one"];
-  };
-
-  fileSystems."/var/lib/smb_root/tv" = {
-    fsType = "fuse.mergerfs";
-    device = "/var/lib/plex/media/tv:/var/lib/plex/ssd-one/tv";
-    options = [
-      "cache.files=partial"
-      "dropcacheonclose=true"
-      "category.create=mfs"
-    ];
-    depends = ["/var/lib/plex/media" "/var/lib/plex/ssd-one"];
-  };
-
-  fileSystems."/var/lib/smb_root/kids_movies" = {
-    fsType = "fuse.mergerfs";
-    device = "/var/lib/plex/media/kids_movies:/var/lib/plex/ssd-one/kids";
-    options = [
-      "cache.files=partial"
-      "dropcacheonclose=true"
-      "category.create=mfs"
-    ];
-    depends = ["/var/lib/plex/media" "/var/lib/plex/ssd-one"];
-  };
-
-  fileSystems."/mnt/kids_movies" = {
-    fsType = "fuse.mergerfs";
-    device = "/var/lib/plex/media/kids_movies:/var/lib/plex/ssd-one/kids";
-    options = [
-      "cache.files=partial"
-      "dropcacheonclose=true"
-      "category.create=mfs"
-    ];
-    depends = ["/var/lib/plex/media" "/var/lib/plex/ssd-one"];
   };
 
   systemd = {
     tmpfiles = {
       rules = ["f /var/lib/systemd/linger/nixos"];
+
       settings = {
-        "openvpn" = {
-          "/etc/openvpn" = {
-            d = {
-              user = "nixos";
-              group = "users";
-              mode = "757";
-            };
-          };
+        "openvpn" = mkDir "/etc/openvpn" {mode = "757";};
+        "custom-bins" = mkDir "/opt/bin" {mode = "757";};
+
+        "media-drive-0" = mkDir "/var/lib/plex/media" {mode = "706";};
+        "media-drive-1" = mkDir "/var/lib/plex/ssd-one" {mode = "706";};
+
+        "sabnzbd-dl" = mkDirs [
+          "/home/nixos/Downloads/complete"
+          "/home/nixos/Downloads/incomplete"
+          "/home/nixos/Downloads/private-complete"
+          "/home/nixos/Downloads/private-incomplete"
+        ] {mode = "755";};
+
+        "watchstate" = mkDir "/var/lib/watchstate" {
+          user = "root";
+          group = "root";
+          mode = "757";
         };
-        "custom-bins" = {
-          "/opt/bin" = {
-            d = {
-              user = "nixos";
-              group = "users";
-              mode = "757";
-            };
-          };
-        };
-        "media-drive-0" = {
-          "/var/lib/plex/media" = {
-            d = {
-              user = "nixos";
-              group = "users";
-              mode = "706";
-            };
-          };
-        };
-        "media-drive-1" = {
-          "/var/lib/plex/ssd-one" = {
-            d = {
-              user = "nixos";
-              group = "users";
-              mode = "706";
-            };
-          };
-        };
-        "sabnzbd-dl" = {
-          "/home/nixos/Downloads/complete" = {
-            d = {
-              user = "nixos";
-              group = "users";
-              mode = "755";
-            };
-          };
-          "/home/nixos/Downloads/incomplete" = {
-            d = {
-              user = "nixos";
-              group = "users";
-              mode = "755";
-            };
-          };
-          "/home/nixos/Downloads/private-complete" = {
-            d = {
-              user = "nixos";
-              group = "users";
-              mode = "755";
-            };
-          };
-          "/home/nixos/Downloads/private-incomplete" = {
-            d = {
-              user = "nixos";
-              group = "users";
-              mode = "755";
-            };
-          };
-        };
-        "watchstate" = {
-          "/var/lib/watchstate" = {
-            d = {
-              user = "root";
-              group = "root";
-              mode = "757";
-            };
-          };
-        };
-        "tdarr-directories" = {
-          "/var/lib/tdarr" = {
-            d = {
-              user = "root";
-              group = "root";
-              mode = "757";
-            };
-          };
-          "/var/lib/smb_root" = {
-            d = {
-              user = "nixos";
+
+        "tdarr-directories" = lib.mkMerge [
+          (mkDir "/var/lib/tdarr" {
+            user = "root";
+            group = "root";
+            mode = "757";
+          })
+
+          (mkDirs [
+              "/var/lib/smb_root"
+              "/var/lib/smb_root/temp"
+              "/var/lib/tdarr/server"
+              "/var/lib/tdarr/logs"
+              "/var/lib/tdarr/configs"
+            ] {
               group = "1000";
               mode = "777";
-            };
-          };
-          "/var/lib/smb_root/temp" = {
-            d = {
-              user = "nixos";
-              group = "1000";
-              mode = "777";
-            };
-          };
-          "/var/lib/tdarr/server" = {
-            d = {
-              user = "nixos";
-              group = "1000";
-              mode = "777";
-            };
-          };
-          "/var/lib/tdarr/logs" = {
-            d = {
-              user = "nixos";
-              group = "1000";
-              mode = "757";
-            };
-          };
-          "/var/lib/tdarr/configs" = {
-            d = {
-              user = "nixos";
-              group = "1000";
-              mode = "757";
-            };
-          };
-        };
+            })
+        ];
       };
     };
-    services = {
+    services = lib.mapAttrs (name: value: makeService value) {
       vpn = {
         description = "Namespaced OpenVPN NordVPN";
         wants = ["multi-user.target"];
-        wantedBy = ["default.target"];
-        startLimitBurst = 3;
-        startLimitIntervalSec = 30;
         script = ''
           /run/current-system/sw/bin/ip netns delete protected || true
           /opt/bin/namespaced-openvpn --config /etc/openvpn/ovpn_udp/us12527.nordvpn.com.udp.ovpn
         '';
-
-        serviceConfig = {Type = "simple";};
       };
       sabnzbd-private = {
         description = "SABnzbd downloader behind VPN";
         wants = ["vpn.service"];
-        wantedBy = ["default.target"];
-        startLimitBurst = 3;
-        startLimitIntervalSec = 3;
         script = ''
           /run/current-system/sw/bin/ip link add veth-host type veth peer name veth-ns || true
           /run/current-system/sw/bin/ip link set veth-ns netns protected || true
@@ -471,169 +381,37 @@
           /run/current-system/sw/bin/ip netns exec protected /run/current-system/sw/bin/ip link set veth-ns up || true
           /run/current-system/sw/bin/ip netns exec protected /run/wrappers/bin/sudo -u nixos -i /run/current-system/sw/bin/sabnzbd -f /home/nixos/.sabnzbd/sabnzbd-private.ini
         '';
-
-        serviceConfig = {
-          Type = "simple";
-          Restart = "on-failure";
-          RestartSec = 1;
-          RemainAfterExit = "yes";
-        };
       };
       sabnzbd = {
         description = "SABnzbd downloader";
-        after = ["network-online.target"];
-        wants = ["network-online.target"];
-        wantedBy = ["default.target"];
-        startLimitBurst = 3;
-        startLimitIntervalSec = 3;
-
         serviceConfig = {
-          Type = "simple";
           ExecStart = "/run/wrappers/bin/sudo -u nixos -i /run/current-system/sw/bin/sabnzbd";
-          Restart = "on-failure";
-          RestartSec = 1;
-          RemainAfterExit = "yes";
         };
       };
     };
-    user.services = {
-      sonarr = {
-        description = "TV show NZB finder";
-        script = ''
-          /run/current-system/sw/bin/Sonarr
-        '';
-        wantedBy = ["default.target"];
-        after = ["network-online.target"];
-        wants = ["network-online.target"];
-        startLimitBurst = 3;
-        startLimitIntervalSec = 30;
-        serviceConfig = {
-          Type = "simple";
-          Restart = "on-failure";
-          RestartSec = 10;
-          RemainAfterExit = "yes";
+    user.services =
+      (lib.mapAttrs (name: value: makeService value) {
+        sonarr = {
+          description = "TV show NZB finder";
+          script = ''
+            /run/current-system/sw/bin/Sonarr
+          '';
         };
-      };
-      radarr = {
-        description = "Movie NZB finder";
-        script = ''
-          /run/current-system/sw/bin/Radarr
-        '';
-        wantedBy = ["default.target"];
-        after = ["network-online.target"];
-        wants = ["network-online.target"];
-        startLimitBurst = 3;
-        startLimitIntervalSec = 30;
-        serviceConfig = {
-          Type = "simple";
-          Restart = "on-failure";
-          RestartSec = 10;
-          RemainAfterExit = "yes";
+        radarr = {
+          description = "Movie NZB finder";
+          script = ''
+            /run/current-system/sw/bin/Radarr
+          '';
         };
+      })
+      // {
+        tunnel-overseerr = makeTunnel "Overseerr";
+        tunnel-jellyfin = makeTunnel "Jellyfin";
+        tunnel-wizarr = makeTunnel "Wizarr";
+        tunnel-sonarr = makeTunnel "Sonarr";
+        tunnel-radarr = makeTunnel "Radarr";
+        tunnel-tautulli = makeTunnel "Tautulli";
       };
-      tunnel-overseerr = {
-        description = "Cloudflare tunnel exposing Overseerr";
-        wantedBy = ["default.target"];
-        script = ''
-          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-overseerr`
-        '';
-        after = ["network-online.target"];
-        wants = ["network-online.target"];
-        startLimitBurst = 3;
-        startLimitIntervalSec = 30;
-        serviceConfig = {
-          Type = "simple";
-          Restart = "on-failure";
-          RestartSec = 10;
-          RemainAfterExit = "yes";
-        };
-      };
-      tunnel-jellyfin = {
-        description = "Cloudflare tunnel exposing Jellyfin";
-        wantedBy = ["default.target"];
-        script = ''
-          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-jellyfin`
-        '';
-        after = ["network-online.target"];
-        wants = ["network-online.target"];
-        startLimitBurst = 3;
-        startLimitIntervalSec = 30;
-        serviceConfig = {
-          Type = "simple";
-          Restart = "on-failure";
-          RestartSec = 10;
-          RemainAfterExit = "yes";
-        };
-      };
-      tunnel-wizarr = {
-        description = "Cloudflare tunnel exposing Wizarr";
-        wantedBy = ["default.target"];
-        script = ''
-          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-wizarr`
-        '';
-        after = ["network-online.target"];
-        wants = ["network-online.target"];
-        startLimitBurst = 3;
-        startLimitIntervalSec = 30;
-        serviceConfig = {
-          Type = "simple";
-          Restart = "on-failure";
-          RestartSec = 10;
-          RemainAfterExit = "yes";
-        };
-      };
-      tunnel-sonarr = {
-        description = "Cloudflare tunnel exposing Sonarr";
-        wantedBy = ["default.target"];
-        script = ''
-          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-sonarr`
-        '';
-        after = ["network-online.target"];
-        wants = ["network-online.target"];
-        startLimitBurst = 3;
-        startLimitIntervalSec = 30;
-        serviceConfig = {
-          Type = "simple";
-          Restart = "on-failure";
-          RestartSec = 10;
-          RemainAfterExit = "yes";
-        };
-      };
-      tunnel-radarr = {
-        description = "Cloudflare tunnel exposing Radarr";
-        wantedBy = ["default.target"];
-        script = ''
-          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-radarr`
-        '';
-        after = ["network-online.target"];
-        wants = ["network-online.target"];
-        startLimitBurst = 3;
-        startLimitIntervalSec = 30;
-        serviceConfig = {
-          Type = "simple";
-          Restart = "on-failure";
-          RestartSec = 10;
-          RemainAfterExit = "yes";
-        };
-      };
-      tunnel-tautulli = {
-        description = "Cloudflare tunnel exposing Tautulli";
-        wantedBy = ["default.target"];
-        script = ''
-          /run/current-system/sw/bin/cloudflared tunnel run --token `cat /home/nixos/.tunneltoken-tautulli`
-        '';
-        after = ["network-online.target"];
-        wants = ["network-online.target"];
-        startLimitBurst = 3;
-        startLimitIntervalSec = 30;
-        serviceConfig = {
-          Type = "simple";
-          Restart = "on-failure";
-          RestartSec = 10;
-          RemainAfterExit = "yes";
-        };
-      };
-    };
   };
   environment.systemPackages = with pkgs; let
   in [
