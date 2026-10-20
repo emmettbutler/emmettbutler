@@ -245,23 +245,22 @@ in {
 
     samba = {
       enable = true;
-      securityType = "user";
       openFirewall = true;
       settings = {
         global = {
-          "workgroup" = "WORKGROUP";
+          workgroup = "WORKGROUP";
           "server string" = "smbnix";
           "netbios name" = "smbnix";
-          "security" = "user";
+          security = "user";
           "hosts allow" = "192.168.0. 127.0.0.1 10.0.0.";
           "guest account" = "nixos";
           "map to guest" = "Bad User";
           "passdb backend" = "tdbsam";
         };
-        "smb_root" = {
-          "path" = "/var/lib/smb_root";
-          "writeable" = "yes";
-          "browseable" = "yes";
+        smb_root = {
+          path = "/var/lib/smb_root";
+          writeable = "yes";
+          browseable = "yes";
           "read only" = "no";
           "force user" = "nixos";
           "force group" = "users";
@@ -363,7 +362,7 @@ in {
     services = lib.mapAttrs (name: value: makeService value) {
       vpn = {
         description = "Namespaced OpenVPN NordVPN";
-        wants = ["multi-user.target"];
+        wants = ["network-online.target" "multi-user.target"];
         script = ''
           /run/current-system/sw/bin/ip netns delete protected || true
           /opt/bin/namespaced-openvpn --config /etc/openvpn/ovpn_udp/us12527.nordvpn.com.udp.ovpn
@@ -371,7 +370,7 @@ in {
       };
       sabnzbd-private = {
         description = "SABnzbd downloader behind VPN";
-        wants = ["vpn.service"];
+        wants = ["network-online.target" "vpn.service"];
         script = ''
           /run/current-system/sw/bin/ip link add veth-host type veth peer name veth-ns || true
           /run/current-system/sw/bin/ip link set veth-ns netns protected || true
