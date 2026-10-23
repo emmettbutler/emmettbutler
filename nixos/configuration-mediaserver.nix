@@ -36,7 +36,7 @@
   mkDir = path: {
     user ? "nixos",
     group ? "users",
-    mode ? "755",
+    mode ? "757",
   }: {
     "${path}".d = {inherit user group mode;};
   };
@@ -162,7 +162,7 @@ in {
       image = "ghcr.io/wizarrrr/wizarr:v2026.10.1";
       environment = {
         "DISABLE_BUILTIN_AUTH" = "false";
-        "PGID" = "1000";
+        "PGID" = "100";
         "PUID" = "1000";
         "TZ" = "US/Pacific";
       };
@@ -174,8 +174,8 @@ in {
     tdarr = {
       image = "ghcr.io/haveagitgat/tdarr:2.96.01";
       environment = {
-        "PGID" = "1000";
-        "PUID" = "1000";
+        "PGID" = "501";
+        "PUID" = "20";
         "TZ" = "US/Pacific";
         "UMASK_SET" = "002";
         "auth" = "false";
@@ -262,8 +262,13 @@ in {
           writeable = "yes";
           browseable = "yes";
           "read only" = "no";
+          "guest ok" = "yes";
           "force user" = "nixos";
           "force group" = "users";
+          "create mask" = "0777";
+          "directory mask" = "0777";
+          "force create mode" = "0777";
+          "force directory mode" = "0777";
         };
       };
     };
@@ -353,7 +358,8 @@ in {
               "/var/lib/tdarr/logs"
               "/var/lib/tdarr/configs"
             ] {
-              group = "1000";
+              user = "501";
+              group = "20";
               mode = "777";
             })
         ];
