@@ -174,8 +174,8 @@ in {
     tdarr = {
       image = "ghcr.io/haveagitgat/tdarr:2.96.01";
       environment = {
-        "PGID" = "501";
-        "PUID" = "20";
+        "PGID" = "100";
+        "PUID" = "1000";
         "TZ" = "US/Pacific";
         "UMASK_SET" = "002";
         "auth" = "false";
