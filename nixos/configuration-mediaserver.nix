@@ -397,8 +397,18 @@ in {
       };
     };
     user.services = lib.mapAttrs (name: value: makeService value) {
-      sonarr = {script = "/run/current-system/sw/bin/Sonarr";};
-      radarr = {script = "/run/current-system/sw/bin/Radarr";};
+      sonarr = {
+        description = "TV show NZB finder";
+        script = ''
+          /run/current-system/sw/bin/Sonarr
+        '';
+      };
+      radarr = {
+        description = "Movie NZB finder";
+        script = ''
+          /run/current-system/sw/bin/Radarr
+        '';
+      };
     };
   };
   environment.systemPackages = with pkgs; let
