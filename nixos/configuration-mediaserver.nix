@@ -28,11 +28,17 @@
     }
     // lib.optionalAttrs (script != null) {inherit script;}
     // (builtins.removeAttrs args ["description" "script" "serviceConfig"]);
-  makeTunnel = name:
-    makeService {
-      description = "Cloudflare tunnel exposing ${name}";
-      script = "/run/current-system/sw/bin/cloudflared tunnel run --token $(cat /home/nixos/.tunneltoken-${lib.toLower name})";
-    };
+  makeTunnelOci = name: {
+    image = "cloudflare/cloudflared:2026.10.2";
+    environmentFiles = ["/home/nixos/${name}-tunnel.env"];
+    cmd = [
+      "tunnel"
+      "--no-autoupdate"
+      "run"
+    ];
+    log-driver = "journald";
+    extraOptions = ["--network=host"];
+  };
   mkDir = path: {
     user ? "nixos",
     group ? "users",
@@ -147,17 +153,13 @@ in {
   };
 
   virtualisation.oci-containers.containers = {
-    "tunnel-ssh" = {
-      image = "cloudflare/cloudflared:2026.10.0";
-      environmentFiles = ["/home/nixos/ssh-tunnel.env"];
-      cmd = [
-        "tunnel"
-        "--no-autoupdate"
-        "run"
-      ];
-      log-driver = "journald";
-      extraOptions = ["--network=host"];
-    };
+    tunnel-ssh = makeTunnelOci "ssh";
+    tunnel-jellyfin = makeTunnelOci "jellyfin";
+    tunnel-overseerr = makeTunnelOci "overseerr";
+    tunnel-wizarr = makeTunnelOci "wizarr";
+    tunnel-sonarr = makeTunnelOci "sonarr";
+    tunnel-radarr = makeTunnelOci "radarr";
+    tunnel-tautulli = makeTunnelOci "tautulli";
     wizarr = {
       image = "ghcr.io/wizarrrr/wizarr:v2026.10.1";
       environment = {
@@ -394,33 +396,13 @@ in {
         };
       };
     };
-    user.services =
-      (lib.mapAttrs (name: value: makeService value) {
-        sonarr = {
-          description = "TV show NZB finder";
-          script = ''
-            /run/current-system/sw/bin/Sonarr
-          '';
-        };
-        radarr = {
-          description = "Movie NZB finder";
-          script = ''
-            /run/current-system/sw/bin/Radarr
-          '';
-        };
-      })
-      // {
-        tunnel-overseerr = makeTunnel "Overseerr";
-        tunnel-jellyfin = makeTunnel "Jellyfin";
-        tunnel-wizarr = makeTunnel "Wizarr";
-        tunnel-sonarr = makeTunnel "Sonarr";
-        tunnel-radarr = makeTunnel "Radarr";
-        tunnel-tautulli = makeTunnel "Tautulli";
-      };
+    user.services = lib.mapAttrs (name: value: makeService value) {
+      sonarr = {script = "/run/current-system/sw/bin/Sonarr";};
+      radarr = {script = "/run/current-system/sw/bin/Radarr";};
+    };
   };
   environment.systemPackages = with pkgs; let
   in [
-    cloudflared
     ftop
     htop
     mergerfs
