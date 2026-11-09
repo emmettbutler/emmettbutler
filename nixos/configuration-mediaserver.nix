@@ -149,6 +149,7 @@ in {
       127.0.0.1 stats.pandaemonium
       127.0.0.1 wizarr.pandaemonium
       127.0.0.1 tdarr.pandaemonium
+      127.0.0.1 tracearr.pandaemonium
     '';
   };
 
@@ -159,7 +160,7 @@ in {
     tunnel-wizarr = makeTunnelOci "wizarr";
     tunnel-sonarr = makeTunnelOci "sonarr";
     tunnel-radarr = makeTunnelOci "radarr";
-    tunnel-tautulli = makeTunnelOci "tautulli";
+    tunnel-tracearr = makeTunnelOci "tracearr";
     wizarr = {
       image = "ghcr.io/wizarrrr/wizarr:v2026.10.1";
       environment = {
@@ -204,6 +205,20 @@ in {
       ports = ["8265:8265/tcp" "8266:8266/tcp"];
       log-driver = "journald";
       extraOptions = ["--network=host"];
+    };
+    tracearr = {
+      image = "ghcr.io/connorgallopo/tracearr:supervised";
+      ports = [
+        "3000:3000"
+      ];
+      environment = {
+        NODE_ENV = "production";
+        PORT = "3000";
+      };
+      volumes = [
+        "tracearr_data:/data"
+      ];
+      extraOptions = [ "--network=host" ];
     };
     watchstate = {
       image = "ghcr.io/arabcoders/watchstate:v1.10.10";
@@ -285,7 +300,6 @@ in {
       user = "nixos";
     };
     overseerr = {enable = true;};
-    tautulli = {enable = true;};
     resolved = {enable = true;};
     openssh = {enable = true;};
     nginx = {
@@ -298,6 +312,7 @@ in {
         "radarr.pandaemonium" = mkProxy "http://127.0.0.1:7878";
         "sonarr.pandaemonium" = mkProxy "http://127.0.0.1:8989";
         "overseerr.pandaemonium" = mkProxy "http://127.0.0.1:5055";
+        "tracearr.pandaemonium" = mkProxy "http://127.0.0.1:3000";
         "sabnzbd-private.pandaemonium" = mkProxyWithHeaders "http://192.168.10.2:8080";
         "sabnzbd.pandaemonium" = mkProxyWithHeaders "http://127.0.0.1:8080";
       };
