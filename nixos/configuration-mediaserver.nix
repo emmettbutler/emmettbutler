@@ -215,10 +215,17 @@ in {
         NODE_ENV = "production";
         PORT = "3000";
       };
-      volumes = [
-        "tracearr_data:/data"
+      extraOptions = [
+        "--shm-size=512m"
+        "--memory=3g"
+        "--network=host"
       ];
-      extraOptions = ["--network=host"];
+      volumes = [
+        "tracearr_postgres:/data/postgres"
+        "tracearr_redis:/data/redis"
+        "tracearr_data:/data/tracearr"
+        "tracearr_backups:/data/backup"
+      ];
     };
     watchstate = {
       image = "ghcr.io/arabcoders/watchstate:v1.10.10";
