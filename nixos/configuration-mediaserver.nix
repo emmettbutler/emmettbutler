@@ -218,7 +218,7 @@ in {
       volumes = [
         "tracearr_data:/data"
       ];
-      extraOptions = [ "--network=host" ];
+      extraOptions = ["--network=host"];
     };
     watchstate = {
       image = "ghcr.io/arabcoders/watchstate:v1.10.10";
@@ -382,35 +382,44 @@ in {
         ];
       };
     };
-    services = lib.mapAttrs (name: value: makeService value) {
-      vpn = {
-        description = "Namespaced OpenVPN NordVPN";
-        wants = ["network-online.target" "multi-user.target"];
-        script = ''
-          /run/current-system/sw/bin/ip netns delete protected || true
-          /opt/bin/namespaced-openvpn --config /etc/openvpn/ovpn_udp/us12527.nordvpn.com.udp.ovpn
-        '';
-      };
-      sabnzbd-private = {
-        description = "SABnzbd downloader behind VPN";
-        wants = ["network-online.target" "vpn.service"];
-        script = ''
-          /run/current-system/sw/bin/ip link add veth-host type veth peer name veth-ns || true
-          /run/current-system/sw/bin/ip link set veth-ns netns protected || true
-          /run/current-system/sw/bin/ip addr add 192.168.10.1/24 dev veth-host || true
-          /run/current-system/sw/bin/ip link set veth-host up || true
-          /run/current-system/sw/bin/ip netns exec protected /run/current-system/sw/bin/ip addr add 192.168.10.2/24 dev veth-ns || true
-          /run/current-system/sw/bin/ip netns exec protected /run/current-system/sw/bin/ip link set veth-ns up || true
-          /run/current-system/sw/bin/ip netns exec protected /run/wrappers/bin/sudo -u nixos -i /run/current-system/sw/bin/sabnzbd -f /home/nixos/.sabnzbd/sabnzbd-private.ini
-        '';
-      };
-      sabnzbd = {
-        description = "SABnzbd downloader";
-        serviceConfig = {
-          ExecStart = "/run/wrappers/bin/sudo -u nixos -i /run/current-system/sw/bin/sabnzbd";
+    services =
+      lib.mapAttrs (name: value: makeService value) {
+        vpn = {
+          description = "Namespaced OpenVPN NordVPN";
+          wants = ["network-online.target" "multi-user.target"];
+          script = ''
+            /run/current-system/sw/bin/ip netns delete protected || true
+            /opt/bin/namespaced-openvpn --config /etc/openvpn/ovpn_udp/us12527.nordvpn.com.udp.ovpn
+          '';
+        };
+        sabnzbd-private = {
+          description = "SABnzbd downloader behind VPN";
+          wants = ["network-online.target" "vpn.service"];
+          script = ''
+            /run/current-system/sw/bin/ip link add veth-host type veth peer name veth-ns || true
+            /run/current-system/sw/bin/ip link set veth-ns netns protected || true
+            /run/current-system/sw/bin/ip addr add 192.168.10.1/24 dev veth-host || true
+            /run/current-system/sw/bin/ip link set veth-host up || true
+            /run/current-system/sw/bin/ip netns exec protected /run/current-system/sw/bin/ip addr add 192.168.10.2/24 dev veth-ns || true
+            /run/current-system/sw/bin/ip netns exec protected /run/current-system/sw/bin/ip link set veth-ns up || true
+            /run/current-system/sw/bin/ip netns exec protected /run/wrappers/bin/sudo -u nixos -i /run/current-system/sw/bin/sabnzbd -f /home/nixos/.sabnzbd/sabnzbd-private.ini
+          '';
+        };
+        sabnzbd = {
+          description = "SABnzbd downloader";
+          serviceConfig = {
+            ExecStart = "/run/wrappers/bin/sudo -u nixos -i /run/current-system/sw/bin/sabnzbd";
+          };
+        };
+      }
+      // {
+        jellyfin = {
+          serviceConfig = {
+            ProtectProc = lib.mkForce "default";
+            ProcSubset = lib.mkForce "all";
+          };
         };
       };
-    };
     user.services = lib.mapAttrs (name: value: makeService value) {
       sonarr = {
         description = "TV show NZB finder";
