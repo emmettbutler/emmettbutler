@@ -115,7 +115,7 @@ with lib; {
       addresses = true;
     };
   };
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   hardware.sane = {enable = true;};
   services.pipewire = {
     enable = true;
@@ -128,10 +128,14 @@ with lib; {
 
   services.resolved = {
     enable = true;
-    dnssec = "true";
-    domains = ["~."];
-    fallbackDns = ["8.8.4.4"];
-    dnsovertls = "true";
+    settings = {
+      Resolve = {
+        DNSSEC = "true";
+        DNSOverTLS = "true";
+        Domains = ["~."];
+        FallbackDNS = ["8.8.4.4"];
+      };
+    };
   };
   systemd = {
     services.wgnord = let
@@ -344,10 +348,10 @@ with lib; {
   services.fprintd.enable = true;
   services.pcscd.enable = true;
   services.dbus.packages = [pkgs.gcr];
+  services.desktopManager.gnome.enable = true;
+  services.displayManager.gdm.enable = true;
   services.xserver = {
     enable = true;
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
     xkb.layout = "us";
     xkb.variant = "";
   };
