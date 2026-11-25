@@ -3,33 +3,43 @@
     nixpkgs.url = "nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
   };
-  outputs = { self, nixpkgs, ... }@inputs:
-    let
-      system = "x86_64-linux";
-      pkgs = import inputs.nixpkgs { inherit system; };
-      my-custom-overlay = final: prev: rec {
-        unstable = import inputs.nixpkgs-unstable {
-          system = "${system}";
-          config.allowUnfree = true;
-        };
-      };
-    in {
-      # for the first run on a fresh system, the hostname is "nixos"
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          ({ config, pkgs, ... }: { nixpkgs.overlays = [ my-custom-overlay ]; })
-          ./configuration.nix
-        ];
-      };
-      # on subsequent runs, the hostname is "hell"
-      nixosConfigurations.hell = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          ({ config, pkgs, ... }: { nixpkgs.overlays = [ my-custom-overlay ]; })
-          ./configuration.nix
-        ];
+  outputs = {
+    self,
+    nixpkgs,
+    ...
+  } @ inputs: let
+    system = "x86_64-linux";
+    pkgs = import inputs.nixpkgs {inherit system;};
+    my-custom-overlay = final: prev: rec {
+      unstable = import inputs.nixpkgs-unstable {
+        system = "${system}";
+        config.allowUnfree = true;
       };
     };
+  in {
+    # for the first run on a fresh system, the hostname is "nixos"
+    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+      inherit system;
+      modules = [
+        ({
+          config,
+          pkgs,
+          ...
+        }: {nixpkgs.overlays = [my-custom-overlay];})
+        ./configuration.nix
+      ];
+    };
+    # on subsequent runs, the hostname is "hell"
+    nixosConfigurations.hell = nixpkgs.lib.nixosSystem {
+      inherit system;
+      modules = [
+        ({
+          config,
+          pkgs,
+          ...
+        }: {nixpkgs.overlays = [my-custom-overlay];})
+        ./configuration.nix
+      ];
+    };
+  };
 }
-
