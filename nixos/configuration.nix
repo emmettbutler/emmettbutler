@@ -259,6 +259,18 @@ with lib; {
       });
     })
     (self: super: {wine = super.wineWow64Packages.stable;})
+    (final: prev: {
+      cloudflared = prev.cloudflared.overrideAttrs (oldAttrs: rec {
+        version = "2026.11.2";
+        src = prev.fetchFromGitHub {
+          owner = "cloudflare";
+          repo = "cloudflared";
+          rev = version;
+          hash = "sha256-j0WVmn7XMLla31yBn3K1rmeCexSQTWrgm4xtaEBiJAw=";
+        };
+        vendorHash = "sha256-l5dvI3C8eQKcF6zACHIOud5KWfIRkdZNoVEPRR9Oxt0=";
+      });
+    })
   ];
 
   environment.systemPackages = with pkgs; let

@@ -29,7 +29,7 @@
     // lib.optionalAttrs (script != null) {inherit script;}
     // (builtins.removeAttrs args ["description" "script" "serviceConfig"]);
   makeTunnelOci = name: {
-    image = "cloudflare/cloudflared:2026.10.6";
+    image = "cloudflare/cloudflared:2026.11.2";
     environmentFiles = ["/home/nixos/${name}-tunnel.env"];
     cmd = [
       "tunnel"
@@ -228,7 +228,7 @@ in {
       ];
     };
     watchstate = {
-      image = "ghcr.io/arabcoders/watchstate:v1.10.10";
+      image = "ghcr.io/arabcoders/watchstate:v1.11.0";
       ports = ["8282:8080"];
       volumes = [
         "/var/lib/watchstate:/config:rw"
